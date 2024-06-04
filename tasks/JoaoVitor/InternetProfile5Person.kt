@@ -1,12 +1,17 @@
 fun main() {
-    val amanda = Person("Amanda", 33, "play tennis", null)
-    val atiqah = Person("Atiqah", 28, "climb", amanda)
     
-    amanda.showProfile()
-    atiqah.showProfile()
+    val joao = Person("João", 33, "play football", null)
+    val pedro = Person("Pedro", 28, "climb", joao)
+    val messi = Person("Messi", 36, "play football", pedro)
+    val cris = Person("Cris", 37, "play tennis", messi)
+    val maria = Person("Maria", 22, "dance", null)
+    
+    val perfil = listOf(joao, pedro, messi, cris, maria)
+    
+    perfil.forEach {
+        it.showProfile()
+    }
 }
-
-
 class Person(val name: String, val age: Int, val hobby: String?, val referrer: Person?) {
     fun showProfile() {
         println("Name: ${this.name}")
