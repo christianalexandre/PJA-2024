@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +9,7 @@
         android:id="@+id/buttonSave"
         android:layout_width="126dp"
         android:layout_height="60dp"
-        android:text="Salvar contato"
+        android:text="@string/saveContact"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +19,7 @@
         android:id="@+id/buttonList"
         android:layout_width="126dp"
         android:layout_height="60dp"
-        android:text="Lista de Contatos"
+        android:text="@string/contactList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonSave" />
@@ -29,7 +28,7 @@
         android:id="@+id/buttonClear"
         android:layout_width="126dp"
         android:layout_height="60dp"
-        android:text="Limpar lista"
+        android:text="@string/cleanList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonList" />
@@ -40,7 +39,8 @@
         android:layout_height="49dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="20dp"
-        android:hint="Telefone"
+        android:hint="@string/phone"
+        android:importantForAutofill="no"
         android:inputType="phone"
         app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,9 +50,10 @@
         android:id="@+id/editTextName"
         android:layout_width="0dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginStart="40dp"
+        android:layout_marginBottom="20dp"
         android:hint="@string/name"
+        android:importantForAutofill="no"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@id/buttonSave"
         app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
