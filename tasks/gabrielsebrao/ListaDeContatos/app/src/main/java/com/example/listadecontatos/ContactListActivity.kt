@@ -1,6 +1,7 @@
 package com.example.listadecontatos
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -20,29 +21,43 @@ class ContactListActivity : ComponentActivity() {
         val bundle = intent.getBundleExtra("bundle")
         val contactList = bundle?.getParcelableArrayList<Contact>("contactlist")?.toList()
 
-        when(contactList?.size) {
+        when (contactList?.size) {
             1 -> {
                 binding.contact1.visibility = View.VISIBLE
-                binding.contact1.text = contactList[0].name + '\n' + contactList[0].phone
+                binding.nameContact1.text = contactList[0].name
+                binding.phoneContact1.text = contactList[0].phone
             }
+
             2 -> {
                 binding.contact1.visibility = View.VISIBLE
-                binding.contact1.text = contactList[0].name + '\n' + contactList[0].phone
+                binding.nameContact1.text = contactList[0].name
+                binding.phoneContact1.text = contactList[0].phone
 
                 binding.contact2.visibility = View.VISIBLE
-                binding.contact2.text = contactList[1].name + '\n' + contactList[1].phone
+                binding.nameContact2.text = contactList[1].name
+                binding.phoneContact2.text = contactList[1].phone
             }
+
             3 -> {
                 binding.contact1.visibility = View.VISIBLE
-                binding.contact1.text = contactList[0].name + '\n' + contactList[0].phone
+                binding.nameContact1.text = contactList[0].name
+                binding.phoneContact1.text = contactList[0].phone
 
                 binding.contact2.visibility = View.VISIBLE
-                binding.contact2.text = contactList[1].name + '\n' + contactList[1].phone
+                binding.nameContact2.text = contactList[1].name
+                binding.phoneContact2.text = contactList[1].phone
 
                 binding.contact3.visibility = View.VISIBLE
-                binding.contact3.text = contactList[2].name + '\n' + contactList[2].phone
+                binding.nameContact3.text = contactList[2].name
+                binding.phoneContact3.text = contactList[2].phone
             }
         }
+
+        binding.buttonReturn.setOnClickListener { goToMainActivity() }
     }
 
+    private fun goToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 }
