@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ConversaoMoedas</string>
+    <string name="selectCurrency">Seleciona uma moeda</string>
+    <string name="convertValue">Valor a ser convertido</string>
+    <string name="calculateButton">Calcular</string>
+    <string name="returnButton">Retornar</string>
+    <string name="result">Resultado</string>
+    <string name="equals">=</string>
+    <string name="title_activity_main">MainActivity</string>
+</resources>
