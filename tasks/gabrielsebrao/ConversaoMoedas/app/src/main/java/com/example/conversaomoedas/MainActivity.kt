@@ -1,14 +1,26 @@
 package com.example.conversaomoedas
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.activity.ComponentActivity
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.MainActivityBinding
+import kotlinx.parcelize.Parcelize
 import java.lang.Double.parseDouble
 import java.lang.Integer.parseInt
 
+@SuppressLint("StaticFieldLeak")
 private lateinit var binding: MainActivityBinding
+private lateinit var currenciesList: Array<String>
+
+@SuppressLint("StaticFieldLeak")
+private lateinit var spinnerOne: Spinner
+
+@SuppressLint("StaticFieldLeak")
+private lateinit var spinnerTwo: Spinner
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,8 +28,9 @@ class MainActivity : ComponentActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val spinnerOne = binding.currencyOne
-        val spinnerTwo = binding.currencyTwo
+        spinnerOne = binding.currencyOne
+        spinnerTwo = binding.currencyTwo
+        binding.calculateButton.setOnClickListener { goToConversionPage() }
 
         ArrayAdapter.createFromResource(
             this,
@@ -28,67 +41,22 @@ class MainActivity : ComponentActivity() {
             spinnerOne.adapter = adapter
             spinnerTwo.adapter = adapter
         }
-
-        var spinnerOneSelectedItem = spinnerOne.selectedItem.toString()
-        var spinnerTwoSelectedItem = spinnerTwo.selectedItem.toString()
-
-        calculateConversion(spinnerOneSelectedItem, spinnerTwoSelectedItem, 10.0)
     }
 
-    fun calculateConversion(currencyOne: String, currencyTwo:String, value:Double): Double {
-        val brl = 1.0
-        val usd = 5.3
-        val gbp = 6.74
-        val chf = 5.91
-        val eur = 5.72
+    private fun goToConversionPage() {
 
-        var valueOne = value
-        var valueTwo = 0.0
+        val spinnerOneSelectedItem = spinnerOne.selectedItem.toString()
+        val spinnerTwoSelectedItem = spinnerTwo.selectedItem.toString()
+        currenciesList = arrayOf(spinnerOneSelectedItem, spinnerTwoSelectedItem)
+        val initialValue = binding.initialValue.text.toString().toDouble()
 
-        when(currencyOne) {
-            "Real (BRL)" -> {
-                valueOne = brl
+        val intent = Intent(this, ConversionPage::class.java).apply {
+            val bundle = Bundle().apply {
+                putStringArray("currenciesList", currenciesList)
+                putDouble("initialValue", initialValue)
             }
-
-            "Dólar Americano (USD)" -> {
-                valueOne = usd
-            }
-
-            "Libra Esterlina (GBP)" -> {
-                valueOne = gbp
-            }
-
-            "Franco Suíço" -> {
-                valueOne = chf
-            }
-
-            "Euro (EUR)" -> {
-                valueOne = eur
-            }
+            putExtra("bundle", bundle)
         }
-
-        when(currencyTwo) {
-            "Real (BRL)" -> {
-                valueTwo = brl
-            }
-
-            "Dólar Americano (USD)" -> {
-                valueTwo = usd
-            }
-
-            "Libra Esterlina (GBP)" -> {
-                valueTwo = gbp
-            }
-
-            "Franco Suíço" -> {
-                valueTwo = chf
-            }
-
-            "Euro (EUR)" -> {
-                valueTwo = eur
-            }
-        }
-
-        return valueOne/valueTwo
+        startActivity(intent)
     }
 }
