@@ -3,6 +3,7 @@ package com.example.conversaomoedas
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ConversionPageBinding
 
 @SuppressLint("StaticFieldLeak")
@@ -43,43 +44,63 @@ class ConversionPage : ComponentActivity() {
         when (currencyOne) {
             "BRL" -> {
                 valueOne *= brl
+                binding.flagOne.setImageResource(R.drawable.brflag)
+                binding.flagOne.contentDescription = "Ícone da Bandeira do Brasil"
             }
 
             "USD" -> {
                 valueOne *= usd
+                binding.flagOne.setImageResource(R.drawable.usflag)
+                binding.flagOne.contentDescription = "Ícone da bandeira dos Estados Unidos"
             }
 
             "GBP" -> {
                 valueOne *= gbp
+                binding.flagOne.setImageResource(R.drawable.ukflag)
+                binding.flagOne.contentDescription = "Ícone da bandeira do Reino Unido"
             }
 
             "CHF" -> {
                 valueOne *= chf
+                binding.flagOne.setImageResource(R.drawable.chflag)
+                binding.flagOne.contentDescription = "Ícone da bandeira da Suíça"
             }
 
             "EUR" -> {
                 valueOne *= eur
+                binding.flagOne.setImageResource(R.drawable.euflag)
+                binding.flagOne.contentDescription = "Ícone da bandeira da União Europeia"
             }
         }
         when (currencyTwo) {
             "BRL" -> {
                 valueTwo = brl
+                binding.flagTwo.setImageResource(R.drawable.brflag)
+                binding.flagTwo.contentDescription = "Ícone da Bandeira do Brasil"
             }
 
             "USD" -> {
                 valueTwo = usd
+                binding.flagTwo.setImageResource(R.drawable.usflag)
+                binding.flagTwo.contentDescription = "Ícone da bandeira dos Estados Unidos"
             }
 
             "GBP" -> {
                 valueTwo = gbp
+                binding.flagTwo.setImageResource(R.drawable.ukflag)
+                binding.flagTwo.contentDescription = "Ícone da bandeira do Reino Unido"
             }
 
             "CHF" -> {
                 valueTwo = chf
+                binding.flagTwo.setImageResource(R.drawable.chflag)
+                binding.flagTwo.contentDescription = "Ícone da bandeira da Suíça"
             }
 
             "EUR" -> {
                 valueTwo = eur
+                binding.flagTwo.setImageResource(R.drawable.euflag)
+                binding.flagTwo.contentDescription = "Ícone da bandeira da União Europeia"
             }
         }
 
