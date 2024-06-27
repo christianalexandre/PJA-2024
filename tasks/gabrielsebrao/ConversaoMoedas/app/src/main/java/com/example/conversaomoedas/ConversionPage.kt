@@ -1,6 +1,7 @@
 package com.example.conversaomoedas
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import com.example.listadecontatos.R
@@ -8,6 +9,8 @@ import com.example.listadecontatos.databinding.ConversionPageBinding
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var binding: ConversionPageBinding
+private lateinit var currenciesList: Array<String>
+private var initialValue: Double = 0.0
 
 class ConversionPage : ComponentActivity() {
     @SuppressLint("DefaultLocale")
@@ -17,13 +20,16 @@ class ConversionPage : ComponentActivity() {
         setContentView(binding.root)
 
         val bundle = intent.getBundleExtra("bundle")
-        val currencyOne = getCurrencyAbbreviation(bundle?.getStringArray("currenciesList")?.get(0)!!)
-        val currencyTwo = getCurrencyAbbreviation(bundle.getStringArray("currenciesList")?.get(1)!!)
-        val initialValue = bundle.getDouble("initialValue")
+
+        currenciesList = bundle?.getStringArray("currenciesList")!!
+        val currencyOne = getCurrencyAbbreviation(currenciesList[0])
+        val currencyTwo = getCurrencyAbbreviation(currenciesList[1])
+        initialValue = bundle.getDouble("initialValue")
         val finalValue = calculateConversion(currencyOne, currencyTwo, initialValue)
 
         binding.initialValue.text = String.format("%.2f $currencyOne", initialValue)
         binding.finalValue.text = String.format("%.2f $currencyTwo", finalValue)
+        binding.returnButton.setOnClickListener { goToMainActivity() }
 
     }
 
@@ -108,7 +114,7 @@ class ConversionPage : ComponentActivity() {
     }
 
     private fun getCurrencyAbbreviation(currency: String): String {
-        when(currency) {
+        when (currency) {
             "Real (BRL)" -> {
                 return "BRL"
             }
@@ -130,6 +136,17 @@ class ConversionPage : ComponentActivity() {
             }
         }
 
-        return "ERROR"
+        return ""
+    }
+
+    private fun goToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            val bundle = Bundle().apply {
+                putStringArray("currenciesList", currenciesList)
+                putDouble("initialValue", initialValue)
+            }
+            putExtra("bundle", bundle)
+        }
+        startActivity(intent)
     }
 }
