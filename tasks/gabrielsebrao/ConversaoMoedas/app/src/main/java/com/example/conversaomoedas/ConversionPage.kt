@@ -18,7 +18,6 @@ class ConversionPage : ComponentActivity() {
         super.onCreate(savedInstanceState)
         binding = ConversionPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val bundle = intent.getBundleExtra("bundle")
 
         currenciesList = bundle?.getStringArray("currenciesList")!!
