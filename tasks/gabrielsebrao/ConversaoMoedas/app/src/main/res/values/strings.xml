@@ -8,4 +8,5 @@
     <string name="equals">=</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_conversion_page">ConversionPage</string>
+    <string name="currencyconverter">Conversor de Moedas</string>
 </resources>
