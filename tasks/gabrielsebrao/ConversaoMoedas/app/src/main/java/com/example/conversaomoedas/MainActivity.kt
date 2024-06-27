@@ -66,14 +66,14 @@ class MainActivity : ComponentActivity() {
         } else if (spinnerOneSelectedItem == spinnerTwoSelectedItem) {
             Toast.makeText(this, "Selecione duas moedas diferentes.", Toast.LENGTH_SHORT).show()
         } else {
-        val intent = Intent(this, ConversionPage::class.java).apply {
-            val bundle = Bundle().apply {
-                putStringArray("currenciesList", currenciesList)
-                putDouble("initialValue", initialValue)
+            val intent = Intent(this, ConversionPage::class.java).apply {
+                val bundle = Bundle().apply {
+                    putStringArray("currenciesList", currenciesList)
+                    putDouble("initialValue", initialValue)
+                }
+                putExtra("bundle", bundle)
             }
-            putExtra("bundle", bundle)
+            startActivity(intent)
         }
-        startActivity(intent)
     }
-}
 }
