@@ -11,6 +11,7 @@ import com.example.listadecontatos.databinding.ConversionPageBinding
 private lateinit var binding: ConversionPageBinding
 private lateinit var currenciesList: Array<String>
 private var initialValue: Double = 0.0
+private val currency: Currency = Currency()
 
 class ConversionPage : ComponentActivity() {
     @SuppressLint("DefaultLocale")
@@ -21,121 +22,83 @@ class ConversionPage : ComponentActivity() {
         val bundle = intent.getBundleExtra("bundle")
 
         currenciesList = bundle?.getStringArray("currenciesList")!!
-        val currencyOne = getCurrencyAbbreviation(currenciesList[0])
-        val currencyTwo = getCurrencyAbbreviation(currenciesList[1])
+        val currencyOne = currency.getCurrencyAbbreviation(currenciesList[0])
+        val currencyTwo = currency.getCurrencyAbbreviation(currenciesList[1])
+
         initialValue = bundle.getDouble("initialValue")
-        val finalValue = calculateConversion(currencyOne, currencyTwo, initialValue)
-
         binding.initialValue.text = String.format("%.2f $currencyOne", initialValue)
-        binding.finalValue.text = String.format("%.2f $currencyTwo", finalValue)
-        binding.returnButton.setOnClickListener { goToMainActivity() }
-
-    }
-
-    private fun calculateConversion(
-        currencyOne: String,
-        currencyTwo: String,
-        initialValue: Double
-    ): Double {
-        val brl = 1.0
-        val usd = 5.3
-        val gbp = 6.74
-        val chf = 5.91
-        val eur = 5.72
-
-        var valueOne = initialValue
-        var valueTwo = 0.0
+        var controlInitialValue = initialValue
+        var finalValue = 1.0
 
         when (currencyOne) {
             "BRL" -> {
-                valueOne *= brl
+                controlInitialValue *= 1.0
                 binding.flagOne.setImageResource(R.drawable.brflag)
                 binding.flagOne.contentDescription = "Ícone da Bandeira do Brasil"
             }
 
             "USD" -> {
-                valueOne *= usd
+                controlInitialValue *= 5.3
                 binding.flagOne.setImageResource(R.drawable.usflag)
                 binding.flagOne.contentDescription = "Ícone da bandeira dos Estados Unidos"
             }
 
             "GBP" -> {
-                valueOne *= gbp
+                controlInitialValue *= 6.74
                 binding.flagOne.setImageResource(R.drawable.ukflag)
                 binding.flagOne.contentDescription = "Ícone da bandeira do Reino Unido"
             }
 
             "CHF" -> {
-                valueOne *= chf
+                controlInitialValue *= 5.91
                 binding.flagOne.setImageResource(R.drawable.chflag)
                 binding.flagOne.contentDescription = "Ícone da bandeira da Suíça"
             }
 
             "EUR" -> {
-                valueOne *= eur
+                controlInitialValue *= 5.72
                 binding.flagOne.setImageResource(R.drawable.euflag)
                 binding.flagOne.contentDescription = "Ícone da bandeira da União Europeia"
             }
         }
+
         when (currencyTwo) {
             "BRL" -> {
-                valueTwo = brl
+                finalValue = 1.0
                 binding.flagTwo.setImageResource(R.drawable.brflag)
                 binding.flagTwo.contentDescription = "Ícone da Bandeira do Brasil"
             }
 
             "USD" -> {
-                valueTwo = usd
+                finalValue = 5.3
                 binding.flagTwo.setImageResource(R.drawable.usflag)
                 binding.flagTwo.contentDescription = "Ícone da bandeira dos Estados Unidos"
             }
 
             "GBP" -> {
-                valueTwo = gbp
+                finalValue = 6.74
                 binding.flagTwo.setImageResource(R.drawable.ukflag)
                 binding.flagTwo.contentDescription = "Ícone da bandeira do Reino Unido"
             }
 
             "CHF" -> {
-                valueTwo = chf
+                finalValue = 5.91
                 binding.flagTwo.setImageResource(R.drawable.chflag)
                 binding.flagTwo.contentDescription = "Ícone da bandeira da Suíça"
             }
 
             "EUR" -> {
-                valueTwo = eur
+                finalValue = 5.72
                 binding.flagTwo.setImageResource(R.drawable.euflag)
                 binding.flagTwo.contentDescription = "Ícone da bandeira da União Europeia"
             }
         }
 
-        return valueOne / valueTwo
-    }
+        finalValue = controlInitialValue/finalValue
+        binding.finalValue.text = String.format("%.2f $currencyTwo", finalValue)
 
-    private fun getCurrencyAbbreviation(currency: String): String {
-        when (currency) {
-            "Real (BRL)" -> {
-                return "BRL"
-            }
+        binding.returnButton.setOnClickListener { goToMainActivity() }
 
-            "Dólar Americano (USD)" -> {
-                return "USD"
-            }
-
-            "Libra Esterlina (GBP)" -> {
-                return "GBP"
-            }
-
-            "Franco Suíço (CHF)" -> {
-                return "CHF"
-            }
-
-            "Euro (EUR)" -> {
-                return "EUR"
-            }
-        }
-
-        return ""
     }
 
     private fun goToMainActivity() {
