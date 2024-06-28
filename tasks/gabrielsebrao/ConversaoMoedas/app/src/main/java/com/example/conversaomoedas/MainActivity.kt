@@ -9,14 +9,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.MainActivityBinding
-import kotlinx.parcelize.Parcelize
-import java.lang.Double.parseDouble
-import java.lang.Integer.parseInt
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var binding: MainActivityBinding
 private lateinit var currenciesList: Array<String>
-
 @SuppressLint("StaticFieldLeak")
 private lateinit var spinnerOne: Spinner
 
