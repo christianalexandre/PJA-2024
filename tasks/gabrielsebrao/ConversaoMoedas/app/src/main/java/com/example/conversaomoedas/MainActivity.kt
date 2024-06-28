@@ -22,6 +22,7 @@ private lateinit var spinnerOne: Spinner
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var spinnerTwo: Spinner
+private val currency: Currency = Currency()
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +43,28 @@ class MainActivity : ComponentActivity() {
             spinnerOne.adapter = adapter
             spinnerTwo.adapter = adapter
         }
+
+        val bundle = intent.getBundleExtra("bundle")
+        if(bundle != null)  {
+            val initialValue = bundle.getDouble("initialValue")
+            val spinnerOneSelectedItem = bundle.getStringArray("currenciesList")!![0]
+            val spinnerTwoSelectedItem = bundle.getStringArray("currenciesList")!![1]
+
+            if(initialValue % 1 == 0.0)
+                binding.initialValue.setText(initialValue.toInt().toString())
+            else
+                binding.initialValue.setText(initialValue.toString())
+
+            currency.defineCurrencySelectedItem(spinnerOne,spinnerOneSelectedItem)
+            currency.defineCurrencySelectedItem(spinnerTwo,spinnerTwoSelectedItem)
+        }
     }
 
     private fun goToConversionPage() {
 
         val spinnerOneSelectedItem = spinnerOne.selectedItem.toString()
         val spinnerTwoSelectedItem = spinnerTwo.selectedItem.toString()
-        val initialValue: Double
+        var initialValue = 1.0
         currenciesList = arrayOf(spinnerOneSelectedItem, spinnerTwoSelectedItem)
 
         if (binding.initialValue.text.toString().isBlank()) {
