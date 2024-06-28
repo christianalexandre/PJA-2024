@@ -55,7 +55,12 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, "Digite um valor a ser convertido.", Toast.LENGTH_SHORT).show()
             return
         } else {
+            try {
             initialValue = binding.initialValue.text.toString().toDouble()
+            } catch(_: NumberFormatException) {
+                Toast.makeText(this, "Digite um valor válido.", Toast.LENGTH_SHORT).show()
+                return
+            }
         }
 
         if (spinnerOneSelectedItem == "Selecionar uma moeda" || spinnerTwoSelectedItem == "Selecionar uma moeda") {
