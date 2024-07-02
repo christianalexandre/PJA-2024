@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">APIMoedas</string>
+    <string name="currencyOne">Moeda a ser convertida</string>
+    <string name="currencyTwo">Moeda Final</string>
+    <string name="initialValue">Valor a ser convertido</string>
+</resources>
