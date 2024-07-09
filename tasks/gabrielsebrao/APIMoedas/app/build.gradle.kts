@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.retrofit)
     implementation(libs.convertergson)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
