@@ -19,8 +19,7 @@ class MainActivity : ComponentActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val retrofitService =
-            RetrofitInstance.getRetrofitInstance().create(CurrencyApi::class.java)
+        val retrofitService = RetrofitInstance.getRetrofitInstance().create(CurrencyApi::class.java)
 
         val responseLiveData: LiveData<Response<CurrencyItem>> =
             liveData {
