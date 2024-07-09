@@ -8,11 +8,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.liveData
 import com.example.apimoedas.databinding.MainActivityBinding
 import retrofit2.Response
+import kotlin.text.*
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var binding: MainActivityBinding
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,10 +31,45 @@ class MainActivity : ComponentActivity() {
 
         responseLiveData.observe(this) {
             val currencyInfo = it.body()
+            binding.currencyOne.append("Currency name: ${currencyInfo?.USDBRL?.code} \n")
+            binding.currencyOne.append(
+                "Converted value to BRL: ${
+                    String.format(
+                        "R$%.2f",
+                        currencyInfo?.USDBRL?.bid?.toDouble()
+                    )
+                }"
+            )
 
-            val currencyName = "Currency name: ${currencyInfo?.code} \n"
-            binding.textView.append(currencyName)
-        })
+            binding.currencyTwo.append("Currency name: ${currencyInfo?.EURBRL?.code} \n")
+            binding.currencyTwo.append(
+                "Converted value to BRL: ${
+                    String.format(
+                        "R$%.2f",
+                        currencyInfo?.EURBRL?.bid?.toDouble()
+                    )
+                }"
+            )
 
+            binding.currencyThree.append("Currency name: ${currencyInfo?.CHFBRL?.code} \n")
+            binding.currencyThree.append(
+                "Converted value to BRL: ${
+                    String.format(
+                        "R$%.2f",
+                        currencyInfo?.CHFBRL?.bid?.toDouble()
+                    )
+                }"
+            )
+
+            binding.currencyFour.append("Currency name: ${currencyInfo?.GBPBRL?.code} \n")
+            binding.currencyFour.append(
+                "Converted value to BRL: ${
+                    String.format(
+                        "R$%.2f",
+                        currencyInfo?.GBPBRL?.bid?.toDouble()
+                    )
+                }"
+            )
+        }
     }
 }
