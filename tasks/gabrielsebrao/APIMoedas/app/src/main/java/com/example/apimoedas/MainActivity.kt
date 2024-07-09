@@ -3,9 +3,10 @@ package com.example.apimoedas
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.liveData
 import com.example.apimoedas.databinding.MainActivityBinding
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
 @SuppressLint("StaticFieldLeak")
@@ -18,12 +19,21 @@ class MainActivity : ComponentActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.textView2.setText(R.string.currencyTwo)
-        binding.textView3.setText(R.string.initialValue)
-    }
+        val retrofitService =
+            RetrofitInstance.getRetrofitInstance().create(CurrencyApi::class.java)
 
-    fun getApiConversaoMoedaData() {
-        val retrofitClient = ApiConversaoMoeda
-        val endpoint = retrofitClient.create(ApiConversaoMoedaEndpoint::class.java)
+        val responseLiveData: LiveData<Response<CurrencyItem>> =
+            liveData {
+                val response = retrofitService.getCurrencies()
+                emit(response)
+            }
+
+        responseLiveData.observe(this, Observer {
+            val currencyInfo = it.body()
+
+            val currencyName = "Currency name: ${currencyInfo?.code} \n"
+            binding.textView.append(currencyName)
+        })
+
     }
 }
