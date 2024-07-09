@@ -4,6 +4,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface CurrencyApi {
-    @GET("USD")
-    suspend fun getCurrencies(): Response<CurrencyItem>
+    @GET("USD,EUR,CHF,GBP")
+    suspend fun getCurrencies(): Response<Currency>
 }
