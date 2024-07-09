@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 emit(response)
             }
 
-        responseLiveData.observe(this, Observer {
+        responseLiveData.observe(this) {
             val currencyInfo = it.body()
 
             val currencyName = "Currency name: ${currencyInfo?.code} \n"
