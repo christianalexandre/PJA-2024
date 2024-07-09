@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
         val retrofitService = RetrofitInstance.getRetrofitInstance().create(CurrencyApi::class.java)
 
-        val responseLiveData: LiveData<Response<CurrencyItem>> =
+        val responseLiveData: LiveData<Response<Currency>> =
             liveData {
                 val response = retrofitService.getCurrencies()
                 emit(response)
