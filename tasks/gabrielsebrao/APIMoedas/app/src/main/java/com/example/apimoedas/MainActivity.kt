@@ -8,6 +8,7 @@ import androidx.lifecycle.liveData
 import com.example.apimoedas.databinding.MainActivityBinding
 import retrofit2.Response
 import kotlin.text.*
+import java.net.UnknownHostException
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var binding: MainActivityBinding
@@ -24,8 +25,12 @@ class MainActivity : ComponentActivity() {
 
         val responseLiveData: LiveData<Response<Currency>> =
             liveData {
-                val response = retrofitService.getCurrencies()
-                emit(response)
+                try {
+                    val response = retrofitService.getCurrencies()
+                    emit(response)
+                } catch(_: UnknownHostException) {
+                    binding.currencyOne.text = "teste"
+                }
             }
 
         responseLiveData.observe(this) {
