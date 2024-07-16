@@ -39,36 +39,28 @@ class MainActivity : ComponentActivity() {
 
         if (name.isNotEmpty() && phone.isNotEmpty()) {
             if (contactsList.size == 3)
-                Toast.makeText(
-                    this,
-                    "Você só pode adicionar até 3 contatos na sua lista!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, R.string.exceedThreeContacts, Toast.LENGTH_SHORT).show()
             else {
                 contactsList.add(Contact(name.toString(), phone.toString()))
-                Toast.makeText(this, "Contato adicionado!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.addContact, Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(
-                this,
-                "Por favor, insira todos os dados do contato para salvá-lo!",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this, R.string.setAllContacts, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun clearContacts() {
         if (contactsList.isEmpty()) {
-            Toast.makeText(this, "Os contatos já estão esvaziados!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.alreadyEmptyContacts, Toast.LENGTH_SHORT).show()
         } else {
             contactsList.clear()
-            Toast.makeText(this, "Lista de contatos limpa!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.emptyContacts, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun goToContactList() {
         if (contactsList.isEmpty())
-            Toast.makeText(this, "Por favor, adicionar pelo menos um contato!", Toast.LENGTH_SHORT)
+            Toast.makeText(this, R.string.addAtLeastOneContact, Toast.LENGTH_SHORT)
                 .show()
         else {
             val intent = Intent(this, ContactListActivity::class.java).apply {
