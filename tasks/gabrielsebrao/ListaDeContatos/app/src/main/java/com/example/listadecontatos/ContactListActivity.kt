@@ -7,9 +7,10 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import com.example.listadecontatos.databinding.ContactListActivityBinding
 
-private lateinit var binding: ContactListActivityBinding
-
 class ContactListActivity : ComponentActivity() {
+
+    private lateinit var binding: ContactListActivityBinding
+    private lateinit var contactList: List<Contact>
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
