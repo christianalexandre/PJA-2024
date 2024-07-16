@@ -20,10 +20,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        setupListeners()
+    }
 
-        binding.buttonSave.setOnClickListener { saveContact() }
-        binding.buttonClear.setOnClickListener { clearContacts() }
-        binding.buttonList.setOnClickListener { goToContactList() }
+    private fun setupListeners() {
+        with(binding) {
+            buttonSave.setOnClickListener { saveContact() }
+            buttonClear.setOnClickListener { clearContacts() }
+            buttonList.setOnClickListener { goToContactList() }
+        }
     }
 
     private fun saveContact() {
