@@ -7,11 +7,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.listadecontatos.databinding.MainActivityBinding
 
-private lateinit var binding: MainActivityBinding
-private var contactsList: MutableList<Contact> = mutableListOf()
-
-
 class MainActivity : ComponentActivity() {
+
+    private lateinit var binding: MainActivityBinding
+    private var contactsList: MutableList<Contact> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
