@@ -1,4 +1,4 @@
-package com.example.apimoedas
+package com.example.apimoedas.Api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

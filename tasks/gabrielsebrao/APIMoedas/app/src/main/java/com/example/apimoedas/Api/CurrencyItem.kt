@@ -1,4 +1,4 @@
-package com.example.apimoedas
+package com.example.apimoedas.Api
 
 import com.google.gson.annotations.SerializedName
 
