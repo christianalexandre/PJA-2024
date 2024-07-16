@@ -8,4 +8,10 @@
     <string name="saveContact">Salvar contato</string>
     <string name="phoneAlt">Um ícone pequeno de um telefone.</string>
     <string name="returnHome">Retornar</string>
+    <string name="exceedThreeContacts">Você só pode adicionar até 3 contatos na sua lista!</string>
+    <string name="addContact">Contato adicionado!</string>
+    <string name="setAllContacts">Por favor, insira todos os dados do contato para salvá-lo!</string>
+    <string name="alreadyEmptyContacts">Os contatos já estão esvaziados!</string>
+    <string name="emptyContacts">Lista de contatos limpa!</string>
+    <string name="addAtLeastOneContact">Por favor, adicionar pelo menos um contato!</string>
 </resources>
