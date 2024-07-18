@@ -94,8 +94,7 @@ class MainActivity : ComponentActivity() {
 
     private fun goToContactList() {
         if (contactsList.isEmpty())
-            Toast.makeText(this, R.string.addAtLeastOneContact, Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(this, R.string.addAtLeastOneContact, Toast.LENGTH_SHORT).show()
         else {
             val intent = Intent(this, ContactListActivity::class.java).apply {
                 val bundle = Bundle().apply {
