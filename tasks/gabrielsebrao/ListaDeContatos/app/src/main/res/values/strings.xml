@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ListaDeContatos</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="name">Name</string>
+    <string name="name">Nome</string>
     <string name="phone">Telefone</string>
     <string name="cleanList">Limpar Contatos</string>
     <string name="contactList">Lista de Contatos</string>
@@ -14,4 +14,7 @@
     <string name="alreadyEmptyContacts">Os contatos já estão esvaziados!</string>
     <string name="emptyContacts">Lista de contatos limpa!</string>
     <string name="addAtLeastOneContact">Por favor, adicionar pelo menos um contato!</string>
+    <string name="exceedPhoneNumber">O número de telefone está muito grande!</string>
+    <string name="onlyNumbers">Insira apenas números para o número de telefone!</string>
+    <string name="exceedName">O nome do contato está muito grande!</string>
 </resources>
