@@ -73,7 +73,12 @@ class ContactListActivity : ComponentActivity() {
     }
 
     private fun goToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java).apply {
+            val bundle = Bundle().apply {
+                putParcelableArrayList("contactlist", contactList.toCollection(ArrayList()))
+            }
+            putExtra("bundle", bundle)
+        }
         startActivity(intent)
     }
 }

@@ -14,6 +14,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        getExtras()
+
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
@@ -56,6 +59,12 @@ class MainActivity : ComponentActivity() {
             contactsList.clear()
             Toast.makeText(this, R.string.emptyContacts, Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun getExtras() {
+        val bundle = intent.getBundleExtra("bundle")
+
+        if(bundle != null)
+            contactsList = (bundle.getParcelableArrayList<Contact>("contactlist")?.toList() as MutableList<Contact>?)!!
     }
 
     private fun goToContactList() {
