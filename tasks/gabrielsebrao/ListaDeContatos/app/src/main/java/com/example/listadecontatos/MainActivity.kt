@@ -35,17 +35,27 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun saveContact() {
-        val name = binding.editTextName.text
-        val phone = binding.editTextPhone.text
+        val name = binding.editTextName.text.toString()
+        val phone = binding.editTextPhone.text.toString()
 
         Log.d("debug", "saveContact()")
 
         if (name.isNotEmpty() && phone.isNotEmpty()) {
-            if (contactsList.size == 3)
+            if (contactsList.size >= 3) {
                 Toast.makeText(this, R.string.exceedThreeContacts, Toast.LENGTH_SHORT).show()
+            } else if (phone.length > 11) {
+                Toast.makeText(this, R.string.exceedPhoneNumber, Toast.LENGTH_SHORT).show()
+            } else if (name.length > 30) {
+                Toast.makeText(this, R.string.exceedName, Toast.LENGTH_SHORT).show()
+            }
             else {
-                contactsList.add(Contact(name.toString(), phone.toString()))
-                Toast.makeText(this, R.string.addContact, Toast.LENGTH_SHORT).show()
+                try {
+                    phone.toBigInteger()
+                    contactsList.add(Contact(name, phone))
+                    Toast.makeText(this, R.string.addContact, Toast.LENGTH_SHORT).show()
+                } catch (_: NumberFormatException) {
+                    Toast.makeText(this, R.string.onlyNumbers, Toast.LENGTH_SHORT).show()
+                }
             }
         } else {
             Toast.makeText(this, R.string.setAllContacts, Toast.LENGTH_SHORT).show()
@@ -60,6 +70,21 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, R.string.emptyContacts, Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun checkPhoneValidation(phoneNumber: String): Boolean {
+        if (phoneNumber.length > 11) {
+            Toast.makeText(this, R.string.exceedPhoneNumber, Toast.LENGTH_SHORT).show()
+        } else {
+            try {
+                phoneNumber.toInt()
+            } catch (_: NumberFormatException) {
+                Toast.makeText(this, R.string.onlyNumbers, Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }
+        return true
+    }
+
     private fun getExtras() {
         val bundle = intent.getBundleExtra("bundle")
 
