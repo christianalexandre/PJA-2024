@@ -35,6 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:text="Salvar contato"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +51,8 @@
         app:layout_constraintTop_toBottomOf="@id/buttonSalvarContato"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
         />
 
     <Button
@@ -58,7 +62,10 @@
         android:text="Limpar lista"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonListaContatos" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonListaContatos"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
