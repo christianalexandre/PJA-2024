@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 coinType1 = selectedName1
                 Toast.makeText(this@MainActivity, "Valores padrões selecionados automáticamente", Toast.LENGTH_SHORT).show()
                 Toast.makeText(this@MainActivity, "${selectedName1} foi selecionado", Toast.LENGTH_SHORT).show()
-                //retirar o toast no inicio
+                //retirar o toast no inicio porem deixar ao selecionar uma moeda
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
