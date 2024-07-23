@@ -2,7 +2,6 @@ package com.example.listadecontatos
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.listadecontatos.databinding.MainActivityBinding
@@ -38,8 +37,6 @@ class MainActivity : ComponentActivity() {
         val name = binding.editTextName.text.toString()
         val phone = binding.editTextPhone.text.toString()
 
-        Log.d("debug", "saveContact()")
-
         if (name.isNotEmpty() && phone.isNotEmpty()) {
             if (contactsList.size >= 3) {
                 Toast.makeText(this, R.string.exceed_three_contacts, Toast.LENGTH_SHORT).show()
@@ -55,6 +52,9 @@ class MainActivity : ComponentActivity() {
                     Toast.makeText(this, R.string.add_contact, Toast.LENGTH_SHORT).show()
                 } catch (_: NumberFormatException) {
                     Toast.makeText(this, R.string.only_numbers, Toast.LENGTH_SHORT).show()
+                } catch (_: UnsupportedOperationException) { // for some reason contactsList is changing to a singletonList
+                    contactsList = mutableListOf(contactsList[0], Contact(name, phone))
+                    Toast.makeText(this, R.string.add_contact, Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
         val bundle = intent.getBundleExtra("bundle")
 
         if(bundle != null)
-            contactsList = (bundle.getParcelableArrayList<Contact>("contactlist")?.toList() as MutableList<Contact>?)!!
+            contactsList = (bundle.getParcelableArrayList<Contact>("contactlist")?.toList() as MutableList<Contact>)
     }
 
     private fun goToContactList() {
