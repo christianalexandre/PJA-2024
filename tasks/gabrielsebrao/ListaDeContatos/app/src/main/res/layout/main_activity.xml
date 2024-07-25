@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -52,7 +53,7 @@
 
         <LinearLayout
             android:id="@+id/buttonsLayout"
-            android:layout_width="match_parent"
+            android:layout_width="190dp"
             android:layout_height="140dp"
             android:layout_marginTop="30dp"
             android:gravity="center_horizontal"
@@ -61,8 +62,9 @@
 
             <Button
                 android:id="@+id/buttonSave"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:background="@color/black"
                 android:text="@string/save_contact"
                 android:textColor="@color/white"
@@ -73,8 +75,9 @@
 
             <Button
                 android:id="@+id/buttonList"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:background="@color/black"
                 android:text="@string/contact_list"
@@ -85,8 +88,9 @@
 
             <Button
                 android:id="@+id/buttonClear"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:background="@color/black"
                 android:text="@string/clean_list"
