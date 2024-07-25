@@ -21,7 +21,7 @@ open class Phone(var isScreenLightOn: Boolean = false){
     }
 }
 
-   class FoldablePhone (var close: Boolean = false): Phone() {
+   class FoldablePhone (var close: Boolean = true): Phone() {
     
     fun openOrClosed (){
         if (close == false){
@@ -41,6 +41,8 @@ open class Phone(var isScreenLightOn: Boolean = false){
             println("Phone opened")
         }
         else {
+            isScreenLightOn = false
+            checkPhoneScreenLight()
             println("Phone closed")
         }
     }
