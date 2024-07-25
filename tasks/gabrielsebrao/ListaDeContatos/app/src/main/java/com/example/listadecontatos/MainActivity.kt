@@ -44,8 +44,7 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(this, R.string.exceed_phone_number, Toast.LENGTH_SHORT).show()
             } else if (name.length > 30) {
                 Toast.makeText(this, R.string.exceed_name, Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
                 try {
                     phone.toBigInteger()
                     contactsList.add(Contact(name, phone))
