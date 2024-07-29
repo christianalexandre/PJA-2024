@@ -65,8 +65,14 @@ class MainActivity : ComponentActivity() {
         if (contactsList.isEmpty()) {
             Toast.makeText(this, R.string.already_empty_contacts, Toast.LENGTH_SHORT).show()
         } else {
-            contactsList.clear()
-            Toast.makeText(this, R.string.empty_contacts, Toast.LENGTH_SHORT).show()
+            try {
+                contactsList.clear()
+            } catch(_:UnsupportedOperationException) { // for some reason contactsList is changing to a singletonList
+                contactsList = mutableListOf(contactsList[0])
+                contactsList.clear()
+            } finally {
+                Toast.makeText(this, R.string.empty_contacts, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
