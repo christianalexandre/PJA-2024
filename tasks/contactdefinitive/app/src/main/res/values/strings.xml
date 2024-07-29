@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">contact definitive</string>
+    <string name="null_fields_toast">Os campos não podem estar vazios</string>
+    <string name="full_fields_toast">A lista de contato está cheia</string>
+    <string name="save_fields_toast">Contato salvo com sucesso</string>
+    <string name="null_list_toast">A lista de conatato está vazia</string>
 </resources>
