@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupListener()
     }
+
     private fun openSecondActivity() {
         val intent = Intent(this, ListContactActivity::class.java).apply {
             val bundle = Bundle().apply {
@@ -44,12 +45,20 @@ class MainActivity : AppCompatActivity() {
 
             buttonSalvarContato.setOnClickListener {
                 if (editNome.text.toString() == "" || editTelefone.text.toString() == "") {
-                    Toast.makeText(applicationContext, getString(R.string.null_fields_toast), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.null_fields_toast),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     return@setOnClickListener
                 }
                 if (contatoList.size >= 3) {
-                    Toast.makeText(applicationContext, getString(R.string.full_fields_toast), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.full_fields_toast),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     return@setOnClickListener
                 }
@@ -60,14 +69,22 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
                 clearEditText()
-                Toast.makeText(applicationContext, getString(R.string.save_fields_toast), Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.save_fields_toast),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
             editTelefone.addTextChangedListener(TextWatcherHelper.textWatcher(binding.editTelefone))
 
             buttonLimparContatos.setOnClickListener {
                 contatoList.removeAll(contatoList)
-                Toast.makeText(applicationContext, getString(R.string.null_list_toast), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.null_list_toast),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             buttonListaContatos.setOnClickListener {
@@ -76,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     object TextWatcherHelper {
         fun textWatcher(valueField: EditText): TextWatcher {
             return object : TextWatcher {

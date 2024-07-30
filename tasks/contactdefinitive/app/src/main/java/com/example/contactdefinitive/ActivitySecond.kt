@@ -23,7 +23,7 @@ class ListContactActivity : AppCompatActivity() {
         val contactList = bundle?.getParcelableArrayList<Contact>("contact")
 
         when (contactList != null) {
-            (contactList?.size == 1) -> with(binding){
+            (contactList?.size == 1) -> with(binding) {
                 nomeDoCtt1.text = contactList!![0].name
                 phone1.text = contactList[0].num
                 barra1.visibility = View.VISIBLE
@@ -38,7 +38,7 @@ class ListContactActivity : AppCompatActivity() {
                 barra2.visibility = View.VISIBLE
             }
 
-            (contactList?.size == 3) -> with(binding){
+            (contactList?.size == 3) -> with(binding) {
                 nomeDoCtt1.text = contactList!![0].name
                 phone1.text = contactList[0].num
                 nomeDoCtt2.text = contactList[1].name
@@ -49,14 +49,15 @@ class ListContactActivity : AppCompatActivity() {
                 barra2.visibility = View.VISIBLE
                 barra3.visibility = View.VISIBLE
             }
+
             else -> {
                 Toast.makeText(this, "Nenhum contato adicionado!", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
 
-            binding.buttonRetornar.setOnClickListener {
-                finish()
-            }
+        binding.buttonRetornar.setOnClickListener {
+            finish()
+        }
     }
 }
