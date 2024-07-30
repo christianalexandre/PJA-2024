@@ -2,7 +2,7 @@ package com.example.conversaomoedas
 
 import android.widget.Spinner
 
-class Currency {
+object Currency {
     fun getCurrencyAbbreviation(currency: String): String {
         when (currency) {
             "Real (BRL)" -> {

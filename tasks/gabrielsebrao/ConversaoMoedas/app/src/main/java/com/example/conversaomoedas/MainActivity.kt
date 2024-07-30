@@ -51,6 +51,10 @@ class MainActivity : ComponentActivity() {
             else
                 binding.initialValue.setText(initialValue.toString())
 
+            with(Currency) {
+                defineCurrencySelectedItem(spinnerOne, spinnerOneSelectedItem)
+                defineCurrencySelectedItem(spinnerTwo, spinnerTwoSelectedItem)
+            }
         initialValue.addTextChangedListener(TextWatcherHelper.filterChangedText(initialValue))
     }
 

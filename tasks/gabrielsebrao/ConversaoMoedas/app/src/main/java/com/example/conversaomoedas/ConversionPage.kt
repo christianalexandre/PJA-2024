@@ -22,8 +22,8 @@ class ConversionPage : ComponentActivity() {
         val bundle = intent.getBundleExtra("bundle")
 
         currenciesList = bundle?.getStringArray("currenciesList")!!
-        val currencyOne = currency.getCurrencyAbbreviation(currenciesList[0])
-        val currencyTwo = currency.getCurrencyAbbreviation(currenciesList[1])
+        val currencyOne = Currency.getCurrencyAbbreviation(currenciesList[0])
+        val currencyTwo = Currency.getCurrencyAbbreviation(currenciesList[1])
 
         initialValue = bundle.getDouble("initialValue")
         binding.initialValue.text = String.format("%.2f $currencyOne", initialValue)
