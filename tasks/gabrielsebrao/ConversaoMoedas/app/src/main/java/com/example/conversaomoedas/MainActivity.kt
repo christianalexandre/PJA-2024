@@ -51,9 +51,7 @@ class MainActivity : ComponentActivity() {
             else
                 binding.initialValue.setText(initialValue.toString())
 
-            currency.defineCurrencySelectedItem(spinnerOne,spinnerOneSelectedItem)
-            currency.defineCurrencySelectedItem(spinnerTwo,spinnerTwoSelectedItem)
-        }
+        initialValue.addTextChangedListener(TextWatcherHelper.filterChangedText(initialValue))
     }
 
     private fun goToConversionPage() {
