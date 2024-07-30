@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.contactdefinitive.databinding.ActivitySecondBinding
 
-class ContactListActivity : AppCompatActivity() {
+class ListContactActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySecondBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +50,9 @@ class ContactListActivity : AppCompatActivity() {
                 barra3.visibility = View.VISIBLE
             }
             else -> {
+                Toast.makeText(this, "Nenhum contato adicionado!", Toast.LENGTH_SHORT).show()
                 finish()
-                Toast.makeText(this, "Nenhum contato adicionado!", Toast.LENGTH_SHORT).show()}
+            }
         }
 
             binding.buttonRetornar.setOnClickListener {

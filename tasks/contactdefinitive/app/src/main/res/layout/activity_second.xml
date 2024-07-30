@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactListActivity">
+    tools:context=".ListContactActivity">
 
     <Button
         android:id="@+id/buttonRetornar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:text="Retornar"
+        android:backgroundTint="@color/black"
+        android:text="@string/return_field_button"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barra3"
-        app:layout_constraintVertical_bias="0.497" />
+        app:layout_constraintTop_toBottomOf="@id/barra3" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/barra1"
@@ -36,14 +38,13 @@
             app:layout_constraintBottom_toBottomOf="@id/barra1"
             app:layout_constraintStart_toStartOf="@id/barra1"
             app:layout_constraintTop_toTopOf="@id/barra1"
-            app:srcCompat="@android:drawable/ic_menu_call"
-            tools:layout_editor_absoluteX="26dp"
-            tools:layout_editor_absoluteY="238dp" />
+            app:srcCompat="@drawable/ic_local_phone"
+            />
 
         <TextView
             android:id="@+id/nomeDoCtt1"
-            android:layout_width="44dp"
-            android:layout_height="19dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@id/barra1"
@@ -82,12 +83,12 @@
             app:layout_constraintBottom_toBottomOf="@id/barra2"
             app:layout_constraintStart_toStartOf="@id/barra2"
             app:layout_constraintTop_toTopOf="@id/barra2"
-            app:srcCompat="@android:drawable/ic_menu_call" />
+            app:srcCompat="@drawable/ic_local_phone" />
 
         <TextView
             android:id="@+id/nomeDoCtt2"
-            android:layout_width="44dp"
-            android:layout_height="19dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@id/barra2"
@@ -114,9 +115,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@color/black"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/barra2">
 
         <ImageView
@@ -126,12 +127,12 @@
             app:layout_constraintBottom_toBottomOf="@id/barra3"
             app:layout_constraintStart_toStartOf="@id/barra3"
             app:layout_constraintTop_toTopOf="@id/barra3"
-            app:srcCompat="@android:drawable/ic_menu_call" />
+            app:srcCompat="@drawable/ic_local_phone" />
 
         <TextView
             android:id="@+id/nomeDoCtt3"
-            android:layout_width="44dp"
-            android:layout_height="19dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@id/barra3"
