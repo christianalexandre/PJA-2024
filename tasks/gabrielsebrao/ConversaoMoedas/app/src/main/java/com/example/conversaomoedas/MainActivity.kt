@@ -10,17 +10,12 @@ import androidx.activity.ComponentActivity
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.MainActivityBinding
 
-@SuppressLint("StaticFieldLeak")
-private lateinit var binding: MainActivityBinding
-private lateinit var currenciesList: Array<String>
-@SuppressLint("StaticFieldLeak")
-private lateinit var spinnerOne: Spinner
-
-@SuppressLint("StaticFieldLeak")
-private lateinit var spinnerTwo: Spinner
-private val currency: Currency = Currency()
-
 class MainActivity : ComponentActivity() {
+    private lateinit var binding: MainActivityBinding
+    private lateinit var currenciesList: Array<String>
+    private lateinit var spinnerOne: Spinner
+    private lateinit var spinnerTwo: Spinner
+    private lateinit var initialValue: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainActivityBinding.inflate(layoutInflater)
