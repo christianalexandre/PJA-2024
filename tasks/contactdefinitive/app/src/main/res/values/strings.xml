@@ -2,6 +2,7 @@
     <string name="app_name">app 77</string>
 
     <string-array name="coins_array1">
+        <item>Selecionar</item>
         <item>BRL</item>
         <item>USD</item>
         <item>GBP</item>
@@ -10,6 +11,7 @@
     </string-array>
 
     <string-array name="coins_array2">
+        <item>Selecionar</item>
         <item>USD</item>
         <item>BRL</item>
         <item>GBP</item>
@@ -22,6 +24,20 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="text_first_activity_para"> </string>
+    <string name="title_first_activity">Conversor de moedas</string>
+    <string name="hint_field_value">Valor a ser convertido</string>
+    <string name="button_calculation_text">CALCULAR</string>
+    <string name="title_second_activity">Resultado</string>
+    <string name="button_return">RETORNAR</string>
+    <string name="sinal_equals">=</string>
+    <string name="anything"> </string>
+    <string name="required_value_toast">Favor colocar um valor!</string>
+    <string name="required_distint_coins_toast">Favor colocar moedas distintas!</string>
+    <string name="selected_value_toast">foi selecionado</string>
+    <string name="anything_selected_toast">Nada foi selecionado</string>
+    <string name="first_toast">Selecione as moedas e o digite o valor</string>
+    <string name="selected_close_toast">Selecione as moedas corretamente</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
