@@ -15,7 +15,15 @@ private var initialValue: Double = 0.0
 private val currency: Currency = Currency()
 
 class ConversionPage : ComponentActivity() {
-    @SuppressLint("DefaultLocale")
+
+    private lateinit var binding: ConversionPageBinding
+    private lateinit var currencyOne: String
+    private lateinit var currencyTwo: String
+    private lateinit var currenciesList: Array<String>
+    private var finalValue by Delegates.notNull<Double>()
+    private var controlInitialValue by Delegates.notNull<Double>()
+    private var initialValue by Delegates.notNull<Double>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ConversionPageBinding.inflate(layoutInflater)
