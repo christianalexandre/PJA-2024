@@ -1,4 +1,4 @@
-package com.example.conversaomoedas
+package com.example.conversaomoedas.objects
 
 import android.widget.Spinner
 

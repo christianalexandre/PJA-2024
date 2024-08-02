@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.conversaomoedas.objects.Currency
+import com.example.conversaomoedas.objects.TextWatcherHelper
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.MainActivityBinding
 

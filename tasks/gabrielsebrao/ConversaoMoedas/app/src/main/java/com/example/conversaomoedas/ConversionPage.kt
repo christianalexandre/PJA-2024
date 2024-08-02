@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import com.example.conversaomoedas.objects.Currency
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ConversionPageBinding
 
