@@ -3,64 +3,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/currencyconverter"
-        android:layout_marginBottom="230dp"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <Spinner
-        android:id="@+id/currencyOne"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_height="wrap_content"
+            android:text="@string/currencyconverter"
+            android:textColor="@color/gray"
+            android:textSize="20sp"/>
 
-    <Spinner
-        android:id="@+id/currencyTwo"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/initialValue">
 
-    <EditText
-        android:id="@+id/initialValue"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:hint="@string/convertValue"
-        android:importantForAutofill="no"
-        android:inputType="phone"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <Spinner
+                android:id="@+id/currencyOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="@color/gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/calculateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/calculateButton"
-        android:layout_marginTop="300dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <Spinner
+                android:id="@+id/currencyTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/initialValue"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/gray"
+            android:digits="0123456789,."
+            android:hint="@string/convertValue"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/initialValue">
+
+            <Button
+                android:id="@+id/calculateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_borders_background"
+                android:text="@string/calculateButton"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
