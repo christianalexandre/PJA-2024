@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity() {
             return
         } else {
             try {
-                convertingValue = this.initialValue.text.toString().toDouble()
+                convertingValue = this.initialValue.text.toString().replace(',','.').toDouble()
             } catch (_: NumberFormatException) {
                 Toast.makeText(this, R.string.valid_value, Toast.LENGTH_SHORT).show()
                 return
