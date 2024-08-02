@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -18,76 +19,92 @@ class MainActivity : ComponentActivity() {
     private lateinit var initialValue: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MainActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
+        initActivityValues()
+        setupView()
+        setupListeners()
+        getExtras()
+    }
+
+    @SuppressLint("ResourceType")
+    private fun initActivityValues() {
+        binding = MainActivityBinding.inflate(layoutInflater)
         spinnerOne = binding.currencyOne
         spinnerTwo = binding.currencyTwo
-        binding.calculateButton.setOnClickListener { goToConversionPage() }
-
+        initialValue = binding.initialValue
         ArrayAdapter.createFromResource(
             this,
             R.array.array_currencies,
-            android.R.layout.simple_spinner_item
+            R.drawable.spinner_item
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
             spinnerOne.adapter = adapter
             spinnerTwo.adapter = adapter
         }
+    }
 
+    private fun setupView() {
+        setContentView(binding.root)
+    }
+
+    private fun getExtras() {
         val bundle = intent.getBundleExtra("bundle")
-        if(bundle != null)  {
+
+        if (bundle != null) {
             val initialValue = bundle.getDouble("initialValue")
             val spinnerOneSelectedItem = bundle.getStringArray("currenciesList")!![0]
             val spinnerTwoSelectedItem = bundle.getStringArray("currenciesList")!![1]
 
-            if(initialValue % 1 == 0.0)
-                binding.initialValue.setText(initialValue.toInt().toString())
-            else
-                binding.initialValue.setText(initialValue.toString())
+            this.initialValue.setText(initialValue.toBigDecimal().toPlainString())
 
             with(Currency) {
                 defineCurrencySelectedItem(spinnerOne, spinnerOneSelectedItem)
                 defineCurrencySelectedItem(spinnerTwo, spinnerTwoSelectedItem)
             }
+        }
+    }
+
+    private fun setupListeners() {
+        binding.calculateButton.setOnClickListener { goToConversionPage() }
         initialValue.addTextChangedListener(TextWatcherHelper.filterChangedText(initialValue))
     }
 
     private fun goToConversionPage() {
-
         val spinnerOneSelectedItem = spinnerOne.selectedItem.toString()
         val spinnerTwoSelectedItem = spinnerTwo.selectedItem.toString()
-        var initialValue = 1.0
+        val convertingValue: Double
         currenciesList = arrayOf(spinnerOneSelectedItem, spinnerTwoSelectedItem)
 
-        if (binding.initialValue.text.toString().isBlank()) {
-            Toast.makeText(this, "Digite um valor a ser convertido.", Toast.LENGTH_SHORT).show()
+        if (this.initialValue.text.toString().isBlank()) {
+            Toast.makeText(this, R.string.missing_convert_value, Toast.LENGTH_SHORT).show()
             return
         } else {
             try {
-                initialValue = binding.initialValue.text.toString().toDouble()
-            } catch(_: NumberFormatException) {
-                Toast.makeText(this, "Digite um valor válido.", Toast.LENGTH_SHORT).show()
+                convertingValue = this.initialValue.text.toString().toDouble()
+            } catch (_: NumberFormatException) {
+                Toast.makeText(this, R.string.valid_value, Toast.LENGTH_SHORT).show()
                 return
             }
         }
 
         if (spinnerOneSelectedItem == "Selecionar uma moeda" || spinnerTwoSelectedItem == "Selecionar uma moeda") {
-            Toast.makeText(this, "Selecione alguma moeda para os dois campos.", Toast.LENGTH_SHORT)
-                .show()
-        } else if (initialValue <= 0) {
-            Toast.makeText(this, "Digite um valor válido.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.missing_selected_currencies, Toast.LENGTH_SHORT).show()
+        } else if (convertingValue <= 0) {
+            Toast.makeText(this, R.string.valid_value, Toast.LENGTH_SHORT).show()
         } else if (spinnerOneSelectedItem == spinnerTwoSelectedItem) {
-            Toast.makeText(this, "Selecione duas moedas diferentes.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.identical_currencies, Toast.LENGTH_SHORT).show()
         } else {
-            val intent = Intent(this, ConversionPage::class.java).apply {
-                val bundle = Bundle().apply {
-                    putStringArray("currenciesList", currenciesList)
-                    putDouble("initialValue", initialValue)
-                }
-                putExtra("bundle", bundle)
-            }
-            startActivity(intent)
+            setupExtras(convertingValue)
         }
+    }
+
+    private fun setupExtras(convertingValue: Double) {
+        startActivity(Intent(this, ConversionPage::class.java).apply {
+            val bundle = Bundle().apply {
+                putStringArray("currenciesList", currenciesList)
+                putDouble("initialValue", convertingValue)
+            }
+            putExtra("bundle", bundle)
+        })
     }
 }

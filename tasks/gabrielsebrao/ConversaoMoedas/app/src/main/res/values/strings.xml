@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ConversaoMoedas</string>
+    <string name="app_name">Conversao de Moedas</string>
     <string name="selectCurrency">Seleciona uma moeda</string>
     <string name="convertValue">Valor a ser convertido</string>
     <string name="calculateButton">Calcular</string>
@@ -9,4 +9,9 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_conversion_page">ConversionPage</string>
     <string name="currencyconverter">Conversor de Moedas</string>
+    <string name="missing_convert_value">Digite um valor a ser convertido.</string>
+    <string name="valid_value">Digite um valor válido.</string>
+    <string name="missing_selected_currencies">Selecione alguma moeda para os dois campos.</string>
+    <string name="identical_currencies">Selecione duas moedas diferentes.</string>
+    <string name="flag">Bandeira.</string>
 </resources>
