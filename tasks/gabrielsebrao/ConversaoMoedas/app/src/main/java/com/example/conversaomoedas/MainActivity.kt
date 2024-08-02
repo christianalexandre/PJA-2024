@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initActivityValues()
+        initActivityVariables()
         setupView()
         setupListeners()
 
@@ -32,21 +32,12 @@ class MainActivity : ComponentActivity() {
         getExtras()
     }
 
-    @SuppressLint("ResourceType")
-    private fun initActivityValues() {
+    private fun initActivityVariables() {
         binding = MainActivityBinding.inflate(layoutInflater)
         spinnerOne = binding.currencyOne
         spinnerTwo = binding.currencyTwo
         initialValue = binding.initialValue
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.array_currencies,
-            R.drawable.spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
-            spinnerOne.adapter = adapter
-            spinnerTwo.adapter = adapter
-        }
+        setupSpinners()
     }
 
     private fun setupView() {
@@ -56,15 +47,11 @@ class MainActivity : ComponentActivity() {
     private fun getExtras() {
         bundle = intent.getBundleExtra("bundle") ?: return // if bundle == null returns the function
 
-        if (bundle != null) {
-            val initialValue = bundle.getDouble("initialValue")
-            val spinnerOneSelectedItem = bundle.getStringArray("currenciesList")!![0]
-            val spinnerTwoSelectedItem = bundle.getStringArray("currenciesList")!![1]
+        val spinnerOneSelectedItem = bundle.getStringArray("currenciesList")!![0]
+        val spinnerTwoSelectedItem = bundle.getStringArray("currenciesList")!![1]
 
         Currency.defineCurrencySelectedItem(spinnerOne, spinnerOneSelectedItem)
         Currency.defineCurrencySelectedItem(spinnerTwo, spinnerTwoSelectedItem)
-            }
-        }
     }
 
     private fun setupListeners() {
@@ -81,13 +68,13 @@ class MainActivity : ComponentActivity() {
         if (this.initialValue.text.toString().isBlank()) {
             Toast.makeText(this, R.string.missing_convert_value, Toast.LENGTH_SHORT).show()
             return
-        } else {
-            try {
-                convertingValue = this.initialValue.text.toString().replace(',','.').toDouble()
-            } catch (_: NumberFormatException) {
-                Toast.makeText(this, R.string.valid_value, Toast.LENGTH_SHORT).show()
-                return
-            }
+        }
+
+        try {
+            convertingValue = this.initialValue.text.toString().replace(',','.').toDouble()
+        } catch (_: NumberFormatException) {
+            Toast.makeText(this, R.string.valid_value, Toast.LENGTH_SHORT).show()
+            return
         }
 
         if (spinnerOneSelectedItem == "Selecionar uma moeda" || spinnerTwoSelectedItem == "Selecionar uma moeda") {
@@ -109,5 +96,18 @@ class MainActivity : ComponentActivity() {
             }
             putExtra("bundle", bundle)
         })
+    }
+
+    @SuppressLint("ResourceType")
+    private fun setupSpinners() {
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.array_currencies,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spinnerOne.adapter = adapter
+            spinnerTwo.adapter = adapter
+        }
     }
 }
