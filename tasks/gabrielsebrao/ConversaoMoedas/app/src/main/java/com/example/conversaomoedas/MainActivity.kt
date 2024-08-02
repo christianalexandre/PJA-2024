@@ -15,6 +15,7 @@ import com.example.listadecontatos.databinding.MainActivityBinding
 
 class MainActivity : ComponentActivity() {
     private lateinit var binding: MainActivityBinding
+    private lateinit var bundle: Bundle
     private lateinit var currenciesList: Array<String>
     private lateinit var spinnerOne: Spinner
     private lateinit var spinnerTwo: Spinner
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun getExtras() {
-        val bundle = intent.getBundleExtra("bundle")
+        bundle = intent.getBundleExtra("bundle") ?: return // if bundle == null returns the function
 
         if (bundle != null) {
             val initialValue = bundle.getDouble("initialValue")
