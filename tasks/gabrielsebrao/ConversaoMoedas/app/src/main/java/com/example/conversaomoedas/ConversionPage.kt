@@ -1,18 +1,12 @@
 package com.example.conversaomoedas
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import com.example.conversaomoedas.objects.Currency
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ConversionPageBinding
-
-@SuppressLint("StaticFieldLeak")
-private lateinit var binding: ConversionPageBinding
-private lateinit var currenciesList: Array<String>
-private var initialValue: Double = 0.0
-private val currency: Currency = Currency()
+import kotlin.properties.Delegates
 
 class ConversionPage : ComponentActivity() {
 
@@ -26,19 +20,47 @@ class ConversionPage : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initActivityVariables()
+        getExtras()
+        setupView()
+        setupListeners()
+    }
+
+    private fun initActivityVariables() {
         binding = ConversionPageBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        finalValue = 1.0
+    }
+
+    private fun getExtras() {
         val bundle = intent.getBundleExtra("bundle")
 
         currenciesList = bundle?.getStringArray("currenciesList")!!
-        val currencyOne = Currency.getCurrencyAbbreviation(currenciesList[0])
-        val currencyTwo = Currency.getCurrencyAbbreviation(currenciesList[1])
+        currencyOne = Currency.getCurrencyAbbreviation(currenciesList[0])
+        currencyTwo = Currency.getCurrencyAbbreviation(currenciesList[1])
 
         initialValue = bundle.getDouble("initialValue")
-        binding.initialValue.text = String.format("%.2f $currencyOne", initialValue)
-        var controlInitialValue = initialValue
-        var finalValue = 1.0
 
+        controlInitialValue = initialValue
+    }
+
+    private fun setupView() {
+        setContentView(binding.root)
+
+        setupCurrencyOneView()
+        setupCurrencyTwoView()
+
+        finalValue = controlInitialValue / finalValue
+
+        binding.initialValue.text = String.format("%.2f $currencyOne", initialValue)
+        binding.finalValue.text = String.format("%.2f $currencyTwo", finalValue)
+    }
+
+    private fun setupListeners() {
+        binding.returnButton.setOnClickListener { goToMainActivity() }
+    }
+
+    private fun setupCurrencyOneView() {
         when (currencyOne) {
             "BRL" -> {
                 controlInitialValue *= 1.0
@@ -70,7 +92,9 @@ class ConversionPage : ComponentActivity() {
                 binding.flagOne.contentDescription = "Ícone da bandeira da União Europeia"
             }
         }
+    }
 
+    private fun setupCurrencyTwoView() {
         when (currencyTwo) {
             "BRL" -> {
                 finalValue = 1.0
@@ -102,22 +126,14 @@ class ConversionPage : ComponentActivity() {
                 binding.flagTwo.contentDescription = "Ícone da bandeira da União Europeia"
             }
         }
-
-        finalValue = controlInitialValue/finalValue
-        binding.finalValue.text = String.format("%.2f $currencyTwo", finalValue)
-
-        binding.returnButton.setOnClickListener { goToMainActivity() }
-
     }
 
     private fun goToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java).apply {
+        startActivity(Intent(this, MainActivity::class.java).apply {
             val bundle = Bundle().apply {
                 putStringArray("currenciesList", currenciesList)
-                putDouble("initialValue", initialValue)
             }
             putExtra("bundle", bundle)
-        }
-        startActivity(intent)
+        })
     }
 }
