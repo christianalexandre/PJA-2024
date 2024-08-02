@@ -58,11 +58,8 @@ class MainActivity : ComponentActivity() {
             val spinnerOneSelectedItem = bundle.getStringArray("currenciesList")!![0]
             val spinnerTwoSelectedItem = bundle.getStringArray("currenciesList")!![1]
 
-            this.initialValue.setText(initialValue.toBigDecimal().toPlainString())
-
-            with(Currency) {
-                defineCurrencySelectedItem(spinnerOne, spinnerOneSelectedItem)
-                defineCurrencySelectedItem(spinnerTwo, spinnerTwoSelectedItem)
+        Currency.defineCurrencySelectedItem(spinnerOne, spinnerOneSelectedItem)
+        Currency.defineCurrencySelectedItem(spinnerTwo, spinnerTwoSelectedItem)
             }
         }
     }
