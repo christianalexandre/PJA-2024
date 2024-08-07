@@ -7,12 +7,12 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import com.example.conversaomoedas.objects.Currency
 import com.example.listadecontatos.R
-import com.example.listadecontatos.databinding.ConversionPageBinding
+import com.example.listadecontatos.databinding.ActivityConversionPageBinding
 import kotlin.properties.Delegates
 
 class ConversionPage : ComponentActivity() {
 
-    private lateinit var binding: ConversionPageBinding
+    private lateinit var binding: ActivityConversionPageBinding
     private lateinit var currencyOne: String
     private lateinit var currencyTwo: String
     private lateinit var currenciesList: Array<String>
@@ -23,7 +23,7 @@ class ConversionPage : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ConversionPageBinding.inflate(layoutInflater)
+        binding = ActivityConversionPageBinding.inflate(layoutInflater)
 
         getExtras()
         convertedValue = initialValue // to remember the initial value
