@@ -13,8 +13,8 @@ import kotlin.properties.Delegates
 class ConversionPage : ComponentActivity() {
 
     private lateinit var binding: ActivityConversionPageBinding
-    private lateinit var currencyOne: String
-    private lateinit var currencyTwo: String
+    private lateinit var initialCurrency: String
+    private lateinit var finalCurrency: String
     private lateinit var currenciesList: Array<String>
     private var initialValue by Delegates.notNull<Double>()
     private var finalValue by Delegates.notNull<Double>()
@@ -37,14 +37,14 @@ class ConversionPage : ComponentActivity() {
         val bundle = intent.getBundleExtra("bundle") ?: return
 
         currenciesList = bundle.getStringArray("currenciesList")!!
-        currencyOne = Currency.getCurrencyAbbreviation(currenciesList[0])
-        currencyTwo = Currency.getCurrencyAbbreviation(currenciesList[1])
+        initialCurrency = Currency.getCurrencyAbbreviation(currenciesList[0])
+        finalCurrency = Currency.getCurrencyAbbreviation(currenciesList[1])
 
         initialValue = bundle.getDouble("initialValue")
     }
 
     private fun convertValues() {
-        when (currencyOne) {
+        when (initialCurrency) {
             "BRL" -> {
                 convertedValue *= 1.0
             }
@@ -66,34 +66,24 @@ class ConversionPage : ComponentActivity() {
             }
         }
 
-        when (currencyTwo) {
-            "BRL" -> {
-                finalValue = convertedValue
-            }
+        when (finalCurrency) {
+            "BRL" -> { finalValue = convertedValue }
 
-            "USD" -> {
-                finalValue = convertedValue / 5.3
-            }
+            "USD" -> { finalValue = convertedValue / 5.3 }
 
-            "GBP" -> {
-                finalValue = convertedValue / 6.74
-            }
+            "GBP" -> { finalValue = convertedValue / 6.74 }
 
-            "CHF" -> {
-                finalValue = convertedValue / 5.91
-            }
+            "CHF" -> { finalValue = convertedValue / 5.91 }
 
-            "EUR" -> {
-                finalValue = convertedValue / 5.72
-            }
+            "EUR" -> { finalValue = convertedValue / 5.72 }
         }
     }
 
     private fun setupView() {
         setContentView(binding.root)
 
-        setupCurrencyView(currencyOne, binding.flagOne, binding.initialValue, initialValue)
-        setupCurrencyView(currencyTwo, binding.flagTwo, binding.finalValue, finalValue)
+        setupCurrencyView(initialCurrency, binding.flagOne, binding.initialValue, initialValue)
+        setupCurrencyView(finalCurrency, binding.flagTwo, binding.finalValue, finalValue)
     }
 
     private fun setupCurrencyView(currency: String, flag: ImageView, textView: TextView, value: Double) {
