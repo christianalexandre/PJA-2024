@@ -99,27 +99,27 @@ class ConversionPage : ComponentActivity() {
     private fun setupCurrencyView(currency: String, flag: ImageView, textView: TextView, value: Double) {
         when (currency) {
             "BRL" -> {
-                flag.setImageResource(R.drawable.brflag)
+                flag.setImageResource(R.drawable.flag_br)
                 flag.contentDescription = "Ícone da Bandeira do Brasil"
             }
 
             "USD" -> {
-                flag.setImageResource(R.drawable.usflag)
+                flag.setImageResource(R.drawable.flag_us)
                 flag.contentDescription = "Ícone da bandeira dos Estados Unidos"
             }
 
             "GBP" -> {
-                flag.setImageResource(R.drawable.ukflag)
+                flag.setImageResource(R.drawable.flag_uk)
                 flag.contentDescription = "Ícone da bandeira do Reino Unido"
             }
 
             "CHF" -> {
-                flag.setImageResource(R.drawable.chflag)
+                flag.setImageResource(R.drawable.flag_ch)
                 flag.contentDescription = "Ícone da bandeira da Suíça"
             }
 
             "EUR" -> {
-                flag.setImageResource(R.drawable.euflag)
+                flag.setImageResource(R.drawable.flag_eu)
                 flag.contentDescription = "Ícone da bandeira da União Europeia"
             }
         }
