@@ -19,7 +19,7 @@
             android:theme="@style/Theme.ConversaoMoedas">
         </activity>
         <activity
-            android:name="com.example.conversaomoedas.MainActivity"
+            android:name="com.example.conversaomoedas.HomeScreen"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ConversaoMoedas">
