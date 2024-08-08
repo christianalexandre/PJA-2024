@@ -8,7 +8,7 @@
     <string name="equals">=</string>
     <string name="title_activity_main">Conversor de Moeda</string>
     <string name="title_activity_conversion_page">ConversionPage</string>
-    <string name="currencyconverter">Conversor de Moedas</string>
+    <string name="currency_converter">Conversor de Moedas</string>
     <string name="missing_convert_value">Digite um valor a ser convertido.</string>
     <string name="missing_selected_currencies">Selecione alguma moeda para os dois campos.</string>
     <string name="identical_currencies">Selecione duas moedas diferentes.</string>
