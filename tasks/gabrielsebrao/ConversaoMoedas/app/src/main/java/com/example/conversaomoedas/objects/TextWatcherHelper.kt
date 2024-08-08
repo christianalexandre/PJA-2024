@@ -37,7 +37,6 @@ object TextWatcherHelper {
                     } else {
                         ""
                     }
-
                 }
 
                 text.filters = arrayOf(inputFilter)
