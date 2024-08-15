@@ -1,5 +1,6 @@
 package com.example.conversaomoedas
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
@@ -8,6 +9,7 @@ import androidx.activity.ComponentActivity
 import com.example.conversaomoedas.objects.Currency
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ActivityConversionPageBinding
+import java.text.NumberFormat
 import kotlin.properties.Delegates
 
 class ConversionPage : ComponentActivity() {
@@ -86,6 +88,7 @@ class ConversionPage : ComponentActivity() {
         setupCurrencyView(finalCurrency, binding.flagTwo, binding.finalValue, finalValue)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupCurrencyView(currency: String, flag: ImageView, textView: TextView, value: Double) {
         when (currency) {
             "BRL" -> {
@@ -114,7 +117,8 @@ class ConversionPage : ComponentActivity() {
             }
         }
 
-        textView.text = String.format("%.2f $currency", value)
+        val formattedValue = NumberFormat.getNumberInstance().format(value)
+        textView.text = "$formattedValue $currency"
     }
 
     private fun setupListeners() {
