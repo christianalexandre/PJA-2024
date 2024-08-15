@@ -10,7 +10,8 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.conversaomoedas.objects.Currency
-import com.example.conversaomoedas.objects.TextWatcherHelper
+import com.example.conversaomoedas.objects.TextWatcherHelper.filterTextChangedForInitialValue
+import com.example.conversaomoedas.objects.TextWatcherHelper.formatTextChangedForInitialValue
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ActivityHomeScreenBinding
 import kotlin.properties.Delegates
@@ -68,40 +69,51 @@ class HomeScreen : ComponentActivity() {
         Currency.defineCurrencySelectedItem(finalCurrencySpinner, finalCurrencySpinnerSelectedItem)
     }
 
+    private fun setupSpinnersSelectedItems() {
+        initialCurrencySpinnerSelectedItem = initialCurrencySpinner.selectedItem.toString()
+        finalCurrencySpinnerSelectedItem = finalCurrencySpinner.selectedItem.toString()
+    }
+
     private fun setupListeners() {
         binding.calculateButton.setOnClickListener {
-            initialCurrencySpinnerSelectedItem = initialCurrencySpinner.selectedItem.toString()
-            finalCurrencySpinnerSelectedItem = finalCurrencySpinner.selectedItem.toString()
+            setupSpinnersSelectedItems()
 
-            if (!verifyIsBlank()) return@setOnClickListener
-            if (!verifyIsMissingSelectedCurrencies()) return@setOnClickListener
-            if (!verifyIsIdenticalSelectedCurrencies()) return@setOnClickListener
+            if (verifyConditionsToGoToConversionPage()) return@setOnClickListener
 
-            convertingValue = initialValueComponent.text.toString().replace(',', '.').toDouble()
+            convertingValue = initialValueComponent.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
 
             goToConversionPage()
         }
-        initialValueComponent.addTextChangedListener(TextWatcherHelper.filterChangeTextForInitialValue(initialValueComponent))
 
-        initialValueComponent.setOnKeyListener(object : View.OnKeyListener {
-            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+        initialValueComponent.setOnClickListener {
+            initialValueComponent.setSelection(initialValueComponent.text.toString().length)
+        }
+
+        initialValueComponent.addTextChangedListener(filterTextChangedForInitialValue(initialValueComponent))
+        initialValueComponent.addTextChangedListener(formatTextChangedForInitialValue(initialValueComponent))
+
+        initialValueComponent.setOnKeyListener { _, keyCode, event ->
                 if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    initialCurrencySpinnerSelectedItem = initialCurrencySpinner.selectedItem.toString()
-                    finalCurrencySpinnerSelectedItem = finalCurrencySpinner.selectedItem.toString()
+                    setupSpinnersSelectedItems()
 
-                    if (!verifyIsBlank()) return false
-                    if (!verifyIsMissingSelectedCurrencies()) return false
-                    if (!verifyIsIdenticalSelectedCurrencies()) return false
+                    if (verifyConditionsToGoToConversionPage()) return@setOnKeyListener false
 
-                    convertingValue = initialValueComponent.text.toString().replace(',', '.').toDouble()
+                    convertingValue = initialValueComponent.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
 
                     goToConversionPage()
-                    return true
                 }
-                return false
-            }
-        })
+                false
+
+        }
     }
+
+    private fun verifyConditionsToGoToConversionPage(): Boolean {
+        if (!verifyIsBlank()) return true
+        if (!verifyIsMissingSelectedCurrencies()) return true
+        if (!verifyIsIdenticalSelectedCurrencies()) return true
+        return false
+    }
+
     private fun verifyIsBlank(): Boolean {
         if (initialValueComponent.text.toString().isBlank()) {
             Toast.makeText(this, R.string.missing_convert_value, Toast.LENGTH_SHORT).show()
