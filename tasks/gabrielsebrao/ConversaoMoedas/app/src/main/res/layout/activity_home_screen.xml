@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@color/gray"
-            android:digits="0123456789,."
+            android:digits="0123456789,"
             android:hint="@string/convert_value"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
