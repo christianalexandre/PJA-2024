@@ -40,7 +40,7 @@ class HomeScreen : ComponentActivity() {
         setupSpinners()
         setupListeners()
 
-        initialValueComponent.setText("") // for some reason textWatcher doesn't work on first change in initialValue, so i put the first change here. now all changes will fall into textWatcher
+        initialValueComponent.setText("") // for some reason textWatcher doesn't work on first change in initialValue, so i put the first change here. now all changes will be watched by textWatcher
         setContentView(binding.root)
     }
 
