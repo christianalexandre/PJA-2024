@@ -31,33 +31,38 @@ class ListContactActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
-        when (contactList?.size) {
-            1 -> with(binding) {
-                bar1.visibility = View.VISIBLE
-                nameContact1.text = contactList!![0].name
-                phone1.text = contactList!![0].num
-            }
-            2 -> with(binding) {
-                bar1.visibility = View.VISIBLE
-                bar2.visibility = View.VISIBLE
-                nameContact1.text = contactList!![0].name
-                phone1.text = contactList!![0].num
-                nameContact2.text = contactList!![1].name ?: ""
-                phone2.text = contactList!![1].num
-            }
-            3 -> with(binding) {
-                bar1.visibility = View.VISIBLE
-                bar2.visibility = View.VISIBLE
-                bar3.visibility = View.VISIBLE
-                nameContact1.text = contactList!![0].name
-                phone1.text = contactList!![0].num
-                nameContact2.text = contactList!![1].name
-                phone2.text = contactList!![1].num
-                nameContact3.text = contactList!![2].name
-                phone3.text = contactList!![2].num
-            }
-            else -> {
-                print("error")
+        with(binding) {
+            when (contactList!!.size) {
+                1 -> {
+                    bar1.visibility = View.VISIBLE
+                    nameContact1.text = contactList!![0].name
+                    phone1.text = contactList!![0].num
+                }
+
+                2 -> {
+                    bar1.visibility = View.VISIBLE
+                    bar2.visibility = View.VISIBLE
+                    nameContact1.text = contactList!![0].name
+                    phone1.text = contactList!![0].num
+                    nameContact2.text = contactList!![1].name
+                    phone2.text = contactList!![1].num
+                }
+
+                3 -> {
+                    bar1.visibility = View.VISIBLE
+                    bar2.visibility = View.VISIBLE
+                    bar3.visibility = View.VISIBLE
+                    nameContact1.text = contactList!![0].name
+                    phone1.text = contactList!![0].num
+                    nameContact2.text = contactList!![1].name
+                    phone2.text = contactList!![1].num
+                    nameContact3.text = contactList!![2].name
+                    phone3.text = contactList!![2].num
+                }
+
+                else -> {
+                    print("error")
+                }
             }
         }
     }

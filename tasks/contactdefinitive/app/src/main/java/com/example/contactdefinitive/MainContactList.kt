@@ -11,9 +11,7 @@ import com.example.contactdefinitive.databinding.ActivityMainBinding
 class  MainContactList : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-
     private val contactList: MutableList<Contact> = mutableListOf()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,18 +21,8 @@ class  MainContactList : AppCompatActivity() {
         setupListener()
     }
 
-
-    private fun clearEditText() {
-        with(binding) {
-            editName.text.clear()
-            editPhone.text.clear()
-        }
-    }
-
-
     private fun setupListener() {
         with(binding) {
-
 
             buttonSaveContact.setOnClickListener {
                 if (editName.text.toString() == "" || editPhone.text.toString() == "") {
@@ -42,40 +30,40 @@ class  MainContactList : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-
                 if (contactList.size >= 3) {
                     Toast.makeText(applicationContext, getString(R.string.full_fields_toast), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-
 
                 contactList.add(Contact(editName.text.toString(), editPhone.text.toString()))
                 clearEditText()
                 Toast.makeText(applicationContext, getString(R.string.save_fields_toast), Toast.LENGTH_SHORT).show()
             }
 
-
-            editPhone.addTextChangedListener(TextWatcherHelper.textWatcher(binding.editPhone))
-
+            editName.addTextChangedListener(Regex.textName(editName))
+            editPhone.addTextChangedListener(Regex.textNumber(editPhone))
 
             buttonClearContacts.setOnClickListener {
                 contactList.clear()
                 Toast.makeText(applicationContext, getString(R.string.null_list_toast), Toast.LENGTH_SHORT).show()
             }
 
-
             buttonContactList.setOnClickListener {
-                if(contactList.size != 0){
+                if(contactList.size > 0){
                     openSecondActivity()
                 }else{
                     Toast.makeText(this@MainContactList, getString(R.string.null_list_toast), Toast.LENGTH_SHORT).show()
                 }
             }
         }
-
-
     }
 
+    private fun clearEditText() {
+        with(binding) {
+            editName.text.clear()
+            editPhone.text.clear()
+        }
+    }
 
     private fun openSecondActivity() {
         val intent = Intent(this, ListContactActivity::class.java).apply {
@@ -87,4 +75,3 @@ class  MainContactList : AppCompatActivity() {
         startActivity(intent)
     }
 }
-
