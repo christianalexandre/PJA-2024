@@ -16,32 +16,36 @@ import com.example.pja_21.ui.theme.PJA21Theme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            PJA21Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
+        Log.i("debug", "onCreate: Acionado assim que o sistema cria a atividade")
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    override fun onStart() {
+        super.onStart()
+        Log.i("debug", "onStart: Quando a atividade entra no estado Iniciado")
+    }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PJA21Theme {
-        Greeting("Android")
+    override fun onResume() {
+        super.onResume()
+        Log.i("debug", "onResume: Quando a atividade entra no estado Retomado")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("debug", "onPause: Quando ocorre um evento de interrupção")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("debug", "onStop: Quando a atividade não está mais visível para o usuário")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("debug", "onDestroy: Quando a atividade é destruida")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.i("debug", "onRestart: Quando a atividade retorna do onStop() e retona ao onStart")
     }
 }
