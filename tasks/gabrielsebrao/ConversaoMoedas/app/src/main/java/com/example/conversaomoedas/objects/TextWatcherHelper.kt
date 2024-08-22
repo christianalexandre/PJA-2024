@@ -11,8 +11,8 @@ object TextWatcherHelper {
         return object : TextWatcher {
 
             private var onlyOneCommaPattern = "^(,)$".toRegex()
-            private var doubleCommasPattern = "^(.*)(,,)$".toRegex()
-            private var anythingThatExceedsTwoNumbersAfterCommaPattern = "^([(\\d*).?]*)(,)(\\d{2}.)$".toRegex()
+            private var decimalNumberWithDoubleCommasPattern = "^([(\\d*).?]*)(,)(.*)(,)$".toRegex()
+            private var decimalNumberThatExceedsTwoNumbersAfterCommaPattern = "^([(\\d*).?]*)(,)(\\d{2}.)$".toRegex()
             private val decimalNumberThatExceedsFourteenDigitsBeforeComma = "^([\\d.]{14})$".toRegex()
 
             override fun beforeTextChanged(s: CharSequence?, startO: Int, count: Int, after: Int) {}
@@ -22,9 +22,9 @@ object TextWatcherHelper {
                         val result = dest.subSequence(0, dstart).toString() + source.subSequence(start, end) + dest.subSequence(dend, dest.length).toString()
 
                         if (onlyOneCommaPattern.matches(result)) return@InputFilter ""
-                        if (doubleCommasPattern.matches(result)) return@InputFilter ""
+                        if (decimalNumberWithDoubleCommasPattern.matches(result)) return@InputFilter ""
                         if (decimalNumberThatExceedsFourteenDigitsBeforeComma.matches(result)) return@InputFilter ""
-                        if (anythingThatExceedsTwoNumbersAfterCommaPattern.matches(result)) return@InputFilter ""
+                        if (decimalNumberThatExceedsTwoNumbersAfterCommaPattern.matches(result)) return@InputFilter ""
 
                         editText.setSelection(editText.text.toString().length)
                         null
