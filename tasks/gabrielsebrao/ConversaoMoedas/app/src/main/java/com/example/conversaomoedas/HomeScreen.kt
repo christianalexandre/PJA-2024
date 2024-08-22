@@ -24,7 +24,8 @@ class HomeScreen : ComponentActivity() {
     private lateinit var finalCurrencySpinner: Spinner
     private lateinit var initialCurrencySpinnerSelectedItem: String
     private lateinit var finalCurrencySpinnerSelectedItem: String
-    private lateinit var initialValueComponent: EditText
+    private lateinit var initialValueEditText: TextInputEditText
+    private lateinit var initialValueInputLayout: TextInputLayout
     private var convertingValue by Delegates.notNull<Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,13 +36,14 @@ class HomeScreen : ComponentActivity() {
         finalCurrencySpinner = binding.currencyTwo
         initialCurrencySpinnerSelectedItem = "Selecionar uma moeda"
         finalCurrencySpinnerSelectedItem = "Selecionar uma moeda"
-        initialValueComponent = binding.initialValue
+        initialValueEditText = binding.initialValueEditText
+        initialValueInputLayout = binding.initialValueInputLayout
 
         getExtras()
         setupSpinners()
         setupListeners()
 
-        initialValueComponent.setText("") // for some reason textWatcher doesn't work on first change in initialValue, so i put the first change here. now all changes will be watched by textWatcher
+        initialValueEditText.setText("") // for some reason textWatcher doesn't work on first change in initialValue, so i put the first change here. now all changes will be watched by textWatcher
         setContentView(binding.root)
     }
 
@@ -80,25 +82,25 @@ class HomeScreen : ComponentActivity() {
 
             if (verifyConditionsToGoToConversionPage()) return@setOnClickListener
 
-            convertingValue = initialValueComponent.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
+            convertingValue = initialValueEditText.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
 
             goToConversionPage()
         }
 
-        initialValueComponent.setOnClickListener {
-            initialValueComponent.setSelection(initialValueComponent.text.toString().length)
+        initialValueEditText.setOnClickListener {
+            initialValueEditText.setSelection(initialValueEditText.text.toString().length)
         }
 
-        initialValueComponent.addTextChangedListener(filterTextChangedForInitialValue(initialValueComponent))
-        initialValueComponent.addTextChangedListener(formatTextChangedForInitialValue(initialValueComponent))
+        initialValueEditText.addTextChangedListener(filterTextChangedForInitialValue(initialValueEditText))
+        initialValueEditText.addTextChangedListener(formatTextChangedForInitialValue(initialValueEditText))
 
-        initialValueComponent.setOnKeyListener { _, keyCode, event ->
+        initialValueEditText.setOnKeyListener { _, keyCode, event ->
                 if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     setupSpinnersSelectedItems()
 
                     if (verifyConditionsToGoToConversionPage()) return@setOnKeyListener false
 
-                    convertingValue = initialValueComponent.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
+                    convertingValue = initialValueEditText.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
 
                     goToConversionPage()
                 }
@@ -115,7 +117,7 @@ class HomeScreen : ComponentActivity() {
     }
 
     private fun verifyIsBlank(): Boolean {
-        if (initialValueComponent.text.toString().isBlank()) {
+        if (initialValueEditText.text.toString().isBlank()) {
             Toast.makeText(this, R.string.missing_convert_value, Toast.LENGTH_SHORT).show()
             return false
         }
