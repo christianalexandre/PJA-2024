@@ -42,6 +42,8 @@ class HomeScreen : ComponentActivity() {
         getExtras()
 
         setupSpinners()
+        initialValueInputLayout.prefixText = getCurrencyAbbreviation(initialCurrencySpinnerSelectedItem)
+
         setupListeners()
 
         initialValueEditText.setText("") // for some reason textWatcher doesn't work on first change in initialValue, so i put the first change here. now all changes will be watched by textWatcher
@@ -107,7 +109,15 @@ class HomeScreen : ComponentActivity() {
                     goToConversionPage()
                 }
                 false
+        }
 
+        initialCurrencySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                initialValueInputLayout.prefixText = getCurrencyAbbreviation(initialCurrencySpinner.selectedItem.toString())
+                initialValueInputLayout
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
