@@ -40,6 +40,7 @@ class HomeScreen : ComponentActivity() {
         initialValueInputLayout = binding.initialValueInputLayout
 
         getExtras()
+
         setupSpinners()
         setupListeners()
 
@@ -68,6 +69,7 @@ class HomeScreen : ComponentActivity() {
             initialCurrencySpinner,
             initialCurrencySpinnerSelectedItem
         )
+
         Currency.defineCurrencySelectedItem(finalCurrencySpinner, finalCurrencySpinnerSelectedItem)
     }
 
