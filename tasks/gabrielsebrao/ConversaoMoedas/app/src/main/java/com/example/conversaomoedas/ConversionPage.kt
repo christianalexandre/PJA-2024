@@ -117,8 +117,19 @@ class ConversionPage : ComponentActivity() {
             }
         }
 
-        val formattedValue = NumberFormat.getNumberInstance().format(value)
-        textView.text = "$formattedValue $currency"
+        textView.text = "${formatCurrencyValue(value)} $currency"
+    }
+
+    private fun formatCurrencyValue(value: Double): String {
+        var formattedValue = NumberFormat.getNumberInstance().format(value)
+
+        val numberWithNoDecimalPlacesPattern = "^(.[^,]*)$".toRegex()
+        val numberWithOneDecimalPlacePattern = "^(.*)(,)(\\d)$".toRegex()
+
+        if(numberWithNoDecimalPlacesPattern.matches(formattedValue)) formattedValue += ",00"
+        if(numberWithOneDecimalPlacePattern.matches(formattedValue)) formattedValue += "0"
+
+        return formattedValue
     }
 
     private fun setupListeners() {
