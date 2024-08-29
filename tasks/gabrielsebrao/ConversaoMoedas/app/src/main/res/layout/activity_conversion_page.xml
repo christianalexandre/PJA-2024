@@ -87,6 +87,8 @@
             <Button
                 android:id="@+id/returnButton"
                 android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:textAllCaps="false"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_gray"
                 android:background="@drawable/rounded_borders_background"
