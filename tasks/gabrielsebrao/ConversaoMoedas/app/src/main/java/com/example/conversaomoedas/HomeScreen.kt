@@ -123,13 +123,23 @@ class HomeScreen : ComponentActivity() {
                 false
         }
 
-        initialCurrencySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                initialValueInputLayout.prefixText = getCurrencyAbbreviation(initialCurrencySpinner.selectedItem.toString())
-                initialValueInputLayout
-            }
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            binding.root.getWindowVisibleDisplayFrame(rect)
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+            val isKeyboardVisible = keypadHeight > screenHeight * 0.15
+
+            Log.e("coiso", "dentro do viewTree + edittext está focado: ${initialValueEditText.isFocused}")
+
+            if(isKeyboardVisible) {
+                if(!initialValueEditText.isFocused) initialValueEditText.requestFocus()
+                Log.e("coiso", "está visivel!")
+            } else {
+                initialValueEditText.clearFocus()
+                Log.e("coiso", "não está visivel!")
+            }
         }
     }
 
