@@ -102,6 +102,14 @@ class HomeScreen : ComponentActivity() {
         initialValueEditText.addTextChangedListener(filterTextChangedForInitialValue(initialValueEditText))
         initialValueEditText.addTextChangedListener(formatTextChangedForInitialValue(initialValueEditText))
 
+        initialCurrencySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                initialValueInputLayout.prefixText = getCurrencyAbbreviation(initialCurrencySpinner.selectedItem.toString())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
         initialValueEditText.setOnKeyListener { _, keyCode, event ->
                 if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     setupSpinnersSelectedItems()
