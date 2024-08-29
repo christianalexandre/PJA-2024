@@ -26,7 +26,7 @@ object Currency {
             }
         }
 
-        return ""
+        return "$"
     }
 
     fun defineCurrencySelectedItem(spinner: Spinner, currency: String) {
