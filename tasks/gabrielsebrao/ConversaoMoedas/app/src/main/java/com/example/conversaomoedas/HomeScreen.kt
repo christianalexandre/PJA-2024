@@ -129,16 +129,14 @@ class HomeScreen : ComponentActivity() {
 
             val screenHeight = binding.root.rootView.height
             val keypadHeight = screenHeight - rect.bottom
-            val isKeyboardVisible = keypadHeight > screenHeight * 0.15
-
-            Log.e("coiso", "dentro do viewTree + edittext está focado: ${initialValueEditText.isFocused}")
+            val isKeyboardVisible = keypadHeight > (screenHeight * 0.15)
 
             if(isKeyboardVisible) {
-                if(!initialValueEditText.isFocused) initialValueEditText.requestFocus()
-                Log.e("coiso", "está visivel!")
+                if(!initialValueEditText.isFocused) initialValueInputLayout.requestFocus()
+                initialValueInputLayout.prefixText = getCurrencyAbbreviation(initialCurrencySpinner.selectedItem.toString())
             } else {
-                initialValueEditText.clearFocus()
-                Log.e("coiso", "não está visivel!")
+                initialValueInputLayout.clearFocus()
+                if(initialValueEditText.length() == 0) initialValueInputLayout.prefixText = ""
             }
         }
     }
