@@ -121,7 +121,10 @@ class ConversionPage : ComponentActivity() {
     }
 
     private fun formatCurrencyValue(value: Double): String {
-        var formattedValue = NumberFormat.getNumberInstance().format(value)
+        var formattedValue = String.format("%.2f", value)
+
+        formattedValue = formattedValue.replace(",", ".")
+        formattedValue = NumberFormat.getNumberInstance().format(formattedValue.toDouble())
 
         val numberWithNoDecimalPlacesPattern = "^(.[^,]*)$".toRegex()
         val numberWithOneDecimalPlacePattern = "^(.*)(,)(\\d)$".toRegex()
