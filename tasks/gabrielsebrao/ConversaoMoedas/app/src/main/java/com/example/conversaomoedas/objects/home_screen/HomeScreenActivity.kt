@@ -1,19 +1,18 @@
-package com.example.conversaomoedas
+package com.example.conversaomoedas.objects.home_screen
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.conversaomoedas.objects.conversion_page.ConversionPageActivity
 import com.example.conversaomoedas.objects.Currency
 import com.example.conversaomoedas.objects.Currency.getCurrencyAbbreviation
-import com.example.conversaomoedas.objects.TextWatcherHelper.filterTextChangedForInitialValue
-import com.example.conversaomoedas.objects.TextWatcherHelper.formatTextChangedForInitialValue
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ActivityHomeScreenBinding
 import com.google.android.material.textfield.TextInputEditText
@@ -21,9 +20,10 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlin.properties.Delegates
 
 
-class HomeScreen : ComponentActivity() {
+class HomeScreenActivity : ComponentActivity() {
     private lateinit var binding: ActivityHomeScreenBinding
     private lateinit var bundle: Bundle
+    private lateinit var homeScreenViewModel: HomeScreenViewModel
     private lateinit var initialCurrencySpinner: Spinner
     private lateinit var finalCurrencySpinner: Spinner
     private lateinit var initialCurrencySpinnerSelectedItem: String
@@ -36,12 +36,14 @@ class HomeScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
+        homeScreenViewModel = ViewModelProvider(this)[HomeScreenViewModel::class.java]
         initialCurrencySpinner = binding.currencyOne
         finalCurrencySpinner = binding.currencyTwo
         initialCurrencySpinnerSelectedItem = "Selecionar uma moeda"
         finalCurrencySpinnerSelectedItem = "Selecionar uma moeda"
         initialValueEditText = binding.initialValueEditText
         initialValueInputLayout = binding.initialValueInputLayout
+
 
         getExtras()
 
@@ -99,8 +101,13 @@ class HomeScreen : ComponentActivity() {
             initialValueEditText.setSelection(initialValueEditText.text.toString().length)
         }
 
-        initialValueEditText.addTextChangedListener(filterTextChangedForInitialValue(initialValueEditText))
-        initialValueEditText.addTextChangedListener(formatTextChangedForInitialValue(initialValueEditText))
+        initialValueEditText.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus) initialValueEditText.setSelection(initialValueEditText.text.toString().length)
+        }
+
+        initialValueEditText.addTextChangedListener(homeScreenViewModel.filterTextChangedForInitialValue(initialValueEditText))
+        initialValueEditText.addTextChangedListener(homeScreenViewModel.formatTextChangedForInitialValue(initialValueEditText))
+        initialValueEditText.addTextChangedListener(homeScreenViewModel.disableErrorModeOnTextChanged(initialValueInputLayout))
 
         initialCurrencySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -150,7 +157,7 @@ class HomeScreen : ComponentActivity() {
 
     private fun verifyIsBlank(): Boolean {
         if (initialValueEditText.text.toString().isBlank()) {
-            Toast.makeText(this, R.string.missing_convert_value, Toast.LENGTH_SHORT).show()
+            initialValueInputLayout.error = resources.getText(R.string.missing_convert_value)
             return false
         }
         return true
@@ -158,7 +165,7 @@ class HomeScreen : ComponentActivity() {
 
     private fun verifyIsMissingSelectedCurrencies(): Boolean {
         if (initialCurrencySpinnerSelectedItem == "Selecionar uma moeda" || finalCurrencySpinnerSelectedItem == "Selecionar uma moeda") {
-            Toast.makeText(this, R.string.missing_selected_currencies, Toast.LENGTH_SHORT).show()
+            initialValueInputLayout.error = resources.getText(R.string.missing_selected_currencies)
             return false
         }
         return true
@@ -166,14 +173,14 @@ class HomeScreen : ComponentActivity() {
 
     private fun verifyIsIdenticalSelectedCurrencies(): Boolean {
         if (initialCurrencySpinnerSelectedItem == finalCurrencySpinnerSelectedItem) {
-            Toast.makeText(this, R.string.identical_currencies, Toast.LENGTH_SHORT).show()
+            initialValueInputLayout.error = resources.getText(R.string.identical_currencies)
             return false
         }
         return true
     }
 
     private fun goToConversionPage() {
-        startActivity(Intent(this, ConversionPage::class.java).apply {
+        startActivity(Intent(this, ConversionPageActivity::class.java).apply {
             putExtra("bundle", Bundle().apply {
                 putStringArray(
                     "currenciesList",

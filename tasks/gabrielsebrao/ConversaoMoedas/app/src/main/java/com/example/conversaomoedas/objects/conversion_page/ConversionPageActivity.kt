@@ -1,4 +1,4 @@
-package com.example.conversaomoedas
+package com.example.conversaomoedas.objects.conversion_page
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,12 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import com.example.conversaomoedas.objects.Currency
+import com.example.conversaomoedas.objects.home_screen.HomeScreenActivity
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ActivityConversionPageBinding
 import java.text.NumberFormat
 import kotlin.properties.Delegates
 
-class ConversionPage : ComponentActivity() {
+class ConversionPageActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityConversionPageBinding
     private lateinit var initialCurrency: String
@@ -140,7 +141,7 @@ class ConversionPage : ComponentActivity() {
     }
 
     private fun goToMainActivity() {
-        startActivity(Intent(this, HomeScreen::class.java).apply {
+        startActivity(Intent(this, HomeScreenActivity::class.java).apply {
             putExtra("bundle", Bundle().apply {
                 putStringArray("currenciesList", currenciesList)
             })

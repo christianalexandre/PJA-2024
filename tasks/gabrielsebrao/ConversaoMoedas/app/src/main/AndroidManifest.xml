@@ -12,13 +12,13 @@
         android:theme="@style/Theme.ConversaoMoedas"
         tools:targetApi="31">
         <activity
-            android:name="com.example.conversaomoedas.ConversionPage"
+            android:name="com.example.conversaomoedas.objects.conversion_page.ConversionPageActivity"
             android:exported="false"
             android:label="@string/title_activity_conversion_page"
             android:theme="@style/Theme.ConversaoMoedas">
         </activity>
         <activity
-            android:name="com.example.conversaomoedas.HomeScreen"
+            android:name="com.example.conversaomoedas.objects.home_screen.HomeScreenActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ConversaoMoedas">
