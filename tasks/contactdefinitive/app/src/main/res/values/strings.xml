@@ -2,7 +2,6 @@
     <string name="app_name">app 77</string>
 
     <string-array name="coins_array1">
-        <item>Selecionar</item>
         <item>BRL</item>
         <item>USD</item>
         <item>GBP</item>
@@ -11,7 +10,6 @@
     </string-array>
 
     <string-array name="coins_array2">
-        <item>Selecionar</item>
         <item>USD</item>
         <item>BRL</item>
         <item>GBP</item>
@@ -32,8 +30,7 @@
     <string name="button_return">RETORNAR</string>
     <string name="sinal_equals">=</string>
     <string name="anything"> </string>
-    <string name="required_value_toast">Favor colocar um valor!</string>
-    <string name="required_distint_coins_toast">Favor colocar moedas distintas!</string>
+    <string name="required_value_toast">Favor colocar um valor e moedas distintas!</string>
     <string name="selected_value_toast">foi selecionado</string>
     <string name="anything_selected_toast">Nada foi selecionado</string>
     <string name="first_toast">Selecione as moedas e o digite o valor</string>

@@ -2,246 +2,144 @@ package com.example.contactdefinitive
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.example.contactdefinitive.databinding.ActivitySecondBinding
 
 class ResultActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: ViewModelResultActivity
     private lateinit var binding: ActivitySecondBinding
+    private var coinType1: String? = null
+    private var coinType2: String? = null
+    private var value: Float? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider( this )[ViewModelResultActivity::class.java]
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getExtra()
         setupListener1()
+        setupView()
+    }
+
+    private fun getExtra() {
+        val bundle = intent.getBundleExtra("bundle")
+        coinType1 = bundle?.getString("coinType1")
+        coinType2 = bundle?.getString("coinType2")
+        value = bundle?.getFloat("valor", 0f)
     }
 
     private fun setupListener1() {
-        val bundle = intent.getBundleExtra("bundle")
-        val coinValue1 = bundle?.getString("coinType1")
-        val coinValue2 = bundle?.getString("coinType2")
-        val valor: Float? = bundle?.getFloat("valor", 0f)
+        binding.buttonReturn.setOnClickListener {
+            finish()
+        }
+    }
 
-        when (valor != null) {
+    private fun setupView() {
+        with(binding) {
 
-            (coinValue1 == "BRL" && coinValue2 == "USD" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 5.30f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgBR1.visibility = View.VISIBLE
-                imgUSD2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "BRL" && coinValue2 == "GBP" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 6.74f)
-                coin1.text = "$valor $coinValue1"
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coinResult.text = completeValue
-                imgBR1.visibility = View.VISIBLE
-                imgGBP2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "BRL" && coinValue2 == "CHF" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 5.91f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgBR1.visibility = View.VISIBLE
-                imgCHF2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "BRL" && coinValue2 == "EUR" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 5.72f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgBR1.visibility = View.VISIBLE
-                imgEUR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "USD" && coinValue2 == "BRL" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 5.3f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgUSD1.visibility = View.VISIBLE
-                imgBR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "USD" && coinValue2 == "GBP" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 1.44f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgUSD1.visibility = View.VISIBLE
-                imgGBP2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "USD" && coinValue2 == "CHF" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 0.61f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgUSD1.visibility = View.VISIBLE
-                imgCHF2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "USD" && coinValue2 == "EUR" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 0.42f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgUSD1.visibility = View.VISIBLE
-                imgEUR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "GBP" && coinValue2 == "BRL" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 6.74f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgGBP1.visibility = View.VISIBLE
-                imgBR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "GBP" && coinValue2 == "USD" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 1.44f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgGBP1.visibility = View.VISIBLE
-                imgUSD2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "GBP" && coinValue2 == "CHF" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 0.83f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgGBP1.visibility = View.VISIBLE
-                imgCHF2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "GBP" && coinValue2 == "EUR" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 1.02f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgGBP1.visibility = View.VISIBLE
-                imgEUR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "CHF" && coinValue2 == "BRL" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 5.91f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgCHF1.visibility = View.VISIBLE
-                imgBR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "CHF" && coinValue2 == "USD" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 0.61f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgCHF1.visibility = View.VISIBLE
-                imgUSD2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "CHF" && coinValue2 == "GBP" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 0.83f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgCHF1.visibility = View.VISIBLE
-                imgGBP2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "CHF" && coinValue2 == "EUR" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 0.19f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgCHF1.visibility = View.VISIBLE
-                imgEUR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "EUR" && coinValue2 == "BRL" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 5.72f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgEUR1.visibility = View.VISIBLE
-                imgBR2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "EUR" && coinValue2 == "USD" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! * 0.42f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgEUR1.visibility = View.VISIBLE
-                imgUSD2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "EUR" && coinValue2 == "GBP" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 1.02f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgEUR1.visibility = View.VISIBLE
-                imgGBP2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "EUR" && coinValue2 == "CHF" && valor != 0f) -> with(binding) {
-                val resultado = (valor!! / 0.19f)
-                val resultValue = String.format("%.2f", resultado)
-                val completeValue = "$resultValue $coinValue2"
-                coin1.text = "$valor $coinValue1"
-                coinResult.text = completeValue
-                imgEUR1.visibility = View.VISIBLE
-                imgCHF2.visibility = View.VISIBLE
-            }
-
-            (coinValue1 == "Selecionar" || coinValue2 == "Selecionar") -> with(binding) {
-                Toast.makeText(this@ResultActivity, R.string.selected_close_toast, Toast.LENGTH_SHORT).show()
-                finish()
-            }
-
-            (coinValue1 == coinValue2) -> with(binding) {
-                Toast.makeText(this@ResultActivity, R.string.required_distint_coins_toast, Toast.LENGTH_SHORT).show()
-                finish()
-            }
-
-            else -> with(binding) {
-                Toast.makeText(this@ResultActivity, R.string.required_value_toast, Toast.LENGTH_SHORT).show()
-                finish()
-            }
+        fun result(c1 : String?, c2 : String?, v : Float?) {
+            val result = viewModel.calculatingResult(c1, c2, v)
+            val resultValue = String.format("%.2f", result)
+            val completeValue = "$resultValue $coinType2"
+            coin1.text = "$value $coinType1"
+            coinResult.text = completeValue
         }
 
-        binding.buttonRetornar.setOnClickListener {
-            finish()
+       fun imageView(x : ImageView, y : ImageView) {
+             x.visibility = View.VISIBLE
+             y.visibility = View.VISIBLE
+       }
+
+            when (value != null) {
+                (coinType1 == "BRL" && coinType2 == "USD" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgBR1, imgUSD2)
+                }
+                (coinType1 == "BRL" && coinType2 == "GBP" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgBR1, imgGBP2)
+                }
+                (coinType1 == "BRL" && coinType2 == "CHF" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgBR1, imgCHF2)
+                }
+                (coinType1 == "BRL" && coinType2 == "EUR" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgBR1, imgEUR2)
+                }
+                (coinType1 == "USD" && coinType2 == "BRL" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgUSD1, imgBR2)
+                }
+                (coinType1 == "USD" && coinType2 == "GBP" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgUSD1, imgGBP2)
+                }
+                (coinType1 == "USD" && coinType2 == "CHF" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgUSD1, imgCHF2)
+                }
+                (coinType1 == "USD" && coinType2 == "EUR" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgUSD1, imgEUR2)
+                }
+                (coinType1 == "GBP" && coinType2 == "BRL" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgGBP1, imgBR2)
+                }
+                (coinType1 == "GBP" && coinType2 == "USD" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgGBP1, imgUSD2)
+                }
+                (coinType1 == "GBP" && coinType2 == "CHF" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgGBP1, imgCHF2)
+                }
+                (coinType1 == "GBP" && coinType2 == "EUR" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgGBP1, imgEUR2)
+                }
+                (coinType1 == "CHF" && coinType2 == "BRL" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgCHF1, imgBR2)
+                }
+                (coinType1 == "CHF" && coinType2 == "USD" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgCHF1, imgUSD2)
+                }
+                (coinType1 == "CHF" && coinType2 == "GBP" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgCHF1, imgGBP2)
+                }
+                (coinType1 == "CHF" && coinType2 == "EUR" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgCHF1, imgEUR2)
+                }
+                (coinType1 == "EUR" && coinType2 == "BRL" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgEUR1, imgBR2)
+                }
+                (coinType1 == "EUR" && coinType2 == "USD" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgEUR1, imgUSD2)
+                }
+                (coinType1 == "EUR" && coinType2 == "GBP" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgEUR1, imgGBP2)
+                }
+                (coinType1 == "EUR" && coinType2 == "CHF" && value != 0f) -> {
+                    result(coinType1, coinType2, value)
+                    imageView(imgEUR1, imgCHF2)
+                }
+                else -> {
+                    print("error")
+                }
+            }
         }
     }
 }
