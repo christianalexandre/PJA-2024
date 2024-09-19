@@ -6,32 +6,33 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.conversaomoedas.objects.Currency
 import com.example.conversaomoedas.objects.home_screen.HomeScreenActivity
 import com.example.listadecontatos.R
 import com.example.listadecontatos.databinding.ActivityConversionPageBinding
 import java.text.NumberFormat
-import kotlin.properties.Delegates
 
 class ConversionPageActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityConversionPageBinding
+    private lateinit var conversionPageViewModel: ConversionPageViewModel
     private lateinit var initialCurrency: String
     private lateinit var finalCurrency: String
-    private lateinit var currenciesList: Array<String>
-    private var initialValue by Delegates.notNull<Double>()
-    private var finalValue by Delegates.notNull<Double>()
-    private var convertedValue by Delegates.notNull<Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityConversionPageBinding.inflate(layoutInflater)
+        conversionPageViewModel = ViewModelProvider(this)[ConversionPageViewModel::class.java]
 
         getExtras()
-        convertedValue = initialValue // to remember the initial value
 
-        convertValues()
+        with(conversionPageViewModel) {
+            convertedValue = initialValue
+            convertValues(Currency.getCurrencyAbbreviation(initialCurrency), Currency.getCurrencyAbbreviation(finalCurrency))
+        }
+
         setupView()
         setupListeners()
     }
@@ -39,54 +40,16 @@ class ConversionPageActivity : ComponentActivity() {
     private fun getExtras() {
         val bundle = intent.getBundleExtra("bundle") ?: return
 
-        currenciesList = bundle.getStringArray("currenciesList")!!
-        initialCurrency = Currency.getCurrencyAbbreviation(currenciesList[0])
-        finalCurrency = Currency.getCurrencyAbbreviation(currenciesList[1])
-
-        initialValue = bundle.getDouble("initialValue")
-    }
-
-    private fun convertValues() {
-        when (initialCurrency) {
-            "BRL" -> {
-                convertedValue *= 1.0
-            }
-
-            "USD" -> {
-                convertedValue *= 5.3
-            }
-
-            "GBP" -> {
-                convertedValue *= 6.74
-            }
-
-            "CHF" -> {
-                convertedValue *= 5.91
-            }
-
-            "EUR" -> {
-                convertedValue *= 5.72
-            }
-        }
-
-        when (finalCurrency) {
-            "BRL" -> { finalValue = convertedValue }
-
-            "USD" -> { finalValue = convertedValue / 5.3 }
-
-            "GBP" -> { finalValue = convertedValue / 6.74 }
-
-            "CHF" -> { finalValue = convertedValue / 5.91 }
-
-            "EUR" -> { finalValue = convertedValue / 5.72 }
-        }
+        initialCurrency = bundle.getString("initialCurrency") ?: return
+        finalCurrency = bundle.getString("finalCurrency") ?: return
+        conversionPageViewModel.initialValue = bundle.getDouble("initialValue")
     }
 
     private fun setupView() {
         setContentView(binding.root)
 
-        setupCurrencyView(initialCurrency, binding.flagOne, binding.initialValue, initialValue)
-        setupCurrencyView(finalCurrency, binding.flagTwo, binding.finalValue, finalValue)
+        setupCurrencyView(initialCurrency, binding.flagOne, binding.initialValue, conversionPageViewModel.initialValue)
+        setupCurrencyView(finalCurrency, binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
     }
 
     @SuppressLint("SetTextI18n")
