@@ -57,7 +57,7 @@ class HomeScreenViewModel: ViewModel() {
 
             override fun onTextChanged(textChanged: CharSequence?, start: Int, before: Int, count: Int) {
 
-                textChanged!!
+                textChanged ?: return
                 if (textChanged.toString() != current) {
 
                     if (textChanged.toString().isEmpty()) return
