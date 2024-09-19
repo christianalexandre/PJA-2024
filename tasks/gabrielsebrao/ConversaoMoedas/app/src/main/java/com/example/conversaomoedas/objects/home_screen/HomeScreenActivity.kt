@@ -90,7 +90,7 @@ class HomeScreenActivity : ComponentActivity() {
         binding.calculateButton.setOnClickListener {
             setupSpinnersSelectedItems()
 
-            if (verifyConditionsToGoToConversionPage()) return@setOnClickListener
+            if (!verifyIsAbleToGoToConversionPage()) return@setOnClickListener
 
             convertingValue = initialValueEditText.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
 
@@ -121,7 +121,7 @@ class HomeScreenActivity : ComponentActivity() {
                 if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     setupSpinnersSelectedItems()
 
-                    if (verifyConditionsToGoToConversionPage()) return@setOnKeyListener false
+                    if (!verifyIsAbleToGoToConversionPage()) return@setOnKeyListener false
 
                     convertingValue = initialValueEditText.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDouble()
 
@@ -148,35 +148,35 @@ class HomeScreenActivity : ComponentActivity() {
         }
     }
 
-    private fun verifyConditionsToGoToConversionPage(): Boolean {
-        if (!verifyIsBlank()) return true
-        if (!verifyIsMissingSelectedCurrencies()) return true
-        if (!verifyIsIdenticalSelectedCurrencies()) return true
-        return false
+    private fun verifyIsAbleToGoToConversionPage(): Boolean {
+        if (verifyIsBlank()) return false
+        if (verifyIsMissingSelectedCurrencies()) return false
+        if (verifyIsIdenticalSelectedCurrencies()) return false
+        return true
     }
 
     private fun verifyIsBlank(): Boolean {
         if (initialValueEditText.text.toString().isBlank()) {
             initialValueInputLayout.error = resources.getText(R.string.missing_convert_value)
-            return false
+            return true
         }
-        return true
+        return false
     }
 
     private fun verifyIsMissingSelectedCurrencies(): Boolean {
         if (initialCurrencySpinnerSelectedItem == "Selecionar uma moeda" || finalCurrencySpinnerSelectedItem == "Selecionar uma moeda") {
             initialValueInputLayout.error = resources.getText(R.string.missing_selected_currencies)
-            return false
+            return true
         }
-        return true
+        return false
     }
 
     private fun verifyIsIdenticalSelectedCurrencies(): Boolean {
         if (initialCurrencySpinnerSelectedItem == finalCurrencySpinnerSelectedItem) {
             initialValueInputLayout.error = resources.getText(R.string.identical_currencies)
-            return false
+            return true
         }
-        return true
+        return false
     }
 
     private fun goToConversionPage() {
