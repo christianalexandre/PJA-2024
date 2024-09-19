@@ -54,7 +54,8 @@ class ConversionPageActivity : ComponentActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setupCurrencyView(currency: String, flag: ImageView, textView: TextView, value: Double) {
-        when (currency) {
+        val abbreviatedCurrency: String = Currency.getCurrencyAbbreviation(currency)
+        when (abbreviatedCurrency) {
             "BRL" -> {
                 flag.setImageResource(R.drawable.flag_br)
                 flag.contentDescription = "Ícone da Bandeira do Brasil"
@@ -81,7 +82,7 @@ class ConversionPageActivity : ComponentActivity() {
             }
         }
 
-        textView.text = "${formatCurrencyValue(value)} $currency"
+        textView.text = "${formatCurrencyValue(value)} $abbreviatedCurrency"
     }
 
     private fun formatCurrencyValue(value: Double): String {
