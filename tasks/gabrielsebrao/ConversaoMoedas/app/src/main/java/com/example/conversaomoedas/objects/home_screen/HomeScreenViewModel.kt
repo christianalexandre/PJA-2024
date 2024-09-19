@@ -19,7 +19,7 @@ class HomeScreenViewModel: ViewModel() {
             private var onlyOneCommaPattern = "^(,)$".toRegex()
             private var decimalNumberWithDoubleCommasPattern = "^([(\\d*).?]*)(,)(.*)(,)$".toRegex()
             private var decimalNumberThatExceedsTwoNumbersAfterCommaPattern = "^([(\\d*).?]*)(,)(\\d{2}.)$".toRegex()
-            private val decimalNumberThatExceedsFourteenDigitsBeforeComma = "^([\\d.]{14})$".toRegex()
+            private val decimalNumberThatExceedsFourteenDigitsBeforeCommaPattern = "^([\\d.]{14})$".toRegex()
 
             override fun beforeTextChanged(s: CharSequence?, startO: Int, count: Int, after: Int) {}
 
@@ -29,7 +29,7 @@ class HomeScreenViewModel: ViewModel() {
 
                     if (onlyOneCommaPattern.matches(result)) return@InputFilter ""
                     if (decimalNumberWithDoubleCommasPattern.matches(result)) return@InputFilter ""
-                    if (decimalNumberThatExceedsFourteenDigitsBeforeComma.matches(result)) return@InputFilter ""
+                    if (decimalNumberThatExceedsFourteenDigitsBeforeCommaPattern.matches(result)) return@InputFilter ""
                     if (decimalNumberThatExceedsTwoNumbersAfterCommaPattern.matches(result)) return@InputFilter ""
 
                     null
