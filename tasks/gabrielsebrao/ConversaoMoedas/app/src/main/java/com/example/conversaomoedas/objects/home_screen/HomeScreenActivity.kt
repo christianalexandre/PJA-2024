@@ -58,8 +58,8 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun getExtras() {
         bundle = intent.getBundleExtra("bundle") ?: return
-        initialCurrencySpinnerSelectedItem = bundle.getStringArray("currenciesList")!![0]
-        finalCurrencySpinnerSelectedItem = bundle.getStringArray("currenciesList")!![1]
+        initialCurrencySpinnerSelectedItem = bundle.getString("initialCurrency") ?: return
+        finalCurrencySpinnerSelectedItem = bundle.getString("finalCurrency") ?: return
     }
 
     private fun setupSpinners() {
@@ -182,10 +182,8 @@ class HomeScreenActivity : ComponentActivity() {
     private fun goToConversionPage() {
         startActivity(Intent(this, ConversionPageActivity::class.java).apply {
             putExtra("bundle", Bundle().apply {
-                putStringArray(
-                    "currenciesList",
-                    arrayOf(initialCurrencySpinnerSelectedItem, finalCurrencySpinnerSelectedItem)
-                )
+                putString("initialCurrency", initialCurrencySpinnerSelectedItem)
+                putString("finalCurrency", finalCurrencySpinnerSelectedItem)
                 putDouble("initialValue", convertingValue)
             })
         })

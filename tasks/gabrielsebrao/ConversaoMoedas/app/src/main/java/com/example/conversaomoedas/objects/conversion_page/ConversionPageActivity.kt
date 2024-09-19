@@ -107,7 +107,8 @@ class ConversionPageActivity : ComponentActivity() {
     private fun goToMainActivity() {
         startActivity(Intent(this, HomeScreenActivity::class.java).apply {
             putExtra("bundle", Bundle().apply {
-                putStringArray("currenciesList", currenciesList)
+                putString("initialCurrency", initialCurrency)
+                putString("finalCurrency", finalCurrency)
             })
         })
     }
