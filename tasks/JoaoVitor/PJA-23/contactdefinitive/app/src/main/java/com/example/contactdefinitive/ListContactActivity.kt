@@ -31,8 +31,10 @@ class ListContactActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
+
         with(binding) {
-            when (contactList!!.size) {
+
+            when (contactList?.size) {
                 1 -> {
                     bar1.visibility = View.VISIBLE
                     nameContact1.text = contactList!![0].name

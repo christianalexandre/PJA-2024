@@ -40,12 +40,9 @@ class  MainContactList : AppCompatActivity() {
                 Toast.makeText(applicationContext, getString(R.string.save_fields_toast), Toast.LENGTH_SHORT).show()
             }
 
-            editName.addTextChangedListener(Regex.textName(editName))
-            editPhone.addTextChangedListener(Regex.textNumber(editPhone))
-
             buttonClearContacts.setOnClickListener {
                 contactList.clear()
-                Toast.makeText(applicationContext, getString(R.string.null_list_toast), Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, getString(R.string.null_saving_toast), Toast.LENGTH_SHORT).show()
             }
 
             buttonContactList.setOnClickListener {
