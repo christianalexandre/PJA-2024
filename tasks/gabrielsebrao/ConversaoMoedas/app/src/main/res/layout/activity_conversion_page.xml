@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_gray"
                 android:background="@drawable/background_rounded_borders"
-                android:text="@string/return_button" />
+                tools:ignore="TextContrastCheck" />
         </LinearLayout>
     </LinearLayout>
 
