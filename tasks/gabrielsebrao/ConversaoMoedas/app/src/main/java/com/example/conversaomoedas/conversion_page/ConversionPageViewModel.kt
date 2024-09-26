@@ -1,4 +1,4 @@
-package com.example.conversaomoedas.objects.conversion_page
+package com.example.conversaomoedas.conversion_page
 
 import androidx.lifecycle.ViewModel
 
@@ -8,7 +8,9 @@ class  ConversionPageViewModel: ViewModel() {
     var convertedValue: Double = 0.0
     var finalValue: Double = 0.0
 
+    // consume api later.
     fun convertValues(initialCurrency: String, finalCurrency: String) {
+
         when (initialCurrency) {
             "BRL" -> {
                 convertedValue *= 1.0
@@ -42,5 +44,7 @@ class  ConversionPageViewModel: ViewModel() {
 
             "EUR" -> { finalValue = convertedValue / 5.72 }
         }
+
     }
+
 }

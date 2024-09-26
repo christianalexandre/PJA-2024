@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Conversao de Moedas</string>
     <string name="select_currency">Seleciona uma moeda</string>
-    <string name="convert_value">Valor a ser convertido</string>
+    <string name="convert_value">Insira o valor</string>
     <string name="calculate_button">Calcular</string>
     <string name="return_button">Retornar</string>
     <string name="result">Resultado</string>
