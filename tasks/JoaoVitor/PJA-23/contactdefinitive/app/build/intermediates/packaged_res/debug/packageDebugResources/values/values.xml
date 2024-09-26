@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="green_intelbras">#228B22</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">contact definitive</string>
+    <string name="contact_list">Contact List</string>
+    <string name="full_fields_toast">A lista de contato está cheia</string>
+    <string name="hint_name">Nome</string>
+    <string name="hint_phone">Telefone</string>
+    <string name="list_clear_field_button">Limpar lista</string>
+    <string name="list_field_button">Lista de contatos</string>
+    <string name="null_fields_toast">Os campos não podem estar vazios</string>
+    <string name="null_list_toast">A lista de contato está vazia</string>
+    <string name="null_saving_toast">A lista de contato foi apagada com sucesso!</string>
+    <string name="return_field_button">Retornar</string>
+    <string name="save_field_button">Salvar contato</string>
+    <string name="save_fields_toast">Contato salvo com sucesso</string>
+    <string name="toast_shirt_name">Coloque um nome menor!</string>
+    <style name="Theme.ContactDefinitive" parent="Theme.AppCompat.Light.NoActionBar"/>
+</resources>
