@@ -36,8 +36,9 @@ class ConversionPageActivity : ComponentActivity() {
         finalCurrency.value = conversionPageViewModel.finalValue
 
         with(conversionPageViewModel) {
-            convertedValue = initialValue
+            convertedValue = initialCurrency.value
             convertValues(initialCurrency.code, finalCurrency.code)
+            finalCurrency.value = finalValue
         }
 
         setupView()
@@ -51,7 +52,7 @@ class ConversionPageActivity : ComponentActivity() {
 
         initialCurrency.name = bundle.getString("initialCurrency") ?: return
         finalCurrency.name = bundle.getString("finalCurrency") ?: return
-        conversionPageViewModel.initialValue = bundle.getDouble("initialValue")
+        initialCurrency.value = bundle.getDouble("initialValue")
         Log.e("coiso", "bundle: ${bundle.getDouble("initialValue")}")
     }
 
@@ -59,7 +60,7 @@ class ConversionPageActivity : ComponentActivity() {
 
         setContentView(binding.root)
 
-        setupCurrencyView(initialCurrency.code, binding.flagOne, binding.initialValue, conversionPageViewModel.initialValue)
+        setupCurrencyView(initialCurrency.code, binding.flagOne, binding.initialValue, initialCurrency.value)
         setupCurrencyView(finalCurrency.code, binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
 
     }

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 
 class  ConversionPageViewModel: ViewModel() {
 
-    var initialValue: Double = 0.0
     var convertedValue: Double = 0.0
     var finalValue: Double = 0.0
 
