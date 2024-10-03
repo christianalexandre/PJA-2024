@@ -5,19 +5,32 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/hard_gray"
+    android:background="@color/gray"
     tools:context="com.example.contactdefinitive.MainActivity">
+
+    <Toolbar
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="-15dp"
+        android:layout_marginBottom="-5dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintEnd_toEndOf="@id/textView"
+        app:layout_constraintStart_toStartOf="@id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        />
 
     <Toolbar
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="-10dp"
         android:layout_marginEnd="-10dp"
-        android:background="@color/black"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/textView"
         app:layout_constraintEnd_toEndOf="@id/textView"
         app:layout_constraintStart_toStartOf="@id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        />
 
     <TextView
         android:id="@+id/textView"
@@ -25,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/title_first_activity"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@id/spin1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,10 +48,10 @@
     <Toolbar
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="-2dp"
-        android:layout_marginEnd="-2dp"
-        android:layout_marginBottom="-2dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginStart="-1dp"
+        android:layout_marginEnd="-5dp"
+        android:layout_marginBottom="-4dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/spin1"
         app:layout_constraintEnd_toEndOf="@id/spin1"
@@ -47,7 +60,7 @@
 
     <Spinner
         android:id="@+id/spin1"
-        android:background="@color/gray"
+        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -60,10 +73,10 @@
     <Toolbar
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="-2dp"
-        android:layout_marginEnd="-2dp"
-        android:layout_marginBottom="-2dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginStart="-1dp"
+        android:layout_marginEnd="-5dp"
+        android:layout_marginBottom="-4dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/spin2"
         app:layout_constraintEnd_toEndOf="@id/spin2"
@@ -72,7 +85,7 @@
 
     <Spinner
         android:id="@+id/spin2"
-        android:background="@color/gray"
+        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -98,7 +111,11 @@
     <Toolbar
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/gray"
+        android:background="@color/black"
+        android:layout_marginBottom="-5dp"
+        android:layout_marginEnd="-5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
         app:layout_constraintBottom_toBottomOf="@id/edit_text3"
         app:layout_constraintEnd_toEndOf="@id/edit_text3"
         app:layout_constraintStart_toStartOf="@id/edit_text3"
@@ -109,16 +126,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/white"
         android:hint="@string/hint_field_value"
         android:inputType="numberDecimal"
         android:textAlignment="center"
+        android:textColorHint="@color/gray"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        />
 
+    <Toolbar
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:layout_marginTop="3dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="-1dp"
+        app:layout_constraintBottom_toBottomOf="@id/buttonCalculating"
+        app:layout_constraintEnd_toEndOf="@id/buttonCalculating"
+        app:layout_constraintStart_toStartOf="@id/buttonCalculating"
+        app:layout_constraintTop_toTopOf="@+id/buttonCalculating"
         />
 
     <Button
@@ -127,9 +159,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:layout_marginBottom="100dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/white"
         android:text="@string/button_calculation_text"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -33,8 +33,8 @@ class ViewModelResultActivity : ViewModel() {
                 "EUR" to "USD" to 1.12f,
                 "EUR" to "GBP" to 0.84f,
                 "EUR" to "CHF" to 0.95f,
+                )
 
-            )
             val rate: Float = exchangeRates[coinType1 to coinType2]!!.toFloat()
             result = rate * value
         }

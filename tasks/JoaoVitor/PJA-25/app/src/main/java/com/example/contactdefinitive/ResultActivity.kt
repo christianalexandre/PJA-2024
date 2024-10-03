@@ -42,18 +42,18 @@ class ResultActivity : AppCompatActivity() {
     private fun setupView() {
         with(binding) {
 
-        fun result(c1 : String?, c2 : String?, v : Float?) {
-            val result = viewModel.calculatingResult(c1, c2, v)
-            val resultValue = String.format("%.2f", result)
-            val completeValue = "$resultValue $coinType2"
-            coin1.text = "$value $coinType1"
-            coinResult.text = completeValue
-        }
+            fun result(c1 : String?, c2 : String?, v : Float?) {
+                val result = viewModel.calculatingResult(c1, c2, v)
+                val resultValue = String.format("%.2f", result)
+                val completeValue = "$resultValue $coinType2"
+                coin1.text = "$value $coinType1"
+                coinResult.text = completeValue
+            }
 
-       fun imageView(x : ImageView, y : ImageView) {
-             x.visibility = View.VISIBLE
-             y.visibility = View.VISIBLE
-       }
+            fun imageView(x : ImageView, y : ImageView) {
+                x.visibility = View.VISIBLE
+                y.visibility = View.VISIBLE
+            }
 
             when (value != null) {
                 (coinType1 == "BRL" && coinType2 == "USD" && value != 0f) -> {
