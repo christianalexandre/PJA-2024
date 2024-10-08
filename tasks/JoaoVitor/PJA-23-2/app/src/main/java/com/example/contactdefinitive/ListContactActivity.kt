@@ -1,6 +1,5 @@
 package com.example.contactdefinitive
 
-
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +7,7 @@ import com.example.contactdefinitive.databinding.ActivitySecondBinding
 
 class ListContactActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySecondBinding
-    private var contactList: List<Contact>? = null
+    private lateinit var contactList: List<Contact>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,9 +18,10 @@ class ListContactActivity : AppCompatActivity() {
         setupListeners()
         setupView()
     }
-    private fun getExtras(){
+
+    private fun getExtras() {
         val bundle = intent.getBundleExtra("bundle")
-        contactList = bundle?.getParcelableArrayList<Contact>("contact")?.toList()
+        contactList = bundle?.getParcelableArrayList<Contact>("contact")?.toList() ?: emptyList()
     }
 
     private fun setupListeners() {
@@ -33,39 +33,27 @@ class ListContactActivity : AppCompatActivity() {
     private fun setupView() {
 
         with(binding) {
+            for ((index, contact) in contactList.withIndex()) {
 
-            when (contactList?.size) {
-                1 -> {
-                    bar1.visibility = View.VISIBLE
-                    nameContact1.text = contactList!![0].name
-                    phone1.text = contactList!![0].num
-                }
-
-                2 -> {
-                    bar1.visibility = View.VISIBLE
-                    bar2.visibility = View.VISIBLE
-                    nameContact1.text = contactList!![0].name
-                    phone1.text = contactList!![0].num
-                    nameContact2.text = contactList!![1].name
-                    phone2.text = contactList!![1].num
-                }
-
-                3 -> {
-                    bar1.visibility = View.VISIBLE
-                    bar2.visibility = View.VISIBLE
-                    bar3.visibility = View.VISIBLE
-                    nameContact1.text = contactList!![0].name
-                    phone1.text = contactList!![0].num
-                    nameContact2.text = contactList!![1].name
-                    phone2.text = contactList!![1].num
-                    nameContact3.text = contactList!![2].name
-                    phone3.text = contactList!![2].num
-                }
-
-                else -> {
-                    print("error")
+                when (index) {
+                    0 -> {
+                        bar1.visibility = View.VISIBLE
+                        nameContact1.text = contact.name
+                        phone1.text = contact.num
+                    }
+                    1 -> {
+                        bar2.visibility = View.VISIBLE
+                        nameContact2.text = contact.name
+                        phone2.text = contact.num
+                    }
+                    2 -> {
+                        bar3.visibility = View.VISIBLE
+                        nameContact3.text = contact.name
+                        phone3.text = contact.num
+                    }
                 }
             }
         }
     }
 }
+
