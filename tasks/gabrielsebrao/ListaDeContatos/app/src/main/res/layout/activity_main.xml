@@ -60,7 +60,8 @@
                 android:textColorHint="@color/gray"
                 android:textColor="@color/dark_gray"
                 android:importantForAutofill="no"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
+                android:paddingHorizontal="10dp"
                 android:textAlignment="center"
                 android:textSize="15sp" />
 
@@ -76,6 +77,7 @@
                 android:textColor="@color/dark_gray"
                 android:importantForAutofill="no"
                 android:inputType="phone|number"
+                android:paddingHorizontal="10dp"
                 android:textAlignment="center"
                 android:textSize="15sp" />
         </LinearLayout>

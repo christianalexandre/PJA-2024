@@ -18,13 +18,18 @@ class HomeScreenActivity : ComponentActivity() {
     private lateinit var homeScreenViewModel: HomeScreenViewModel
     private lateinit var contactList: MutableList<Contact>
 
+    companion object {
+        private const val RESIDENTIAL_PHONE_NUMBER_LENGTH = 12
+        private const val PERSONAL_PHONE_NUMBER_LENGTH = 13
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.dark_gray)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.dark_gray)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         homeScreenViewModel = ViewModelProvider(this)[HomeScreenViewModel::class.java]
         contactList = mutableListOf()
 
@@ -38,8 +43,6 @@ class HomeScreenActivity : ComponentActivity() {
         // for some reason textWatcher doesn't work on first change, so i put the first change here. now all changes will be watched by textWatcher.
         binding.editTextName.setText("")
         binding.editTextPhone.setText("")
-
-        setContentView(binding.root)
 
     }
 
@@ -63,7 +66,36 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun setupButtonSaveListeners() {
 
-        binding.buttonSave.setOnClickListener { saveContact() }
+        binding.buttonSave.setOnClickListener {
+
+            val name = binding.editTextName.text.toString()
+            val phone = binding.editTextPhone.text.toString()
+
+            if (name.isEmpty() || phone.isEmpty()) {
+                Toast.makeText(this, R.string.set_all_data, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (contactList.size >= 3) {
+                Toast.makeText(this, R.string.exceed_three_contacts, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (phone.length != RESIDENTIAL_PHONE_NUMBER_LENGTH && phone.length != PERSONAL_PHONE_NUMBER_LENGTH) {
+                Toast.makeText(this, R.string.not_complete_phone_number, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            saveContact(name, phone)
+
+        }
+
+    }
+
+    private fun saveContact(name: String, phone: String) {
+
+        contactList.add(Contact(name, phone))
+        Toast.makeText(this, R.string.add_contact, Toast.LENGTH_SHORT).show()
 
     }
 
@@ -101,7 +133,8 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun setupEditTextPhoneListeners() {
 
-        binding.editTextPhone.addTextChangedListener( homeScreenViewModel.formatTextChangedForTelephoneNumber(binding.editTextPhone) )
+        binding.editTextPhone.addTextChangedListener( homeScreenViewModel.filterTextChangedForTelephoneNumber(binding.editTextPhone) )
+        binding.editTextPhone.addTextChangedListener( homeScreenViewModel.maskTextChangedForTelephoneNumber(binding.editTextPhone) )
 
     }
 
@@ -126,44 +159,6 @@ class HomeScreenActivity : ComponentActivity() {
             if(!binding.editTextPhone.isFocused && !binding.editTextName.isFocused) binding.editTextPhone.requestFocus()
 
         }
-
-    }
-
-    private fun saveContact() {
-
-        val name = binding.editTextName.text.toString()
-        val phone = binding.editTextPhone.text.toString()
-
-        if (name.isEmpty() && phone.isEmpty()) {
-            Toast.makeText(this, R.string.set_all_data, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (contactList.size >= 3) {
-            Toast.makeText(this, R.string.exceed_three_contacts, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (phone.length > 11) {
-            Toast.makeText(this, R.string.exceed_phone_number, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (name.length > 30) {
-            Toast.makeText(this, R.string.exceed_name, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // regex
-        try {
-            phone.toBigInteger()
-        } catch (_: NumberFormatException) {
-            Toast.makeText(this, R.string.only_numbers, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        contactList.add(Contact(name, phone))
-        Toast.makeText(this, R.string.add_contact, Toast.LENGTH_SHORT).show()
 
     }
 

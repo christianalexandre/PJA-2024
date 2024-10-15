@@ -29,10 +29,9 @@ class ContactListActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.dark_gray)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.dark_gray)
-
         binding = ActivityContactListBinding.inflate(layoutInflater)
-        contactList = mutableListOf()
         setContentView(binding.root)
+        contactList = mutableListOf()
 
         getExtras()
         

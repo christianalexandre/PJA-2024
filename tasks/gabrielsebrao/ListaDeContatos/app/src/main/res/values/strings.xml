@@ -2,15 +2,15 @@
     <string name="app_name">ListaDeContatos</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="name">Nome</string>
-    <string name="phone">(00) 90000–0000</string>
+    <string name="phone">00 0000–0000</string>
     <string name="clean_list">Limpar Contatos</string>
     <string name="contact_list">Lista de Contatos</string>
     <string name="save_contact">Salvar Contato</string>
     <string name="phone_alt">Um ícone pequeno de um telefone.</string>
     <string name="return_home">Retornar</string>
-    <string name="exceed_three_contacts">Você só pode adicionar até 3 contatos na sua lista!</string>
+    <string name="exceed_three_contacts">Só pode adicionar até 3 contatos!</string>
     <string name="add_contact">Contato adicionado!</string>
-    <string name="set_all_data">Por favor, insira todos os dados do contato para salvá-lo!</string>
+    <string name="set_all_data">Insira todos os dados do contato para salvá-lo!</string>
     <string name="already_empty_contacts">Os contatos já estão esvaziados!</string>
     <string name="empty_contacts">Lista de contatos limpa!</string>
     <string name="add_at_least_one_contact">Por favor, adicionar pelo menos um contato!</string>
@@ -20,4 +20,6 @@
     <string name="no_contact">Nenhum contato salvo</string>
     <string name="bundle_contact_list">contact_list</string>
     <string name="singleton_list">SingletonList</string>
+    <string name="not_complete_phone_number">Insira um número de telefone completo!</string>
+    <string name="mask_prefix_phone_number">$formattedText </string>
 </resources>
