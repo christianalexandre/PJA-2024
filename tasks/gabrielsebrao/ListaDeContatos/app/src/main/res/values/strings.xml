@@ -8,7 +8,7 @@
     <string name="save_contact">Salvar Contato</string>
     <string name="phone_alt">Um ícone pequeno de um telefone.</string>
     <string name="return_home">Retornar</string>
-    <string name="exceed_three_contacts">Só pode adicionar até 3 contatos!</string>
+    <string name="exceed_three_contacts">Lista de contatos cheia!</string>
     <string name="add_contact">Contato adicionado!</string>
     <string name="set_all_data">Insira todos os dados do contato para salvá-lo!</string>
     <string name="already_empty_contacts">Os contatos já estão esvaziados!</string>
