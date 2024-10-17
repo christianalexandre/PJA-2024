@@ -21,5 +21,4 @@
     <string name="bundle_contact_list">contact_list</string>
     <string name="singleton_list">SingletonList</string>
     <string name="not_complete_phone_number">Insira um número de telefone completo!</string>
-    <string name="mask_prefix_phone_number">$formattedText </string>
 </resources>
