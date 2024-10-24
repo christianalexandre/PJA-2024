@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_currencies">
+        <item>@string/currency_default</item>
+        <item>@string/currency_brazilian_real</item>
+        <item>@string/currency_american_dollar</item>
+        <item>@string/currency_chinese_yuan</item>
+        <item>@string/currency_british_pound</item>
+        <item>@string/currency_euro</item>
+        <item>@string/currency_swiss_franc</item>
+        <item>@string/currency_japanese_yen</item>
+        <item>@string/currency_canadian_dollar</item>
+        <item>@string/currency_bitcoin</item>
+        <item>@string/currency_dogecoin</item>
+    </string-array>
+
+    <string-array name="array_currencies_without_default_item">
+        <item>@string/currency_brazilian_real</item>
+        <item>@string/currency_american_dollar</item>
+        <item>@string/currency_chinese_yuan</item>
+        <item>@string/currency_british_pound</item>
+        <item>@string/currency_euro</item>
+        <item>@string/currency_swiss_franc</item>
+        <item>@string/currency_japanese_yen</item>
+        <item>@string/currency_canadian_dollar</item>
+        <item>@string/currency_bitcoin</item>
+        <item>@string/currency_dogecoin</item>
+    </string-array>
+</resources>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Conversao de Moedas</string>
+    <string name="convert_value">Insira o valor</string>
+    <string name="calculate_button">Calcular</string>
+    <string name="return_button">Retornar</string>
+    <string name="result">Resultado</string>
+    <string name="equals">=</string>
+    <string name="title_activity_main">Conversor de Moeda</string>
+    <string name="title_activity_conversion_page">ConversionPage</string>
+    <string name="currency_converter">Conversor de Moedas</string>
+    <string name="missing_convert_value">Digite um valor a ser convertido.</string>
+    <string name="missing_selected_currencies">Selecione alguma moeda para os dois campos.</string>
+    <string name="identical_currencies">Selecione duas moedas diferentes.</string>
+    <string name="flag">Bandeira.</string>
+
+    <string name="bundle">bundle</string>
+    <string name="bundle_initial_currency">initialCurrency</string>
+    <string name="bundle_final_currency">finalCurrency</string>
+    <string name="bundle_initial_value">initialValue</string>
+
+    <string name="no_connection">Sem internet!</string>
+
+    <string name="currency_american_dollar">Dólar Americano (USD)</string>
+    <string name="currency_british_pound">Libra Esterlina (GBP)</string>
+    <string name="currency_swiss_franc">Franco Suíço (CHF)</string>
+    <string name="currency_brazilian_real">Real (BRL)</string>
+    <string name="currency_euro">Euro (EUR)</string>
+    <string name="currency_japanese_yen">Iene Japonês (JPY)</string>
+    <string name="currency_canadian_dollar">Dólar Canadense (CAD)</string>
+    <string name="currency_chinese_yuan">Yuan Chinês (CNY)</string>
+    <string name="currency_bitcoin">Bitcoin (BTC)</string>
+    <string name="currency_dogecoin">Dogecoin (DOGE)</string>
+    <string name="currency_default">Selecionar uma moeda</string>
+
+    <string name="currency_code_brazilian_real">BRL</string>
+    <string name="currency_code_american_dollar">USD</string>
+    <string name="currency_code_chinese_yuan">CNY</string>
+    <string name="currency_code_british_pound">GBP</string>
+    <string name="currency_code_swiss_franc">CHF</string>
+    <string name="currency_code_euro">EUR</string>
+    <string name="currency_code_japanese_yen">JPY</string>
+    <string name="currency_code_canadian_dollar">CAD</string>
+    <string name="currency_code_bitcoin">BTC</string>
+    <string name="currency_code_dogecoin">DOGE</string>
+    <string name="currency_code_default">$</string>
+
+    <string name="icon_alt_brazilian_flag">Ícone da Bandeira do Brasil.</string>
+    <string name="icon_alt_american_flag">Ícone da bandeira dos Estados Unidos.</string>
+    <string name="icon_alt_british_flag">Ícone da bandeira do Reino Unido.</string>
+    <string name="icon_alt_swiss_flag">Ícone da bandeira da Suíça.</string>
+    <string name="icon_alt_european_union_flag">Ícone da bandeira da União Europeia.</string>
+    <string name="icon_alt_chinese_flag">Ícone da bandeira da China.</string>
+    <string name="icon_alt_japanese_flag">Ícone da bandeira do Japão.</string>
+    <string name="icon_alt_canadian_flag">Ícone da bandeira do Canadá.</string>
+    <string name="icon_alt_bitcoin">Ícone da criptomoeda Bitcoin.</string>
+    <string name="icon_alt_dogecoin">Ícone da criptomoeda Dogecoin.</string>
+</resources>
