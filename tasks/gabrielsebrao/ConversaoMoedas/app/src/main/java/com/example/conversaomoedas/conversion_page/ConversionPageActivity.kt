@@ -34,8 +34,8 @@ class ConversionPageActivity : ComponentActivity() {
         conversionPageViewModel.resources = resources
         connection = Connection()
 
-        initialCurrency = Currency(resources)
-        finalCurrency = Currency(resources)
+        initialCurrency = Currency()
+        finalCurrency = Currency()
 
         if(!connection.checkForInternet(this)) Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show()
 
@@ -44,7 +44,7 @@ class ConversionPageActivity : ComponentActivity() {
 
         with(conversionPageViewModel) {
             convertedValue = initialCurrency.value
-            convertValues(initialCurrency.code, finalCurrency.code)
+            convertValues(initialCurrency.currency.getCode(resources), finalCurrency.currency.getCode(resources))
             finalCurrency.value = finalValue
         }
 
@@ -57,8 +57,8 @@ class ConversionPageActivity : ComponentActivity() {
 
         val bundle = intent.getBundleExtra(resources.getString(R.string.bundle)) ?: return
 
-        initialCurrency.name = bundle.getString(resources.getString(R.string.bundle_initial_currency)) ?: return
-        finalCurrency.name = bundle.getString(resources.getString(R.string.bundle_final_currency)) ?: return
+        initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_initial_currency)) ?: return) ?: return
+        finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_final_currency)) ?: return) ?: return
         initialCurrency.value = bundle.getDouble(resources.getString(R.string.bundle_initial_value))
 
     }
@@ -67,25 +67,25 @@ class ConversionPageActivity : ComponentActivity() {
 
         setContentView(binding.root)
 
-        setupCurrencyView(initialCurrency.code, binding.flagOne, binding.initialValue, initialCurrency.value)
-        setupCurrencyView(finalCurrency.code, binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
+        setupCurrencyView(initialCurrency.currency.getCode(resources), binding.flagOne, binding.initialValue, initialCurrency.value)
+        setupCurrencyView(finalCurrency.currency.getCode(resources), binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
 
     }
 
     private fun setupCurrencyView(currencyCode: String, flag: ImageView, textView: TextView, value: Double) {
 
-        // corrigir tratamentos de ERRO com icon e icon_alt default
+        textView.text = String.format(Locale("pt", "BR"), "%s %s", formatCurrencyValue(value), currencyCode)
 
-        val currency = CurrencyEnum.entries.firstOrNull { it.getCode(resources) == currencyCode } ?: return
+        val currency = CurrencyEnum.entries.firstOrNull { it.getCode(resources) == currencyCode }
 
-        if(currency.currencyIcon == null) {
+        if(currency == null) {
+            flag.setImageResource(CurrencyEnum.DEFAULT.currencyIcon)
+            flag.contentDescription = CurrencyEnum.DEFAULT.getIconAlt(resources)
             return
         }
 
         flag.setImageResource(currency.currencyIcon)
         flag.contentDescription = currency.getIconAlt(resources)
-
-        textView.text = String.format(Locale("pt", "BR"), "%s %s", formatCurrencyValue(value), currencyCode)
 
     }
 
@@ -116,8 +116,8 @@ class ConversionPageActivity : ComponentActivity() {
 
         startActivity(Intent(this, HomeScreenActivity::class.java).apply {
             putExtra(resources.getString(R.string.bundle), Bundle().apply {
-                putString(resources.getString(R.string.bundle_initial_currency), initialCurrency.name)
-                putString(resources.getString(R.string.bundle_final_currency), finalCurrency.name)
+                putString(resources.getString(R.string.bundle_initial_currency), initialCurrency.currency.getName(resources))
+                putString(resources.getString(R.string.bundle_final_currency), finalCurrency.currency.getName(resources))
             })
         })
 

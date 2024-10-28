@@ -33,7 +33,7 @@
             app:layout_constraintBottom_toTopOf="@id/initialValue">
 
             <Spinner
-                android:id="@+id/currencyOne"
+                android:id="@+id/initial_currency_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -44,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
-                android:id="@+id/currencyTwo"
+                android:id="@+id/final_currency_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

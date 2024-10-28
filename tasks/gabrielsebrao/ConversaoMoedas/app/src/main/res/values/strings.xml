@@ -54,4 +54,5 @@
     <string name="icon_alt_canadian_flag">Ícone da bandeira do Canadá.</string>
     <string name="icon_alt_bitcoin">Ícone da criptomoeda Bitcoin.</string>
     <string name="icon_alt_dogecoin">Ícone da criptomoeda Dogecoin.</string>
+    <string name="icon_alt_default">Ícone de cifrão de dinheiro</string>
 </resources>
