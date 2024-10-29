@@ -37,7 +37,7 @@ class ConversionPageActivity : ComponentActivity() {
         initialCurrency = Currency()
         finalCurrency = Currency()
 
-        if(!connection.checkForInternet(this)) Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show()
+        if(connection.isDisconnected(this)) Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show()
 
         getExtras()
         finalCurrency.value = conversionPageViewModel.finalValue

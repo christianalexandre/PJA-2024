@@ -1,8 +1,18 @@
 package com.example.conversaomoedas.conversion_page
 
+import android.content.Context
 import android.content.res.Resources
+import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.conversaomoedasapi.R
+import androidx.lifecycle.liveData
+import com.example.conversaomoedas.classes.CurrencyApi
+import com.example.conversaomoedas.classes.CurrencyEnum
+import com.example.conversaomoedas.classes.CurrencyJsonObjects
+import com.example.conversaomoedas.classes.RetrofitInstance
+import retrofit2.Response
+import java.net.UnknownHostException
 
 class  ConversionPageViewModel: ViewModel() {
 
@@ -10,53 +20,30 @@ class  ConversionPageViewModel: ViewModel() {
     var finalValue: Double = 0.0
     lateinit var resources: Resources
 
-    fun convertValues(initialCurrency: String, finalCurrency: String) {
+    fun convertValues(initialCurrencyCode: String, finalCurrencyCode: String) {
 
-        when (initialCurrency) {
+        convertedValue *= CurrencyEnum.entries.first { it.getCode(resources) == initialCurrencyCode }.valueToReal
+        finalValue = convertedValue / CurrencyEnum.entries.first { it.getCode(resources) == finalCurrencyCode }.valueToReal
 
-            resources.getString(R.string.currency_code_brazilian_real) -> { convertedValue *= 1.00 }
+    }
 
-            resources.getString(R.string.currency_code_american_dollar) -> { convertedValue *= 5.3 }
+    fun getAPIValue(context: Context, lifecycleOwner: LifecycleOwner, currencyCode: String) {
 
-            resources.getString(R.string.currency_code_british_pound) -> { convertedValue *= 6.74 }
+        val retrofitService = RetrofitInstance.getRetrofitInstance().create(CurrencyApi::class.java)
 
-            resources.getString(R.string.currency_code_swiss_franc) -> { convertedValue *= 5.91 }
+        val responseLiveData: LiveData<Response<CurrencyJsonObjects>> = liveData {
 
-            resources.getString(R.string.currency_code_euro) -> { convertedValue *= 5.72 }
+            try {
+                emit(retrofitService.getCurrencies(currencyCode))
+            } catch(_: UnknownHostException) {
+                Toast.makeText(context, "deu errado na api", Toast.LENGTH_LONG).show()
+            }
 
-            resources.getString(R.string.currency_code_chinese_yuan) -> { convertedValue *= 0.80 }
-
-            resources.getString(R.string.currency_code_japanese_yen) -> { convertedValue *= 0.037 }
-
-            resources.getString(R.string.currency_code_canadian_dollar) -> { convertedValue *= 4.09 }
-
-            resources.getString(R.string.currency_code_bitcoin) -> { convertedValue *= 386_491.49 }
-
-            resources.getString(R.string.currency_code_dogecoin) -> { convertedValue *= 0.81 }
         }
 
-        when (finalCurrency) {
-
-            resources.getString(R.string.currency_code_brazilian_real) -> { finalValue = convertedValue }
-
-            resources.getString(R.string.currency_code_american_dollar) -> { finalValue = convertedValue / 5.3 }
-
-            resources.getString(R.string.currency_code_british_pound) -> { finalValue = convertedValue / 6.74 }
-
-            resources.getString(R.string.currency_code_swiss_franc) -> { finalValue = convertedValue / 5.91 }
-
-            resources.getString(R.string.currency_code_euro) -> { finalValue = convertedValue / 5.72 }
-
-            resources.getString(R.string.currency_code_chinese_yuan) -> { finalValue = convertedValue / 0.80 }
-
-            resources.getString(R.string.currency_code_japanese_yen) -> { finalValue = convertedValue / 0.037 }
-
-            resources.getString(R.string.currency_code_canadian_dollar) -> { finalValue = convertedValue / 4.09 }
-
-            resources.getString(R.string.currency_code_bitcoin) -> { finalValue = convertedValue / 386_491.49 }
-
-            resources.getString(R.string.currency_code_dogecoin) -> { finalValue = convertedValue / 0.81 }
-
+        responseLiveData.observe(lifecycleOwner) {
+            val apiData = it.body()
+            
         }
 
     }

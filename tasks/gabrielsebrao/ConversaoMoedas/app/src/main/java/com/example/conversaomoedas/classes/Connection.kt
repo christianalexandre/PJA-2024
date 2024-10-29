@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
 class Connection {
-    fun checkForInternet(context: Context): Boolean {
+    fun isDisconnected(context: Context): Boolean {
 
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -13,9 +13,9 @@ class Connection {
         val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
 
         return when {
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            else -> false
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> false
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> false
+            else -> true
         }
 
     }
