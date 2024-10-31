@@ -1,6 +1,7 @@
 package com.example.conversaomoedas.conversion_page
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,8 +14,14 @@ import com.example.conversaomoedas.classes.CurrencyEnum
 import com.example.conversaomoedas.home_screen.HomeScreenActivity
 import com.example.conversaomoedasapi.R
 import com.example.conversaomoedasapi.databinding.ActivityConversionPageBinding
+import kotlinx.coroutines.Dispatchers
 import java.text.NumberFormat
 import java.util.Locale
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ConversionPageActivity : ComponentActivity() {
 
@@ -42,11 +49,10 @@ class ConversionPageActivity : ComponentActivity() {
         getExtras()
         finalCurrency.value = conversionPageViewModel.finalValue
 
-        with(conversionPageViewModel) {
-            convertedValue = initialCurrency.value
-            convertValues(initialCurrency.currency.getCode(resources), finalCurrency.currency.getCode(resources))
-            finalCurrency.value = finalValue
-        }
+
+        conversionPageViewModel.convertedValue = initialCurrency.value
+        finalCurrency.value = conversionPageViewModel.finalValue
+
 
         setupView()
         setupListeners()
@@ -67,8 +73,16 @@ class ConversionPageActivity : ComponentActivity() {
 
         setContentView(binding.root)
 
-        setupCurrencyView(initialCurrency.currency.getCode(resources), binding.flagOne, binding.initialValue, initialCurrency.value)
-        setupCurrencyView(finalCurrency.currency.getCode(resources), binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
+        lifecycleScope.launch {
+
+            conversionPageViewModel.convertValues(this@ConversionPageActivity, initialCurrency.currency.getCode(resources), finalCurrency.currency.getCode(resources))
+
+            binding.equals.visibility = TextView.VISIBLE
+
+            setupCurrencyView(initialCurrency.currency.getCode(resources), binding.flagOne, binding.initialValue, initialCurrency.value)
+            setupCurrencyView(finalCurrency.currency.getCode(resources), binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
+
+        }
 
     }
 

@@ -60,7 +60,8 @@
                 android:text="@string/equals"
                 android:textAlignment="center"
                 android:textColor="@color/dark_gray"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/finalValue"
