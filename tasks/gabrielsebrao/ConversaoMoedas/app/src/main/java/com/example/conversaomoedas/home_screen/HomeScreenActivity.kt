@@ -3,7 +3,6 @@ package com.example.conversaomoedas.home_screen
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.AdapterView
@@ -11,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.conversaomoedas.classes.Connection
 import com.example.conversaomoedas.conversion_page.ConversionPageActivity
 import com.example.conversaomoedas.classes.Currency
 import com.example.conversaomoedas.classes.CurrencyEnum
@@ -249,6 +249,7 @@ class HomeScreenActivity : ComponentActivity() {
         if (verifyIsBlank()) return false
         if (verifyAreMissingSelectedCurrencies()) return false
         if (verifyAreIdenticalSelectedCurrencies()) return false
+        if (verifyIsDisconnected()) return false
         return true
 
     }
@@ -279,8 +280,19 @@ class HomeScreenActivity : ComponentActivity() {
             binding.initialValueInputLayout.error = resources.getText(R.string.identical_currencies)
             return true
         }
+
         return false
 
+    }
+
+    private fun verifyIsDisconnected(): Boolean {
+
+        if (Connection.isDisconnected(this)) {
+            binding.initialValueInputLayout.error = resources.getText(R.string.no_connection)
+            return true
+        }
+
+        return false
     }
 
     private fun goToConversionPage() {

@@ -1,33 +1,26 @@
 package com.example.conversaomoedas.conversion_page
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.compose.material3.Text
 import androidx.lifecycle.ViewModelProvider
-import com.example.conversaomoedas.classes.Connection
 import com.example.conversaomoedas.classes.Currency
 import com.example.conversaomoedas.classes.CurrencyEnum
 import com.example.conversaomoedas.home_screen.HomeScreenActivity
 import com.example.conversaomoedasapi.R
 import com.example.conversaomoedasapi.databinding.ActivityConversionPageBinding
-import kotlinx.coroutines.Dispatchers
 import java.text.NumberFormat
 import java.util.Locale
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class ConversionPageActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityConversionPageBinding
     private lateinit var conversionPageViewModel: ConversionPageViewModel
-    private lateinit var connection: Connection
 
     private lateinit var initialCurrency: Currency
     private lateinit var finalCurrency: Currency
@@ -37,22 +30,20 @@ class ConversionPageActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityConversionPageBinding.inflate(layoutInflater)
-        conversionPageViewModel = ViewModelProvider(this)[ConversionPageViewModel::class.java]
-        conversionPageViewModel.resources = resources
-        connection = Connection()
 
         initialCurrency = Currency()
         finalCurrency = Currency()
 
-        if(connection.isDisconnected(this)) Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show()
-
         getExtras()
+        conversionPageViewModel = ViewModelProvider(this)[ConversionPageViewModel::class.java]
+            .resources(resources)
+            .currencies(initialCurrency.currency, finalCurrency.currency)
+
         finalCurrency.value = conversionPageViewModel.finalValue
 
 
         conversionPageViewModel.convertedValue = initialCurrency.value
         finalCurrency.value = conversionPageViewModel.finalValue
-
 
         setupView()
         setupListeners()
@@ -75,9 +66,10 @@ class ConversionPageActivity : ComponentActivity() {
 
         lifecycleScope.launch {
 
-            conversionPageViewModel.convertValues(this@ConversionPageActivity, initialCurrency.currency.getCode(resources), finalCurrency.currency.getCode(resources))
+            conversionPageViewModel.convertValues()
 
-            binding.equals.visibility = TextView.VISIBLE
+            binding.loading.visibility = TextView.GONE
+            binding.currencyView.visibility = TextView.VISIBLE
 
             setupCurrencyView(initialCurrency.currency.getCode(resources), binding.flagOne, binding.initialValue, initialCurrency.value)
             setupCurrencyView(finalCurrency.currency.getCode(resources), binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
