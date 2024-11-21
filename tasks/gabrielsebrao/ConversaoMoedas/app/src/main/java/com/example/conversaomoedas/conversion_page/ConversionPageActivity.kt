@@ -1,11 +1,14 @@
 package com.example.conversaomoedas.conversion_page
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.compose.material3.Text
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.conversaomoedas.classes.Currency
 import com.example.conversaomoedas.classes.CurrencyEnum
@@ -15,12 +18,18 @@ import com.example.conversaomoedasapi.databinding.ActivityConversionPageBinding
 import java.text.NumberFormat
 import java.util.Locale
 import androidx.lifecycle.lifecycleScope
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 
 class ConversionPageActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityConversionPageBinding
     private lateinit var conversionPageViewModel: ConversionPageViewModel
+    private var disposable: Disposable? = null
 
     private lateinit var initialCurrency: Currency
     private lateinit var finalCurrency: Currency
@@ -28,6 +37,9 @@ class ConversionPageActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.dark_gray)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.dark_gray)
 
         binding = ActivityConversionPageBinding.inflate(layoutInflater)
 
@@ -64,18 +76,44 @@ class ConversionPageActivity : ComponentActivity() {
 
         setContentView(binding.root)
 
-        lifecycleScope.launch {
-
-            conversionPageViewModel.convertValues()
-
-            binding.loading.visibility = TextView.GONE
-            binding.currencyView.visibility = TextView.VISIBLE
-
-            setupCurrencyView(initialCurrency.currency.getCode(resources), binding.flagOne, binding.initialValue, initialCurrency.value)
-            setupCurrencyView(finalCurrency.currency.getCode(resources), binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
-
+        // Observar o LiveData de loading
+        conversionPageViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                binding.loading.visibility = TextView.VISIBLE
+                binding.currencyView.visibility = TextView.GONE
+            } else {
+                binding.loading.visibility = TextView.GONE
+                binding.currencyView.visibility = TextView.VISIBLE
+            }
         }
 
+        // Observar o LiveData de sucesso
+        conversionPageViewModel.conversionSuccess.observe(this) { success ->
+            if (success) {
+                setupCurrencyView(
+                    initialCurrency.currency.getCode(resources),
+                    binding.flagOne,
+                    binding.initialValue,
+                    initialCurrency.value
+                )
+
+                setupCurrencyView(
+                    finalCurrency.currency.getCode(resources),
+                    binding.flagTwo,
+                    binding.finalValue,
+                    conversionPageViewModel.finalValue
+                )
+            }
+        }
+
+        // Observar o LiveData de erro
+        conversionPageViewModel.hasError.observe(this) { hasError ->
+            if(hasError) {
+                binding.connectionError.visibility = TextView.VISIBLE
+            }
+        }
+
+        conversionPageViewModel.convertValues()
     }
 
     private fun setupCurrencyView(currencyCode: String, flag: ImageView, textView: TextView, value: Double) {

@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.conversaomoedas.classes.Connection
 import com.example.conversaomoedas.conversion_page.ConversionPageActivity
@@ -30,6 +31,9 @@ class HomeScreenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.dark_gray)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.dark_gray)
 
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         homeScreenViewModel = ViewModelProvider(this)[HomeScreenViewModel::class.java]

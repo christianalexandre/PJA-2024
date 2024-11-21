@@ -30,6 +30,16 @@
             android:indeterminateTint="@color/gray"
             />
 
+        <TextView
+            android:id="@+id/connectionError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/error_connection"
+            android:textSize="18sp"
+            android:textColor="@color/gray"
+            android:textAlignment="center"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:id="@+id/currencyView"
             android:layout_width="match_parent"

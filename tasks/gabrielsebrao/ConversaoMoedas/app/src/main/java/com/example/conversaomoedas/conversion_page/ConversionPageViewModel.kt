@@ -2,16 +2,17 @@ package com.example.conversaomoedas.conversion_page
 
 import android.content.res.Resources
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.conversaomoedas.classes.CurrencyApi
 import com.example.conversaomoedas.classes.CurrencyEnum
 import com.example.conversaomoedas.classes.CurrencyJsonItems
-import com.example.conversaomoedas.classes.CurrencyJsonObjects
 import com.example.conversaomoedas.classes.RetrofitInstance
 import com.example.conversaomoedasapi.R
-import retrofit2.Response
-import java.net.UnknownHostException
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 
 class ConversionPageViewModel: ViewModel() {
@@ -21,6 +22,10 @@ class ConversionPageViewModel: ViewModel() {
 
     var convertedValue: Double = 0.0
     var finalValue: Double = 0.0
+    var isLoading = MutableLiveData(true)
+    var hasError = MutableLiveData(false)
+    var conversionSuccess = MutableLiveData(false)
+    var disposable: Disposable? = null
 
     lateinit var resources: Resources
 
@@ -39,37 +44,58 @@ class ConversionPageViewModel: ViewModel() {
 
     }
 
-    suspend fun convertValues() {
+    fun convertValues(): Disposable? {
 
-        initialCurrency.valueToReal = getAPIValue(initialCurrency.getCode(resources))
-        finalCurrency.valueToReal = getAPIValue(finalCurrency.getCode(resources))
+        val initialCurrencyObservable = getApiValue(initialCurrency.getCode(resources))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
-        Log.e("coiso", "initialCurrency: ${initialCurrency.valueToReal} finalCurrency: ${finalCurrency.valueToReal}")
+        val finalCurrencyObservable = getApiValue(finalCurrency.getCode(resources))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
-        convertedValue *= initialCurrency.valueToReal
-        finalValue = convertedValue / finalCurrency.valueToReal
+        disposable = Observable.zip(initialCurrencyObservable, finalCurrencyObservable) { initialValue, finalValue ->
+
+            initialCurrency.valueToReal = if(initialValue.isEmpty()) 1.0 else initialValue[0].bid.toDoubleOrNull() ?: 0.0
+            finalCurrency.valueToReal = if(finalValue.isEmpty()) 1.0 else finalValue[0].bid.toDoubleOrNull() ?: 0.0
+
+        }.subscribe({
+        }, { error ->
+            Log.e("RX_DEBUG", "Error during conversion: ${error.message}")
+            isLoading.postValue(false)
+            hasError.postValue(true)
+            disposable?.dispose()
+        }, {
+            Log.e(
+                "RX_DEBUG",
+                "initialValueToReal = ${this.initialCurrency.valueToReal} finalValueToReal = ${this.finalCurrency.valueToReal}"
+            )
+
+            convertedValue *= initialCurrency.valueToReal
+            finalValue = convertedValue / finalCurrency.valueToReal
+
+            isLoading.postValue(false)
+            conversionSuccess.postValue(true)
+            disposable?.dispose()
+        })
+
+        Log.e("coiso", "initialCurrency.valueToReal = ${initialCurrency.valueToReal}")
+
+        return disposable
 
     }
 
-    private suspend fun getAPIValue(currencyCode: String): Double {
+    private fun getApiValue(currencyCode: String): Observable<List<CurrencyJsonItems>> {
 
-        if(currencyCode == resources.getString(R.string.currency_code_brazilian_real)) { return 1.0 }
+        if (currencyCode == resources.getString(R.string.currency_code_brazilian_real)) return Observable.just(
+            listOf()
+        )
 
         val retrofitService = RetrofitInstance.getRetrofitInstance().create(CurrencyApi::class.java)
-        val response: Response<List<CurrencyJsonItems>>
+        val response = retrofitService.getCurrencies(currencies = currencyCode)
 
-        try {
-            response = retrofitService.getCurrencies(currencies = currencyCode)
-        } catch (e: UnknownHostException) {
-            Log.e("Exceptions", "UnknownHostException")
-            return 0.0
-        }
-
-        Log.e("coiso", response.toString())
-
-        val apiData = response.body() ?: return 0.0
-
-        return apiData[0].bid.toDoubleOrNull() ?: 0.0
+        return response
 
     }
+
 }

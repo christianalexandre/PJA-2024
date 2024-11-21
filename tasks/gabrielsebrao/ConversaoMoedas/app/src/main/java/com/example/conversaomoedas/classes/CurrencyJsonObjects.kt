@@ -7,7 +7,7 @@ data class CurrencyJsonObjects(
     @SerializedName("firstCurrency")
     val initialCurrency: CurrencyJsonItems,
 
-    @SerializedName("secondCurrency")
+    @SerializedName("CNYBRL")
     val finalCurrency: CurrencyJsonItems
 
 )

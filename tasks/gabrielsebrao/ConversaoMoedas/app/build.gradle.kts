@@ -1,3 +1,5 @@
+import java.net.URI
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -64,6 +66,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.convertergson)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+    implementation(libs.rxadapter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

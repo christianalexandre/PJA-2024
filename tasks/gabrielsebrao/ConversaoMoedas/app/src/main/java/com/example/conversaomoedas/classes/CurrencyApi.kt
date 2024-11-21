@@ -1,13 +1,12 @@
 package com.example.conversaomoedas.classes
 
-import retrofit2.Response
+import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface CurrencyApi {
     @GET("{currencies}")
-    suspend fun getCurrencies(
+    fun getCurrencies(
         @Path("currencies") currencies: String
-    ): Response<List<CurrencyJsonItems>>
+    ): Observable<List<CurrencyJsonItems>>
 }
