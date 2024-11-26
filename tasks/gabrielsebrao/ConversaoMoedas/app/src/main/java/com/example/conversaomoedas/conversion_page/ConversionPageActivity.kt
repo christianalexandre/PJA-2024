@@ -62,6 +62,13 @@ class ConversionPageActivity : ComponentActivity() {
 
     }
 
+    override fun onDestroy() {
+
+        super.onDestroy()
+        disposable?.dispose()
+
+    }
+
     private fun getExtras() {
 
         val bundle = intent.getBundleExtra(resources.getString(R.string.bundle)) ?: return
@@ -76,44 +83,55 @@ class ConversionPageActivity : ComponentActivity() {
 
         setContentView(binding.root)
 
-        // Observar o LiveData de loading
         conversionPageViewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading) {
-                binding.loading.visibility = TextView.VISIBLE
-                binding.currencyView.visibility = TextView.GONE
-            } else {
+
+            if(!isLoading) {
                 binding.loading.visibility = TextView.GONE
                 binding.currencyView.visibility = TextView.VISIBLE
+                return@observe
             }
+
+            binding.loading.visibility = TextView.VISIBLE
+            binding.currencyView.visibility = TextView.GONE
         }
 
-        // Observar o LiveData de sucesso
         conversionPageViewModel.conversionSuccess.observe(this) { success ->
-            if (success) {
-                setupCurrencyView(
-                    initialCurrency.currency.getCode(resources),
-                    binding.flagOne,
-                    binding.initialValue,
-                    initialCurrency.value
-                )
 
-                setupCurrencyView(
-                    finalCurrency.currency.getCode(resources),
-                    binding.flagTwo,
-                    binding.finalValue,
-                    conversionPageViewModel.finalValue
-                )
-            }
+            if(!success) return@observe
+
+            conversionPageViewModel.onSuccess()
+
+            setupCurrencyView(
+                initialCurrency.currency.getCode(resources),
+                binding.flagOne,
+                binding.initialValue,
+                initialCurrency.value
+            )
+
+            setupCurrencyView(
+                finalCurrency.currency.getCode(resources),
+                binding.flagTwo,
+                binding.finalValue,
+                conversionPageViewModel.finalValue
+            )
+
+            Log.e("RX_DEBUG (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
         }
 
-        // Observar o LiveData de erro
         conversionPageViewModel.hasError.observe(this) { hasError ->
-            if(hasError) {
-                binding.connectionError.visibility = TextView.VISIBLE
-            }
+
+            if(!hasError) return@observe
+
+            binding.connectionError.visibility = TextView.VISIBLE
+            binding.currencyView.visibility = TextView.GONE
+
+            Log.e("RX_DEBUG (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
         }
 
-        conversionPageViewModel.convertValues()
+        disposable = conversionPageViewModel.convertValues()
+
     }
 
     private fun setupCurrencyView(currencyCode: String, flag: ImageView, textView: TextView, value: Double) {
