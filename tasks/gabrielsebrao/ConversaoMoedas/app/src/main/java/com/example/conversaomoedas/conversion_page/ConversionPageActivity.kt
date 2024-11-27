@@ -1,6 +1,5 @@
 package com.example.conversaomoedas.conversion_page
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.conversaomoedas.classes.Currency
 import com.example.conversaomoedas.classes.CurrencyEnum
@@ -17,13 +15,7 @@ import com.example.conversaomoedasapi.R
 import com.example.conversaomoedasapi.databinding.ActivityConversionPageBinding
 import java.text.NumberFormat
 import java.util.Locale
-import androidx.lifecycle.lifecycleScope
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 
 class ConversionPageActivity : ComponentActivity() {
 
@@ -62,11 +54,18 @@ class ConversionPageActivity : ComponentActivity() {
 
     }
 
-    override fun onDestroy() {
+    override fun onResume() {
 
-        super.onDestroy()
+        super.onResume()
+
+        if(conversionPageViewModel.isLoading.value == true)
+            disposable = conversionPageViewModel.convertValues()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
         disposable?.dispose()
-
     }
 
     private fun getExtras() {
@@ -129,8 +128,6 @@ class ConversionPageActivity : ComponentActivity() {
             Log.e("RX_DEBUG (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
 
         }
-
-        disposable = conversionPageViewModel.convertValues()
 
     }
 
