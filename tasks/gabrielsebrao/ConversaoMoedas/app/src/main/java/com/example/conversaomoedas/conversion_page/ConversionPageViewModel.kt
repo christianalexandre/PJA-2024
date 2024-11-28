@@ -41,7 +41,7 @@ class ConversionPageViewModel: ViewModel() {
     fun convertValues(): Disposable? {
 
         val initialCurrencyObservable = getApiSingle(initialCurrency.getCode(resources))
-            .subscribeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
         val finalCurrencyObservable = getApiSingle(finalCurrency.getCode(resources))
