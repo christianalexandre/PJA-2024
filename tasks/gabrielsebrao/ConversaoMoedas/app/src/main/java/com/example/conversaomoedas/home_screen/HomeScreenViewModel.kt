@@ -29,10 +29,17 @@ class HomeScreenViewModel: ViewModel() {
                 editText.filters = arrayOf(InputFilter { source, begin, end, dest, dstart, dend ->
                     val result = dest.subSequence(0, dstart).toString() + source.subSequence(begin, end) + dest.subSequence(dend, dest.length).toString()
 
-                    if (onlyOneCommaPattern.matches(result)) return@InputFilter ""
-                    if (decimalNumberWithDoubleCommasPattern.matches(result)) return@InputFilter ""
-                    if (decimalNumberThatExceedsFourteenDigitsBeforeCommaPattern.matches(result)) return@InputFilter ""
-                    if (decimalNumberThatExceedsTwoDecimalPlacesPattern.matches(result)) return@InputFilter ""
+                    if (onlyOneCommaPattern.matches(result))
+                        return@InputFilter ""
+
+                    if (decimalNumberWithDoubleCommasPattern.matches(result))
+                        return@InputFilter ""
+
+                    if (decimalNumberThatExceedsFourteenDigitsBeforeCommaPattern.matches(result))
+                        return@InputFilter ""
+
+                    if (decimalNumberThatExceedsTwoDecimalPlacesPattern.matches(result))
+                        return@InputFilter ""
 
                     null
                 })
@@ -67,7 +74,8 @@ class HomeScreenViewModel: ViewModel() {
                 textChanged ?: return
                 if (textChanged.toString() != current) {
 
-                    if (textChanged.toString().isEmpty()) return
+                    if (textChanged.toString().isEmpty())
+                        return
 
                     // do not allow the user to change the input if the last character was a comma, UNLESS the next character entered is a decimal place or the comma is being deleted.
                     if(isDecimalNumberWithCommaWithoutDecimalPlaces && (!decimalNumberWithOneDecimalPlacePattern.matches(textChanged) && !integerNumberPattern.matches(textChanged))) {
@@ -85,8 +93,11 @@ class HomeScreenViewModel: ViewModel() {
 
                     isDecimalNumberWithCommaWithoutDecimalPlaces = false
 
-                    if (decimalNumberWithOneZeroAfterCommaPattern.matches(textChanged.toString())) return
-                    if (decimalNumberWithOneZeroAfterADecimalPlacePattern.matches(textChanged.toString())) return
+                    if (decimalNumberWithOneZeroAfterCommaPattern.matches(textChanged.toString()))
+                        return
+
+                    if (decimalNumberWithOneZeroAfterADecimalPlacePattern.matches(textChanged.toString()))
+                        return
 
                     // i used all the returns above because NumberFormat.getNumberInstance().format(parsed) would remove essential characters under these conditions.
 

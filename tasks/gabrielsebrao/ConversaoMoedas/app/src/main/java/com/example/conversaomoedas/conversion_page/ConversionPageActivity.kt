@@ -162,8 +162,11 @@ class ConversionPageActivity : ComponentActivity() {
         val numberWithNoDecimalPlacesPattern = "^(.[^,]*)$".toRegex()
         val numberWithOneDecimalPlacePattern = "^(.*)(,)(\\d)$".toRegex()
 
-        if(numberWithNoDecimalPlacesPattern.matches(formattedValue)) formattedValue += ",00"
-        if(numberWithOneDecimalPlacePattern.matches(formattedValue)) formattedValue += "0"
+        if(numberWithNoDecimalPlacesPattern.matches(formattedValue))
+            formattedValue += ",00"
+
+        if(numberWithOneDecimalPlacePattern.matches(formattedValue))
+            formattedValue += "0"
 
         return formattedValue
 

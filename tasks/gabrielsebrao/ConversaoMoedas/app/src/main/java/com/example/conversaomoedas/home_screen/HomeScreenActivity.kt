@@ -67,7 +67,8 @@ class HomeScreenActivity : ComponentActivity() {
 
         var arrayStringResources = R.array.array_currencies_without_default_item
 
-        if(bundle.isEmpty) arrayStringResources = R.array.array_currencies
+        if(bundle.isEmpty)
+            arrayStringResources = R.array.array_currencies
 
         ArrayAdapter.createFromResource(this, arrayStringResources, R.layout.item_spinner).also { adapter ->
             adapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
@@ -108,7 +109,8 @@ class HomeScreenActivity : ComponentActivity() {
             initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
             finalCurrency.currency= CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
 
-            if (!verifyIsAbleToGoToConversionPage()) return@setOnClickListener
+            if (!verifyIsAbleToGoToConversionPage())
+                return@setOnClickListener
 
             initialCurrency.value = binding.initialValueEditText.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDoubleOrNull() ?: 0.0
 
@@ -125,7 +127,8 @@ class HomeScreenActivity : ComponentActivity() {
                 initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
                 finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
 
-                if (!verifyIsAbleToGoToConversionPage()) return@setOnKeyListener false
+                if (!verifyIsAbleToGoToConversionPage())
+                    return@setOnKeyListener false
 
                 initialCurrency.value = binding.initialValueEditText.text.toString().replace("(\\.)".toRegex(), "").replace("(,)".toRegex(), ".").toDoubleOrNull() ?: 0.0
 
@@ -165,7 +168,8 @@ class HomeScreenActivity : ComponentActivity() {
                     return
                 }
 
-                if(selectionsOfDiferentItems > 1) return
+                if(selectionsOfDiferentItems > 1)
+                    return
 
                 ArrayAdapter.createFromResource(
                     this@HomeScreenActivity,
@@ -199,7 +203,8 @@ class HomeScreenActivity : ComponentActivity() {
                     return
                 }
 
-                if(selectionsOfDifferentItems > 1) return
+                if(selectionsOfDifferentItems > 1)
+                    return
 
                 ArrayAdapter.createFromResource(
                     this@HomeScreenActivity,
@@ -239,7 +244,8 @@ class HomeScreenActivity : ComponentActivity() {
                 return@addOnGlobalLayoutListener
             }
 
-            if(!binding.initialValueEditText.isFocused) binding.initialValueInputLayout.requestFocus()
+            if(!binding.initialValueEditText.isFocused)
+                binding.initialValueInputLayout.requestFocus()
 
             initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
             binding.initialValueInputLayout.prefixText = initialCurrency.currency.getCode(resources)
@@ -250,10 +256,18 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun verifyIsAbleToGoToConversionPage(): Boolean {
 
-        if (verifyIsBlank()) return false
-        if (verifyAreMissingSelectedCurrencies()) return false
-        if (verifyAreIdenticalSelectedCurrencies()) return false
-        if (verifyIsDisconnected()) return false
+        if (verifyIsBlank())
+            return false
+
+        if (verifyAreMissingSelectedCurrencies())
+            return false
+
+        if (verifyAreIdenticalSelectedCurrencies())
+            return false
+
+        if (verifyIsDisconnected())
+            return false
+
         return true
 
     }
@@ -264,6 +278,7 @@ class HomeScreenActivity : ComponentActivity() {
             binding.initialValueInputLayout.error = resources.getText(R.string.missing_convert_value)
             return true
         }
+
         return false
 
     }
@@ -274,6 +289,7 @@ class HomeScreenActivity : ComponentActivity() {
             binding.initialValueInputLayout.error = resources.getText(R.string.missing_selected_currencies)
             return true
         }
+
         return false
 
     }
