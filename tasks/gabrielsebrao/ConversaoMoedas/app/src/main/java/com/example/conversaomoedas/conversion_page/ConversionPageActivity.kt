@@ -64,8 +64,12 @@ class ConversionPageActivity : ComponentActivity() {
     }
 
     override fun onPause() {
+
         super.onPause()
-        disposable?.dispose()
+
+        if(disposable?.isDisposed == false)
+            disposable?.dispose()
+
     }
 
     private fun getExtras() {
@@ -167,7 +171,14 @@ class ConversionPageActivity : ComponentActivity() {
 
     private fun setupListeners() {
 
-        binding.returnButton.setOnClickListener { goToMainActivity() }
+        binding.returnButton.setOnClickListener {
+
+            if(conversionPageViewModel.isLoading.value == true)
+                return@setOnClickListener
+
+            goToMainActivity()
+
+        }
 
     }
 
