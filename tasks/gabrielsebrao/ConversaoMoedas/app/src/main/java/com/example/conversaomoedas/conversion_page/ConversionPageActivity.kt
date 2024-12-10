@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.conversaomoedas.classes.Currency
-import com.example.conversaomoedas.classes.CurrencyEnum
+import com.example.conversaomoedas.classes.currency.Currency
+import com.example.conversaomoedas.classes.currency.CurrencyEnum
 import com.example.conversaomoedas.home_screen.HomeScreenActivity
 import com.example.conversaomoedasapi.R
 import com.example.conversaomoedasapi.databinding.ActivityConversionPageBinding

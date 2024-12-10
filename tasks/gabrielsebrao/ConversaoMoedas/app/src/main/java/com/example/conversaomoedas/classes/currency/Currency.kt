@@ -1,4 +1,4 @@
-package com.example.conversaomoedas.classes
+package com.example.conversaomoedas.classes.currency
 
 class Currency {
 

@@ -1,4 +1,4 @@
-package com.example.conversaomoedas.classes
+package com.example.conversaomoedas.classes.currency
 
 import android.content.res.Resources
 import com.example.conversaomoedasapi.R
