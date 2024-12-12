@@ -43,7 +43,8 @@ class ResultActivity : AppCompatActivity() {
 
     private fun registerObservers() {
         viewModel.resultLiveData.observe(this) {
-            val text = "$it $coinType1"
+            val valueF = "%,.2f".format(it)
+            val text = "$valueF $coinType1"
             binding.coinResult.text = text
 
             binding.coin1.text = "$value $coinType1"
@@ -51,6 +52,7 @@ class ResultActivity : AppCompatActivity() {
 
         viewModel.resultErrorLiveData.observe(this) {
             Toast.makeText(this@ResultActivity, it, Toast.LENGTH_LONG).show()
+            finish()
         }
     }
 

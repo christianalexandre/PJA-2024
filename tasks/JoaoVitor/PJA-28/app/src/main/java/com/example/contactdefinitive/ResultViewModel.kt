@@ -1,5 +1,6 @@
 package com.example.contactdefinitive
 
+import android.util.Half.toFloat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,7 +26,12 @@ class ResultViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resultModel ->
                 disposable?.dispose()
-                _resultLiveData.value = value * resultModel.brlusd.coinValue.toFloat()
+                val rate = resultModel.currencies["${coinType1}${coinType2}"]?.coinValue?.toFloat()
+                if (rate != null) {
+                    _resultLiveData.value = value * rate
+                } else {
+                    _resultErrorLiveData.value = "Taxa de câmbio não encontrada."
+                }
             }, {
                 disposable?.dispose()
                 println("error = ${it.message}")

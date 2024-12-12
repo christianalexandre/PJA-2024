@@ -10,9 +10,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object NetworkUtils {
 
-    private val moshi: Moshi
+    val moshi: Moshi
         get() = Moshi
             .Builder()
+            .add(ResultModelAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
 

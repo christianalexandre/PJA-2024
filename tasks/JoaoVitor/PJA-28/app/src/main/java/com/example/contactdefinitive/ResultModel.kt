@@ -5,13 +5,11 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ResultModel(
-
-    @Json(name = "BRLUSD")
-    val brlusd: Brlusd
+    val currencies: Map<String, askValue>
 )
 
 @JsonClass(generateAdapter = true)
-data class Brlusd(
+data class askValue(
     @Json(name = "ask")
     val coinValue: String = ""
 )
