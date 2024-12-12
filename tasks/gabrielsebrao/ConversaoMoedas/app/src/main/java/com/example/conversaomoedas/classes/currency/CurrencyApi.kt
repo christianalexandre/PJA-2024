@@ -6,8 +6,12 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface CurrencyApi {
-    @GET("{currencies}")
+    @GET("/last/{currencies}")
     fun getCurrencies(
         @Path("currencies") currencies: String
     ): Single<ResponseBody>
+
+    @GET("json/available/uniq/")
+    fun getAvailableCurrencies(): Single<ResponseBody>
+
 }

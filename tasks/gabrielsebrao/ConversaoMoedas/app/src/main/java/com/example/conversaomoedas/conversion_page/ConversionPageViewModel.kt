@@ -40,9 +40,9 @@ class ConversionPageViewModel: ViewModel() {
         this.resources = resources
     }
 
-    fun convertValues(): Disposable {
+    fun convertValues(): Disposable? {
 
-        return getApiSingle(initialCurrency.getCode(resources), finalCurrency.getCode(resources))
+        disposable = getApiSingle(initialCurrency.getCode(resources), finalCurrency.getCode(resources))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ responseMap ->
@@ -65,13 +65,16 @@ class ConversionPageViewModel: ViewModel() {
                 isLoading.postValue(false)
                 conversionSuccess.postValue(true)
 
-                Log.e("RX_DEBUG (ON SUCCESS)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+                Log.e("RX_DEBUG_CONVERSION (ON SUCCESS)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
             }, { error ->
+
                 isLoading.postValue(false)
                 hasError.postValue(true)
 
-                Log.e("RX_DEBUG (ON ERROR)", "Error during conversion: $error")
+                Log.e("RX_DEBUG_CONVERSION (ON ERROR)", "Error during conversion: $error")
             })
+
+        return disposable
 
     }
 
@@ -100,8 +103,8 @@ class ConversionPageViewModel: ViewModel() {
             .getCurrencies(currencies = endpoint)
             .map { responseBody ->
                 val jsonString = responseBody.string()
-                Log.e("RX", jsonString)
-                Moshi.getStringsFromJson(jsonString) ?: emptyMap()
+                Log.e("RX_DEBUG_CONVERSION_RESPONSE", jsonString)
+                Moshi.getMapFromJson(jsonString) ?: emptyMap()
             }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.conversaomoedas.classes
 
-import com.example.conversaomoedas.classes.currency.CurrencyJsonItems
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Types
@@ -8,14 +7,15 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 object Moshi {
 
-    private val moshi = Moshi.Builder()
+    val moshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    private val type = Types.newParameterizedType(Map::class.java, String::class.java, CurrencyJsonItems::class.java)
-    private val adapter: JsonAdapter<Map<String, CurrencyJsonItems>> = moshi.adapter(type)
+    inline fun <reified T, reified F> getMapFromJson(json: String): Map<T, F>? {
 
-    fun getStringsFromJson(json: String): Map<String, CurrencyJsonItems>? {
+        val type = Types.newParameterizedType(Map::class.java, T::class.java, F::class.java)
+        val adapter: JsonAdapter<Map<T, F>> = moshi.adapter(type)
+
         return adapter.fromJson(json)
     }
 

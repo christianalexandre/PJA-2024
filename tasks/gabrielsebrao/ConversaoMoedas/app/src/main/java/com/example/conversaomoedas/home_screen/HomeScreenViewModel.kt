@@ -3,15 +3,22 @@ package com.example.conversaomoedas.home_screen
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.ViewModel
+import com.example.conversaomoedas.classes.Moshi
+import com.example.conversaomoedas.classes.RetrofitInstance
+import com.example.conversaomoedas.classes.currency.CurrencyApi
 import com.google.android.material.textfield.TextInputLayout
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.Disposable
 import java.text.NumberFormat
 
 class HomeScreenViewModel: ViewModel() {
 
     private var isDecimalNumberWithCommaWithoutDecimalPlaces: Boolean = false
     private var previousResult: String = ""
+    private var disposable: Disposable? = null
 
     fun filterTextChangedForInitialValue(editText: EditText): TextWatcher {
 
@@ -134,6 +141,36 @@ class HomeScreenViewModel: ViewModel() {
 
         }
 
+    }
+
+    fun getAvailableCurrenciesMap(): Map<String, String> {
+
+        var availableCurrenciesMap: Map<String, String> = mapOf()
+
+        disposable = getApiSingle().subscribe({ map ->
+
+            availableCurrenciesMap = map
+            Log.e("RX_DEBUG_HOME (ON SUCCESS)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
+        }, { error ->
+
+            Log.e("RX_DEBUG_HOME (ON ERROR)", error.toString())
+            Log.e("RX_DEBUG_HOME (ON ERROR)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
+        })
+
+        return availableCurrenciesMap
+    }
+
+    private fun getApiSingle(): Single<Map<String, String>> {
+        return RetrofitInstance.getRetrofitInstance()
+            .create(CurrencyApi::class.java)
+            .getAvailableCurrencies()
+            .map { responseBody ->
+                val jsonString = responseBody.string()
+                Log.e("RX_DEBUG_HOME_RESPONSE", jsonString)
+                Moshi.getMapFromJson(jsonString) ?: emptyMap()
+            }
     }
 
 }

@@ -5,7 +5,8 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val MAIN_URL = "https://economia.awesomeapi.com.br/last/"
+
+    private const val MAIN_URL = "https://economia.awesomeapi.com.br/"
 
     fun getRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
@@ -14,4 +15,5 @@ object RetrofitInstance {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
     }
+
 }

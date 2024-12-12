@@ -118,7 +118,7 @@ class ConversionPageActivity : ComponentActivity() {
                 conversionPageViewModel.finalValue
             )
 
-            Log.e("RX_DEBUG (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+            Log.e("RX_DEBUG_CONVERSION (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
 
         }
 
@@ -129,7 +129,7 @@ class ConversionPageActivity : ComponentActivity() {
             binding.connectionError.visibility = TextView.VISIBLE
             binding.currencyView.visibility = TextView.GONE
 
-            Log.e("RX_DEBUG (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+            Log.e("RX_DEBUG_CONVERSION (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
 
         }
 
