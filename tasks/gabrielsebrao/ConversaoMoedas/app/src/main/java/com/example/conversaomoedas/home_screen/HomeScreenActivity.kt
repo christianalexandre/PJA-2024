@@ -1,16 +1,19 @@
 package com.example.conversaomoedas.home_screen
 
+import com.example.conversaomoedas.classes.MapAdapter
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.conversaomoedas.classes.Connection
 import com.example.conversaomoedas.conversion_page.ConversionPageActivity
 import com.example.conversaomoedas.classes.currency.Currency
@@ -28,6 +31,8 @@ class HomeScreenActivity : ComponentActivity() {
     private lateinit var initialCurrency: Currency
     private lateinit var finalCurrency: Currency
 
+    private lateinit var availableCurrenciesMap: Map<String, String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -40,10 +45,12 @@ class HomeScreenActivity : ComponentActivity() {
 
         initialCurrency = Currency()
         finalCurrency = Currency()
+        availableCurrenciesMap = mapOf()
+
+        homeScreenViewModel.setAvailableCurrenciesMap()
 
         getExtras()
 
-        setupSpinners()
         binding.initialValueInputLayout.prefixText = initialCurrency.currency.getCode(resources)
 
         setupListeners()
@@ -51,7 +58,14 @@ class HomeScreenActivity : ComponentActivity() {
         // for some reason textWatcher doesn't work on first change in initialValue, so i put the first change here. now all changes will be watched by textWatcher.
         binding.initialValueEditText.setText("")
 
-        homeScreenViewModel.getAvailableCurrenciesMap()
+        homeScreenViewModel.reqSuccess.observe(this) { reqSuccess ->
+
+            if(reqSuccess) {
+                availableCurrenciesMap = homeScreenViewModel.availableCurrenciesMap
+
+            }
+
+        }
 
         setContentView(binding.root)
 
@@ -62,24 +76,6 @@ class HomeScreenActivity : ComponentActivity() {
         bundle = intent.getBundleExtra(resources.getString(R.string.bundle)) ?: Bundle()
         initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_initial_currency)) ?: return) ?: CurrencyEnum.DEFAULT
         finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_final_currency)) ?: return) ?: CurrencyEnum.DEFAULT
-
-    }
-
-    private fun setupSpinners() {
-
-        var arrayStringResources = R.array.array_currencies_without_default_item
-
-        if(bundle.isEmpty)
-            arrayStringResources = R.array.array_currencies
-
-        ArrayAdapter.createFromResource(this, arrayStringResources, R.layout.item_spinner).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
-            binding.initialCurrencySpinner.adapter = adapter
-            binding.finalCurrencySpinner.adapter = adapter
-        }
-
-        defineSpinnerSelectedItem(binding.initialCurrencySpinner, initialCurrency.currency.getName(resources))
-        defineSpinnerSelectedItem(binding.finalCurrencySpinner, finalCurrency.currency.getName(resources))
 
     }
 
@@ -99,6 +95,7 @@ class HomeScreenActivity : ComponentActivity() {
     private fun setupListeners() {
 
         setupCalculateButtonListeners()
+        setupCurrencyButtonsListeners()
         setupConvertingValueEditTextListeners()
         setupInitialCurrencySpinnerListeners()
         setupRootListeners()
@@ -108,8 +105,8 @@ class HomeScreenActivity : ComponentActivity() {
     private fun setupCalculateButtonListeners() {
 
         binding.calculateButton.setOnClickListener {
-            initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
-            finalCurrency.currency= CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
+            initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
+            finalCurrency.currency= CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
 
             if (!verifyIsAbleToGoToConversionPage())
                 return@setOnClickListener
@@ -120,14 +117,39 @@ class HomeScreenActivity : ComponentActivity() {
         }
 
     }
+    private fun setupCurrencyButtonsListeners() {
+        val dialogView = layoutInflater.inflate(R.layout.item_dialog_available_currencies, null)
+
+        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerViewDialog)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Título")
+            .setMessage("Esta é uma mensagem de diálogo.")
+            .setPositiveButton("OK") { _, _ ->
+                Toast.makeText(this, "OK clicado!", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Cancelar", null)
+            .setView(dialogView)
+            .create()
+
+        binding.initialCurrencyButton.setOnClickListener {
+            recyclerView.adapter = MapAdapter(availableCurrenciesMap)
+            dialog.show()
+            Log.d("teste", availableCurrenciesMap.toString())
+            Log.d("teste", recyclerView.adapter?.itemCount.toString())
+        }
+
+
+    }
 
     private fun setupConvertingValueEditTextListeners() {
 
         binding.initialValueEditText.setOnKeyListener { _, keyCode, event ->
 
             if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
-                finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
+                initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
+                finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
 
                 if (!verifyIsAbleToGoToConversionPage())
                     return@setOnKeyListener false
@@ -157,75 +179,8 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun setupInitialCurrencySpinnerListeners() {
 
-        binding.initialCurrencySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-
-            private var selectionsOfDiferentItems = 0
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
-                binding.initialValueInputLayout.prefixText = initialCurrency.currency.getCode(resources)
-
-                if(selectionsOfDiferentItems == 0) {
-                    selectionsOfDiferentItems += 1
-                    return
-                }
-
-                if(selectionsOfDiferentItems > 1)
-                    return
-
-                ArrayAdapter.createFromResource(
-                    this@HomeScreenActivity,
-                    R.array.array_currencies_without_default_item,
-                    R.layout.item_spinner
-                ).also { adapter ->
-                    adapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
-                    binding.initialCurrencySpinner.adapter = adapter
-                }
-
-                defineSpinnerSelectedItem(binding.initialCurrencySpinner, initialCurrency.currency.getName(resources))
-
-                selectionsOfDiferentItems += 1
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-        }
-
-        binding.finalCurrencySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-
-            private var selectionsOfDifferentItems = 0
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-                finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
-
-                if(selectionsOfDifferentItems == 0) {
-                    selectionsOfDifferentItems += 1
-                    return
-                }
-
-                if(selectionsOfDifferentItems > 1)
-                    return
-
-                ArrayAdapter.createFromResource(
-                    this@HomeScreenActivity,
-                    R.array.array_currencies_without_default_item,
-                    R.layout.item_spinner
-                ).also { adapter ->
-                    adapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
-                    binding.finalCurrencySpinner.adapter = adapter
-                }
-
-                defineSpinnerSelectedItem(binding.finalCurrencySpinner, finalCurrency.currency.getName(resources))
-
-                selectionsOfDifferentItems += 1
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-        }
+        // quando o usuario mudar pela primeira vez o "Selecione uma moeda", remover essa opção das próximas vezes
+        // ou resolver isso de outra forma
 
     }
 
@@ -249,7 +204,7 @@ class HomeScreenActivity : ComponentActivity() {
             if(!binding.initialValueEditText.isFocused)
                 binding.initialValueInputLayout.requestFocus()
 
-            initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencySpinner.selectedItem.toString()) ?: CurrencyEnum.DEFAULT
+            initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
             binding.initialValueInputLayout.prefixText = initialCurrency.currency.getCode(resources)
 
         }
@@ -287,7 +242,7 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun verifyAreMissingSelectedCurrencies(): Boolean {
 
-        if (binding.initialCurrencySpinner.selectedItem == resources.getString(R.string.currency_default) || binding.finalCurrencySpinner.selectedItem == resources.getString(R.string.currency_default)) {
+        if (binding.initialCurrencyButton.text == resources.getString(R.string.currency_default) || binding.finalCurrencyButton.text == resources.getString(R.string.currency_default)) {
             binding.initialValueInputLayout.error = resources.getText(R.string.missing_selected_currencies)
             return true
         }

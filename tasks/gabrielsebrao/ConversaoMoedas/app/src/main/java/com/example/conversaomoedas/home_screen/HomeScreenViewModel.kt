@@ -5,6 +5,7 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.conversaomoedas.classes.Moshi
 import com.example.conversaomoedas.classes.RetrofitInstance
@@ -19,6 +20,9 @@ class HomeScreenViewModel: ViewModel() {
     private var isDecimalNumberWithCommaWithoutDecimalPlaces: Boolean = false
     private var previousResult: String = ""
     private var disposable: Disposable? = null
+
+    var reqSuccess = MutableLiveData(false)
+    var availableCurrenciesMap: Map<String, String> = mapOf()
 
     fun filterTextChangedForInitialValue(editText: EditText): TextWatcher {
 
@@ -143,14 +147,14 @@ class HomeScreenViewModel: ViewModel() {
 
     }
 
-    fun getAvailableCurrenciesMap(): Map<String, String> {
-
-        var availableCurrenciesMap: Map<String, String> = mapOf()
+    fun setAvailableCurrenciesMap() {
 
         disposable = getApiSingle().subscribe({ map ->
 
             availableCurrenciesMap = map
             Log.e("RX_DEBUG_HOME (ON SUCCESS)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
+            reqSuccess.postValue(true)
 
         }, { error ->
 
@@ -159,7 +163,6 @@ class HomeScreenViewModel: ViewModel() {
 
         })
 
-        return availableCurrenciesMap
     }
 
     private fun getApiSingle(): Single<Map<String, String>> {
