@@ -8,11 +8,12 @@ import com.squareup.moshi.ToJson
 class ResultModelAdapter {
     @FromJson
     fun fromJson(json: Map<String, askValue>): ResultModel {
-        return ResultModel(currencies = json)
+        return ResultModel(firstCurrencies = json, secondCurrencies = json)
     }
 
     @ToJson
     fun toJson(resultModel: ResultModel): Map<String, askValue> {
-        return resultModel.currencies
+        return resultModel.firstCurrencies
+        return resultModel.secondCurrencies
     }
 }

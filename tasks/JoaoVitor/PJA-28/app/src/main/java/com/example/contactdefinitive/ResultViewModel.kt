@@ -1,6 +1,6 @@
 package com.example.contactdefinitive
 
-import android.util.Half.toFloat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,19 +19,46 @@ class ResultViewModel : ViewModel() {
     private val _resultErrorLiveData: MutableLiveData<String> = MutableLiveData()
     val resultErrorLiveData: LiveData<String> = _resultErrorLiveData
 
+    private fun returnRate (a: Float, b: Float): Float {
+        val rate = a/b
+        return rate
+    }
+
     fun getResult(coinType1: String, coinType2: String, value: Float) {
         disposable?.dispose()
-        disposable = NetworkClientHelper.apiClient.getCurrencyRate(coinType1, coinType2)
+        var endpoint = ""
+
+        if (coinType1 != "BRL") {
+            endpoint += "$coinType1,"
+        }
+
+        if (coinType2 != "BRL") {
+            endpoint += "$coinType2"
+        }
+
+        else {
+            endpoint = endpoint.removeSuffix(",")
+        }
+
+        disposable = NetworkClientHelper.apiClient.getCurrencyRate(endpoint)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ resultModel ->
+            .subscribe({ resultModel: ResultModel->
                 disposable?.dispose()
-                val rate = resultModel.currencies["${coinType1}${coinType2}"]?.coinValue?.toFloat()
-                if (rate != null) {
-                    _resultLiveData.value = value * rate
-                } else {
-                    _resultErrorLiveData.value = "Taxa de câmbio não encontrada."
+                var rate1 = resultModel.firstCurrencies["${coinType1}BRL"]?.coinValue?.toFloat()
+                var rate2 = resultModel.secondCurrencies["${coinType2}BRL"]?.coinValue?.toFloat()
+
+                if (rate1 == null) {
+                    rate1 = value
                 }
+
+                if (rate2 == null) {
+                    rate2 = 1f
+                }
+
+                val rate = returnRate(rate1, rate2)
+                _resultLiveData.value = value * rate
+
             }, {
                 disposable?.dispose()
                 println("error = ${it.message}")

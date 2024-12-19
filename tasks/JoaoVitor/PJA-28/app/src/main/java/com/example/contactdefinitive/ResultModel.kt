@@ -5,7 +5,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ResultModel(
-    val currencies: Map<String, askValue>
+    val firstCurrencies: Map<String, askValue>,
+    val secondCurrencies: Map<String, askValue>
 )
 
 @JsonClass(generateAdapter = true)

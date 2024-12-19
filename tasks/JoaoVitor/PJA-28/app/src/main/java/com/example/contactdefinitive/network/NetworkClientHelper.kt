@@ -11,5 +11,4 @@ object NetworkClientHelper {
                 .create(Endpoint::class.java)
         }
     }
-
 }
