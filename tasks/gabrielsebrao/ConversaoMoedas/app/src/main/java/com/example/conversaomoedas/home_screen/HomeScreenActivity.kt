@@ -118,26 +118,25 @@ class HomeScreenActivity : ComponentActivity() {
 
     }
     private fun setupCurrencyButtonsListeners() {
+
         val dialogView = layoutInflater.inflate(R.layout.item_dialog_available_currencies, null)
 
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerViewDialog)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Título")
-            .setMessage("Esta é uma mensagem de diálogo.")
-            .setPositiveButton("OK") { _, _ ->
-                Toast.makeText(this, "OK clicado!", Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton("Cancelar", null)
+            .setTitle("Selecione uma moeda")
             .setView(dialogView)
             .create()
 
         binding.initialCurrencyButton.setOnClickListener {
             recyclerView.adapter = MapAdapter(availableCurrenciesMap)
             dialog.show()
-            Log.d("teste", availableCurrenciesMap.toString())
-            Log.d("teste", recyclerView.adapter?.itemCount.toString())
+        }
+
+        binding.finalCurrencyButton.setOnClickListener {
+            recyclerView.adapter = MapAdapter(availableCurrenciesMap)
+            dialog.show()
         }
 
 
