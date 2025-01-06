@@ -24,6 +24,9 @@ class HomeScreenViewModel: ViewModel() {
     var reqSuccess = MutableLiveData(false)
     var availableCurrenciesMap: Map<String, String> = mapOf()
 
+    var selectedInitialCurrency = MutableLiveData("Selecionar uma moeda")
+    var selectedFinalCurrency = MutableLiveData("Selecionar uma moeda")
+
     fun filterTextChangedForInitialValue(editText: EditText): TextWatcher {
 
         return object : TextWatcher {

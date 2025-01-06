@@ -5,10 +5,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +30,7 @@ class HomeScreenActivity : ComponentActivity() {
     private lateinit var finalCurrency: Currency
 
     private lateinit var availableCurrenciesMap: Map<String, String>
+    var selectedCurrency: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -66,6 +65,20 @@ class HomeScreenActivity : ComponentActivity() {
             }
 
         }
+
+        homeScreenViewModel.selectedInitialCurrency.observe(this) { selectedCurrency ->
+
+            binding.initialCurrencyButton.text = selectedCurrency
+
+        }
+
+        homeScreenViewModel.selectedFinalCurrency.observe(this) { selectedCurrency ->
+
+            binding.finalCurrencyButton.text = selectedCurrency
+
+        }
+
+
 
         setContentView(binding.root)
 
@@ -130,12 +143,13 @@ class HomeScreenActivity : ComponentActivity() {
             .create()
 
         binding.initialCurrencyButton.setOnClickListener {
-            recyclerView.adapter = MapAdapter(availableCurrenciesMap)
+            recyclerView.adapter = MapAdapter(availableCurrenciesMap, dialog, homeScreenViewModel.selectedInitialCurrency)
             dialog.show()
         }
 
         binding.finalCurrencyButton.setOnClickListener {
-            recyclerView.adapter = MapAdapter(availableCurrenciesMap)
+            recyclerView.adapter = MapAdapter(availableCurrenciesMap, dialog, homeScreenViewModel.selectedFinalCurrency)
+
             dialog.show()
         }
 
@@ -252,7 +266,7 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun verifyAreIdenticalSelectedCurrencies(): Boolean {
 
-        if (initialCurrency.currency.getName(resources) == finalCurrency.currency.getName(resources)) {
+        if (initialCurrency == finalCurrency) {
             binding.initialValueInputLayout.error = resources.getText(R.string.identical_currencies)
             return true
         }

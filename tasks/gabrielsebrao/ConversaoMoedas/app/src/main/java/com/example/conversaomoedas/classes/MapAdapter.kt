@@ -1,13 +1,19 @@
 package com.example.conversaomoedas.classes
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.example.conversaomoedas.home_screen.HomeScreenActivity
+import com.example.conversaomoedasapi.R
 import java.util.Locale
 
-class MapAdapter(private val data: Map<String, String>) :
+class MapAdapter(private val data: Map<String, String>, private val dialog: AlertDialog, private val currencyLiveData: MutableLiveData<String>) :
     RecyclerView.Adapter<MapAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,6 +29,10 @@ class MapAdapter(private val data: Map<String, String>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val key = data.keys.toList()[position]
         holder.itemText.text = String.format(Locale("pt", "BR"), "${data[key]} ($key)")
+        holder.itemText.setOnClickListener {
+            currencyLiveData.postValue(holder.itemText.text.toString())
+            dialog.dismiss()
+        }
     }
 
     override fun getItemCount(): Int = data.size

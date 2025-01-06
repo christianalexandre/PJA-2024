@@ -34,10 +34,10 @@
 
             <Button
                 android:id="@+id/initial_currency_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="10dp"
                 android:text="@string/currency_default"
                 android:textSize="16sp"
                 android:textAllCaps="false"
@@ -50,12 +50,13 @@
 
             <Button
                 android:id="@+id/final_currency_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/currency_default"
                 android:textSize="16sp"
                 android:textAllCaps="false"
+                android:layout_marginStart="10dp"
                 android:paddingHorizontal="20dp"
                 android:background="@drawable/background_rounded_borders"
                 app:layout_constraintBottom_toBottomOf="parent"

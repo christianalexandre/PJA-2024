@@ -98,6 +98,8 @@ class ConversionPageViewModel: ViewModel() {
         else
             endpoint = endpoint.removeSuffix(",")
 
+        Log.d("RX_ENDPOINT", "endpoint: $endpoint")
+
         return RetrofitInstance.getRetrofitInstance()
             .create(CurrencyApi::class.java)
             .getCurrencies(currencies = endpoint)
