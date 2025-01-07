@@ -5,12 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.listadecontatos"
+    namespace = "com.example.conversaomoedasapi"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.listadecontatos"
+        applicationId = "com.example.conversaomoedasapi"
         minSdk = 30
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -57,11 +58,16 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.material3)
+    implementation(libs.retrofit)
+    implementation(libs.convertergson)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+    implementation(libs.rxadapter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

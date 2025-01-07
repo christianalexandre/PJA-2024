@@ -6,18 +6,22 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.conversaomoedas.classes.Currency
+import com.example.conversaomoedas.classes.CurrencyEnum
 import com.example.conversaomoedas.home_screen.HomeScreenActivity
-import com.example.listadecontatos.R
-import com.example.listadecontatos.databinding.ActivityConversionPageBinding
+import com.example.conversaomoedasapi.R
+import com.example.conversaomoedasapi.databinding.ActivityConversionPageBinding
 import java.text.NumberFormat
 import java.util.Locale
+import io.reactivex.rxjava3.disposables.Disposable
 
 class ConversionPageActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityConversionPageBinding
     private lateinit var conversionPageViewModel: ConversionPageViewModel
+    private var disposable: Disposable? = null
 
     private lateinit var initialCurrency: Currency
     private lateinit var finalCurrency: Currency
@@ -26,77 +30,124 @@ class ConversionPageActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
+        window.statusBarColor = ContextCompat.getColor(this, R.color.dark_gray)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.dark_gray)
+
         binding = ActivityConversionPageBinding.inflate(layoutInflater)
-        conversionPageViewModel = ViewModelProvider(this)[ConversionPageViewModel::class.java]
 
         initialCurrency = Currency()
         finalCurrency = Currency()
 
         getExtras()
+        conversionPageViewModel = ViewModelProvider(this)[ConversionPageViewModel::class.java]
+            .resources(resources)
+            .currencies(initialCurrency.currency, finalCurrency.currency)
+
         finalCurrency.value = conversionPageViewModel.finalValue
 
-        with(conversionPageViewModel) {
-            convertedValue = initialCurrency.value
-            convertValues(initialCurrency.code, finalCurrency.code)
-            finalCurrency.value = finalValue
-        }
+
+        conversionPageViewModel.convertedValue = initialCurrency.value
+        finalCurrency.value = conversionPageViewModel.finalValue
 
         setupView()
         setupListeners()
 
     }
 
+    override fun onResume() {
+
+        super.onResume()
+
+        if(conversionPageViewModel.isLoading.value == true)
+            disposable = conversionPageViewModel.convertValues()
+
+    }
+
+    override fun onPause() {
+
+        super.onPause()
+
+        if(disposable?.isDisposed == false)
+            disposable?.dispose()
+
+    }
+
     private fun getExtras() {
 
-        val bundle = intent.getBundleExtra("bundle") ?: return
+        val bundle = intent.getBundleExtra(resources.getString(R.string.bundle)) ?: return
 
-        initialCurrency.name = bundle.getString("initialCurrency") ?: return
-        finalCurrency.name = bundle.getString("finalCurrency") ?: return
-        initialCurrency.value = bundle.getDouble("initialValue")
-        Log.e("coiso", "bundle: ${bundle.getDouble("initialValue")}")
+        initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_initial_currency)) ?: return) ?: return
+        finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_final_currency)) ?: return) ?: return
+        initialCurrency.value = bundle.getDouble(resources.getString(R.string.bundle_initial_value))
     }
 
     private fun setupView() {
 
         setContentView(binding.root)
 
-        setupCurrencyView(initialCurrency.code, binding.flagOne, binding.initialValue, initialCurrency.value)
-        setupCurrencyView(finalCurrency.code, binding.flagTwo, binding.finalValue, conversionPageViewModel.finalValue)
+        conversionPageViewModel.isLoading.observe(this) { isLoading ->
+
+            if(!isLoading) {
+                binding.loading.visibility = TextView.GONE
+                binding.currencyView.visibility = TextView.VISIBLE
+                return@observe
+            }
+
+            binding.loading.visibility = TextView.VISIBLE
+            binding.currencyView.visibility = TextView.GONE
+        }
+
+        conversionPageViewModel.conversionSuccess.observe(this) { success ->
+
+            if(!success) return@observe
+
+            conversionPageViewModel.onSuccess()
+
+            setupCurrencyView(
+                initialCurrency.currency.getCode(resources),
+                binding.flagOne,
+                binding.initialValue,
+                initialCurrency.value
+            )
+
+            setupCurrencyView(
+                finalCurrency.currency.getCode(resources),
+                binding.flagTwo,
+                binding.finalValue,
+                conversionPageViewModel.finalValue
+            )
+
+            Log.e("RX_DEBUG (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
+        }
+
+        conversionPageViewModel.hasError.observe(this) { hasError ->
+
+            if(!hasError) return@observe
+
+            binding.connectionError.visibility = TextView.VISIBLE
+            binding.currencyView.visibility = TextView.GONE
+
+            Log.e("RX_DEBUG (ACTIVITY)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
+        }
 
     }
 
-    // consume api later
     private fun setupCurrencyView(currencyCode: String, flag: ImageView, textView: TextView, value: Double) {
-
-        when (currencyCode) {
-            "BRL" -> {
-                flag.setImageResource(R.drawable.flag_br)
-                flag.contentDescription = "Ícone da Bandeira do Brasil"
-            }
-
-            "USD" -> {
-                flag.setImageResource(R.drawable.flag_us)
-                flag.contentDescription = "Ícone da bandeira dos Estados Unidos"
-            }
-
-            "GBP" -> {
-                flag.setImageResource(R.drawable.flag_uk)
-                flag.contentDescription = "Ícone da bandeira do Reino Unido"
-            }
-
-            "CHF" -> {
-                flag.setImageResource(R.drawable.flag_ch)
-                flag.contentDescription = "Ícone da bandeira da Suíça"
-            }
-
-            "EUR" -> {
-                flag.setImageResource(R.drawable.flag_eu)
-                flag.contentDescription = "Ícone da bandeira da União Europeia"
-            }
-        }
 
         textView.text = String.format(Locale("pt", "BR"), "%s %s", formatCurrencyValue(value), currencyCode)
 
+        val currency = CurrencyEnum.entries.firstOrNull { it.getCode(resources) == currencyCode }
+
+        if(currency == null) {
+            flag.setImageResource(CurrencyEnum.DEFAULT.currencyIcon)
+            flag.contentDescription = CurrencyEnum.DEFAULT.getIconAlt(resources)
+            return
+        }
+
+        flag.setImageResource(currency.currencyIcon)
+        flag.contentDescription = currency.getIconAlt(resources)
     }
 
     private fun formatCurrencyValue(value: Double): String {
@@ -109,8 +160,11 @@ class ConversionPageActivity : ComponentActivity() {
         val numberWithNoDecimalPlacesPattern = "^(.[^,]*)$".toRegex()
         val numberWithOneDecimalPlacePattern = "^(.*)(,)(\\d)$".toRegex()
 
-        if(numberWithNoDecimalPlacesPattern.matches(formattedValue)) formattedValue += ",00"
-        if(numberWithOneDecimalPlacePattern.matches(formattedValue)) formattedValue += "0"
+        if(numberWithNoDecimalPlacesPattern.matches(formattedValue))
+            formattedValue += ",00"
+
+        if(numberWithOneDecimalPlacePattern.matches(formattedValue))
+            formattedValue += "0"
 
         return formattedValue
 
@@ -118,16 +172,23 @@ class ConversionPageActivity : ComponentActivity() {
 
     private fun setupListeners() {
 
-        binding.returnButton.setOnClickListener { goToMainActivity() }
+        binding.returnButton.setOnClickListener {
+
+            if(conversionPageViewModel.isLoading.value == true)
+                return@setOnClickListener
+
+            goToMainActivity()
+
+        }
 
     }
 
     private fun goToMainActivity() {
 
         startActivity(Intent(this, HomeScreenActivity::class.java).apply {
-            putExtra("bundle", Bundle().apply {
-                putString("initialCurrency", initialCurrency.name)
-                putString("finalCurrency", finalCurrency.name)
+            putExtra(resources.getString(R.string.bundle), Bundle().apply {
+                putString(resources.getString(R.string.bundle_initial_currency), initialCurrency.currency.getName(resources))
+                putString(resources.getString(R.string.bundle_final_currency), finalCurrency.currency.getName(resources))
             })
         })
 

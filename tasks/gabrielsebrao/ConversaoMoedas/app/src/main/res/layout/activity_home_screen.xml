@@ -25,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
+            android:minHeight="70dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:gravity="center_vertical"
@@ -33,18 +33,18 @@
             app:layout_constraintBottom_toTopOf="@id/initialValue">
 
             <Spinner
-                android:id="@+id/currencyOne"
+                android:id="@+id/initial_currency_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
                 android:layout_weight="1"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/background_rounded_borders"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
-                android:id="@+id/currencyTwo"
+                android:id="@+id/final_currency_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -71,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:digits="0123456789,"
                 android:gravity="center"
-                android:inputType="numberDecimal"
+                android:inputType="number"
+                android:importantForAutofill="no"
                 android:textAlignment="center"
                 android:textColor="@color/gray"
                 android:textSize="18sp"

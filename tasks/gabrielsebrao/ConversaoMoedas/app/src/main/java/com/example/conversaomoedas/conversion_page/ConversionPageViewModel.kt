@@ -1,48 +1,95 @@
 package com.example.conversaomoedas.conversion_page
 
+import android.content.res.Resources
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.conversaomoedas.classes.CurrencyApi
+import com.example.conversaomoedas.classes.CurrencyEnum
+import com.example.conversaomoedas.classes.CurrencyJsonItems
+import com.example.conversaomoedas.classes.RetrofitInstance
+import com.example.conversaomoedasapi.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-class  ConversionPageViewModel: ViewModel() {
+
+class ConversionPageViewModel: ViewModel() {
+
+    private lateinit var initialCurrency: CurrencyEnum
+    private lateinit var finalCurrency: CurrencyEnum
 
     var convertedValue: Double = 0.0
     var finalValue: Double = 0.0
+    var isLoading = MutableLiveData(true)
+    var hasError = MutableLiveData(false)
+    var conversionSuccess = MutableLiveData(false)
+    private var disposable: Disposable? = null
 
-    // consume api later.
-    fun convertValues(initialCurrency: String, finalCurrency: String) {
+    lateinit var resources: Resources
 
-        when (initialCurrency) {
-            "BRL" -> {
-                convertedValue *= 1.0
-            }
+    fun currencies(initialCurrency: CurrencyEnum, finalCurrency: CurrencyEnum): ConversionPageViewModel = apply {
+        this.initialCurrency = initialCurrency
+        this.finalCurrency = finalCurrency
+    }
 
-            "USD" -> {
-                convertedValue *= 5.3
-            }
+    fun resources(resources: Resources): ConversionPageViewModel = apply {
+        this.resources = resources
+    }
 
-            "GBP" -> {
-                convertedValue *= 6.74
-            }
+    fun convertValues(): Disposable? {
 
-            "CHF" -> {
-                convertedValue *= 5.91
-            }
+        val initialCurrencyObservable = getApiSingle(initialCurrency.getCode(resources))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
-            "EUR" -> {
-                convertedValue *= 5.72
-            }
-        }
+        val finalCurrencyObservable = getApiSingle(finalCurrency.getCode(resources))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
-        when (finalCurrency) {
-            "BRL" -> { finalValue = convertedValue }
+        disposable = Single.zip(initialCurrencyObservable, finalCurrencyObservable) { initialValue, finalValue ->
 
-            "USD" -> { finalValue = convertedValue / 5.3 }
+            initialCurrency.valueToReal = if(initialValue.isEmpty()) 1.0 else initialValue[0].bid.toDoubleOrNull() ?: 0.0
+            finalCurrency.valueToReal = if(finalValue.isEmpty()) 1.0 else finalValue[0].bid.toDoubleOrNull() ?: 0.0
 
-            "GBP" -> { finalValue = convertedValue / 6.74 }
+            Log.e("RX_DEBUG (OBSERVER)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
 
-            "CHF" -> { finalValue = convertedValue / 5.91 }
+        }.subscribe({
 
-            "EUR" -> { finalValue = convertedValue / 5.72 }
-        }
+            isLoading.postValue(false)
+            conversionSuccess.postValue(true)
+
+            Log.e("RX_DEBUG (ON SUCCESS)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+
+        }, { error ->
+
+            isLoading.postValue(false)
+            hasError.postValue(true)
+
+            Log.e("RX_DEBUG (ON ERROR)", "Error during conversion: ${error.message}")
+
+        })
+
+        return disposable
+
+    }
+
+    fun onSuccess() {
+
+        convertedValue *= initialCurrency.valueToReal
+        finalValue = convertedValue / finalCurrency.valueToReal
+        disposable?.dispose()
+
+    }
+
+    private fun getApiSingle(currencyCode: String): Single<List<CurrencyJsonItems>> {
+
+        if (currencyCode == resources.getString(R.string.currency_code_brazilian_real)) return Single.just(listOf())
+
+        return RetrofitInstance.getRetrofitInstance()
+            .create(CurrencyApi::class.java)
+            .getCurrencies(currencies = currencyCode)
 
     }
 

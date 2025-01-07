@@ -2,6 +2,7 @@ package com.example.conversaomoedas.classes
 
 class Currency {
 
+    var currency: CurrencyEnum = CurrencyEnum.DEFAULT
     var name: String = "Selecionar uma moeda"
 
         // consume api later.
