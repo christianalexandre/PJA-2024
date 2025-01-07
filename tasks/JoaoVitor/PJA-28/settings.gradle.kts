@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "contact definitive"
+rootProject.name = "PJA-28"
 include(":app")
- 

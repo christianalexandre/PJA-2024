@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.contactdefinitive"
+    namespace = "com.example.pja_28"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.contactdefinitive"
+        applicationId = "com.example.pja_28"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -52,27 +52,9 @@ android {
 }
 
 dependencies {
-
-    //RxKotlin
-    implementation (libs.rxjava)
-    implementation (libs.rxandroid)
-    implementation (libs.rxkotlin)
-    implementation (libs.rxrelay)
-
-    // Retrofit/Api
-    implementation (libs.gson)
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
-    implementation ("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
-
-    // Moshi
-    implementation (libs.moshi)
-    implementation (libs.moshi.kotlin)
-    implementation (libs.converter.moshi)
-
-    implementation (libs.kotlinx.coroutines.android)
-
-    implementation (libs.androidx.lifecycle.extensions)
+    implementation(libs.retrofit)
+    implementation (libs.convertergson)
+    implementation(libs.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -81,11 +63,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.support.annotations)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.androidx.baselibrary)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
