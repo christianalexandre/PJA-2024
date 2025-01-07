@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">ListaDeContatos</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="name">Nome</string>
+    <string name="phone">00 0000–0000</string>
+    <string name="clean_list">Limpar Contatos</string>
+    <string name="contact_list">Lista de Contatos</string>
+    <string name="save_contact">Salvar Contato</string>
+    <string name="phone_alt">Um ícone pequeno de um telefone.</string>
+    <string name="return_home">Retornar</string>
+    <string name="exceed_three_contacts">Lista de contatos cheia!</string>
+    <string name="add_contact">Contato adicionado!</string>
+    <string name="set_all_data">Insira todos os dados do contato para salvá-lo!</string>
+    <string name="already_empty_contacts">Os contatos já estão esvaziados!</string>
+    <string name="empty_contacts">Lista de contatos limpa!</string>
+    <string name="add_at_least_one_contact">Por favor, adicionar pelo menos um contato!</string>
+    <string name="exceed_phone_number">O número de telefone está muito grande!</string>
+    <string name="only_numbers">Insira apenas números para o número de telefone!</string>
+    <string name="exceed_name">O nome do contato está muito grande!</string>
+    <string name="no_contact">Nenhum contato salvo</string>
+    <string name="bundle_contact_list">contact_list</string>
+    <string name="singleton_list">SingletonList</string>
+    <string name="not_complete_phone_number">Insira um número de telefone completo!</string>
+</resources>
