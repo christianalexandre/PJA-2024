@@ -12,7 +12,6 @@
     <string name="missing_selected_currencies">Selecione alguma moeda para os dois campos.</string>
     <string name="identical_currencies">Selecione duas moedas diferentes.</string>
     <string name="flag">Bandeira.</string>
-
     <string name="bundle">bundle</string>
     <string name="bundle_initial_currency">initialCurrency</string>
     <string name="bundle_final_currency">finalCurrency</string>

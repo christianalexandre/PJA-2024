@@ -34,7 +34,6 @@ class HomeScreenActivity : ComponentActivity() {
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.dark_gray)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.dark_gray)
-
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         homeScreenViewModel = ViewModelProvider(this)[HomeScreenViewModel::class.java]
 
@@ -255,7 +254,6 @@ class HomeScreenActivity : ComponentActivity() {
     }
 
     private fun verifyIsAbleToGoToConversionPage(): Boolean {
-
         if (verifyIsBlank())
             return false
 
@@ -284,23 +282,19 @@ class HomeScreenActivity : ComponentActivity() {
     }
 
     private fun verifyAreMissingSelectedCurrencies(): Boolean {
-
         if (binding.initialCurrencySpinner.selectedItem == resources.getString(R.string.currency_default) || binding.finalCurrencySpinner.selectedItem == resources.getString(R.string.currency_default)) {
             binding.initialValueInputLayout.error = resources.getText(R.string.missing_selected_currencies)
             return true
         }
-
         return false
 
     }
 
     private fun verifyAreIdenticalSelectedCurrencies(): Boolean {
-
         if (initialCurrency.currency.getName(resources) == finalCurrency.currency.getName(resources)) {
             binding.initialValueInputLayout.error = resources.getText(R.string.identical_currencies)
             return true
         }
-
         return false
 
     }
@@ -316,7 +310,6 @@ class HomeScreenActivity : ComponentActivity() {
     }
 
     private fun goToConversionPage() {
-
         startActivity(Intent(this, ConversionPageActivity::class.java).apply {
             putExtra(resources.getString(R.string.bundle), Bundle().apply {
                 putString(resources.getString(R.string.bundle_initial_currency), initialCurrency.currency.getName(resources))

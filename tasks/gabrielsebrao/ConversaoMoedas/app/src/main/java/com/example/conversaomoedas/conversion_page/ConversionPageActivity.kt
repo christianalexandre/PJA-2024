@@ -79,7 +79,6 @@ class ConversionPageActivity : ComponentActivity() {
         initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_initial_currency)) ?: return) ?: return
         finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_final_currency)) ?: return) ?: return
         initialCurrency.value = bundle.getDouble(resources.getString(R.string.bundle_initial_value))
-
     }
 
     private fun setupView() {
@@ -149,7 +148,6 @@ class ConversionPageActivity : ComponentActivity() {
 
         flag.setImageResource(currency.currencyIcon)
         flag.contentDescription = currency.getIconAlt(resources)
-
     }
 
     private fun formatCurrencyValue(value: Double): String {
