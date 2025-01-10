@@ -30,7 +30,7 @@ class MapAdapter(private val data: Map<String, String>, private val dialog: Aler
         val key = data.keys.toList()[position]
         holder.itemText.text = String.format(Locale("pt", "BR"), "${data[key]} ($key)")
         holder.itemText.setOnClickListener {
-            currencyLiveData.postValue(holder.itemText.text.toString())
+        currencyLiveData.postValue(holder.itemText.text.toString())
             dialog.dismiss()
         }
     }

@@ -30,7 +30,7 @@
     <string name="currency_chinese_yuan">Yuan Chinês (CNY)</string>
     <string name="currency_bitcoin">Bitcoin (BTC)</string>
     <string name="currency_dogecoin">Dogecoin (DOGE)</string>
-    <string name="currency_default">Selecionar uma moeda</string>
+    <string name="currency_default">Selecione uma moeda</string>
 
     <string name="currency_code_brazilian_real">BRL</string>
     <string name="currency_code_american_dollar">USD</string>

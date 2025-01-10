@@ -9,7 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.conversaomoedas.classes.currency.Currency
-import com.example.conversaomoedas.classes.currency.CurrencyEnum
 import com.example.conversaomoedas.home_screen.HomeScreenActivity
 import com.example.conversaomoedasapi.R
 import com.example.conversaomoedasapi.databinding.ActivityConversionPageBinding
@@ -36,15 +35,16 @@ class ConversionPageActivity : ComponentActivity() {
         binding = ActivityConversionPageBinding.inflate(layoutInflater)
 
         initialCurrency = Currency()
+            .resources(resources)
         finalCurrency = Currency()
+            .resources(resources)
 
         getExtras()
         conversionPageViewModel = ViewModelProvider(this)[ConversionPageViewModel::class.java]
             .resources(resources)
-            .currencies(initialCurrency.currency, finalCurrency.currency)
+            .currencies(initialCurrency, finalCurrency)
 
         finalCurrency.value = conversionPageViewModel.finalValue
-
 
         conversionPageViewModel.convertedValue = initialCurrency.value
         finalCurrency.value = conversionPageViewModel.finalValue
@@ -76,9 +76,8 @@ class ConversionPageActivity : ComponentActivity() {
 
         val bundle = intent.getBundleExtra(resources.getString(R.string.bundle)) ?: return
 
-        initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_initial_currency)) ?: return) ?: return
-        finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_final_currency)) ?: return) ?: return
-        initialCurrency.value = bundle.getDouble(resources.getString(R.string.bundle_initial_value))
+        initialCurrency = bundle.getParcelable(resources.getString(R.string.bundle_initial_currency)) ?: return
+        finalCurrency = bundle.getParcelable(resources.getString(R.string.bundle_final_currency)) ?: return
 
     }
 
@@ -105,14 +104,14 @@ class ConversionPageActivity : ComponentActivity() {
             conversionPageViewModel.onSuccess()
 
             setupCurrencyView(
-                initialCurrency.currency.getCode(resources),
+                initialCurrency,
                 binding.flagOne,
                 binding.initialValue,
                 initialCurrency.value
             )
 
             setupCurrencyView(
-                finalCurrency.currency.getCode(resources),
+                finalCurrency,
                 binding.flagTwo,
                 binding.finalValue,
                 conversionPageViewModel.finalValue
@@ -135,20 +134,12 @@ class ConversionPageActivity : ComponentActivity() {
 
     }
 
-    private fun setupCurrencyView(currencyCode: String, flag: ImageView, textView: TextView, value: Double) {
+    private fun setupCurrencyView(currency: Currency, flag: ImageView, textView: TextView, value: Double) {
 
-        textView.text = String.format(Locale("pt", "BR"), "%s %s", formatCurrencyValue(value), currencyCode)
+        textView.text = String.format(Locale("pt", "BR"), "%s %s", formatCurrencyValue(value), currency.currencyCode)
 
-        val currency = CurrencyEnum.entries.firstOrNull { it.getCode(resources) == currencyCode }
-
-        if(currency == null) {
-            flag.setImageResource(CurrencyEnum.DEFAULT.currencyIcon)
-            flag.contentDescription = CurrencyEnum.DEFAULT.getIconAlt(resources)
-            return
-        }
-
-        flag.setImageResource(currency.currencyIcon)
-        flag.contentDescription = currency.getIconAlt(resources)
+        flag.setImageResource(R.drawable.icon_currency_default)
+        flag.contentDescription = getString(R.string.icon_alt_default)
 
     }
 
@@ -189,8 +180,8 @@ class ConversionPageActivity : ComponentActivity() {
 
         startActivity(Intent(this, HomeScreenActivity::class.java).apply {
             putExtra(resources.getString(R.string.bundle), Bundle().apply {
-                putString(resources.getString(R.string.bundle_initial_currency), initialCurrency.currency.getName(resources))
-                putString(resources.getString(R.string.bundle_final_currency), finalCurrency.currency.getName(resources))
+                putParcelable(resources.getString(R.string.bundle_initial_currency), initialCurrency)
+                putParcelable(resources.getString(R.string.bundle_final_currency), finalCurrency)
             })
         })
 

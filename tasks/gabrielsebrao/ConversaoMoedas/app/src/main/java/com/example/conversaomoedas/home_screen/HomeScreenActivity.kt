@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.KeyEvent
-import android.widget.Spinner
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.conversaomoedas.classes.Connection
 import com.example.conversaomoedas.conversion_page.ConversionPageActivity
 import com.example.conversaomoedas.classes.currency.Currency
-import com.example.conversaomoedas.classes.currency.CurrencyEnum
 import com.example.conversaomoedasapi.R
 import com.example.conversaomoedasapi.databinding.ActivityHomeScreenBinding
 
@@ -30,7 +28,6 @@ class HomeScreenActivity : ComponentActivity() {
     private lateinit var finalCurrency: Currency
 
     private lateinit var availableCurrenciesMap: Map<String, String>
-    var selectedCurrency: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -41,16 +38,15 @@ class HomeScreenActivity : ComponentActivity() {
 
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         homeScreenViewModel = ViewModelProvider(this)[HomeScreenViewModel::class.java]
+        setContentView(binding.root)
 
-        initialCurrency = Currency()
-        finalCurrency = Currency()
         availableCurrenciesMap = mapOf()
 
         homeScreenViewModel.setAvailableCurrenciesMap()
 
         getExtras()
 
-        binding.initialValueInputLayout.prefixText = initialCurrency.currency.getCode(resources)
+        binding.initialValueInputLayout.prefixText = initialCurrency.currencyCode
 
         setupListeners()
 
@@ -68,7 +64,11 @@ class HomeScreenActivity : ComponentActivity() {
 
         homeScreenViewModel.selectedInitialCurrency.observe(this) { selectedCurrency ->
 
-            binding.initialCurrencyButton.text = selectedCurrency
+            initialCurrency.currencyName = selectedCurrency
+            initialCurrency.setCurrencyCode()
+
+            binding.initialCurrencyButton.text = initialCurrency.currencyName
+            binding.initialValueInputLayout.prefixText = initialCurrency.currencyCode
 
         }
 
@@ -78,30 +78,28 @@ class HomeScreenActivity : ComponentActivity() {
 
         }
 
-
-
-        setContentView(binding.root)
-
     }
 
     private fun getExtras() {
 
         bundle = intent.getBundleExtra(resources.getString(R.string.bundle)) ?: Bundle()
-        initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_initial_currency)) ?: return) ?: CurrencyEnum.DEFAULT
-        finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, bundle.getString(resources.getString(R.string.bundle_final_currency)) ?: return) ?: CurrencyEnum.DEFAULT
 
-    }
+        if(bundle.isEmpty) {
+            initialCurrency = Currency()
+                .resources(resources)
+            finalCurrency = Currency()
+                .resources(resources)
 
-    private fun defineSpinnerSelectedItem(spinner: Spinner, currency: String) {
-
-        val value = CurrencyEnum.entries.firstOrNull { it.getName(resources) == currency }
-
-        if(value == null) {
-            spinner.setSelection(0)
             return
         }
 
-        spinner.setSelection(CurrencyEnum.valueOf(value.toString()).ordinal - 1)
+        initialCurrency = bundle.getParcelable(resources.getString(R.string.bundle_initial_currency)) ?: return
+        initialCurrency.resources(resources)
+        homeScreenViewModel.selectedInitialCurrency.postValue(initialCurrency.currencyName)
+
+        finalCurrency = bundle.getParcelable(resources.getString(R.string.bundle_final_currency)) ?: return
+        finalCurrency.resources(resources)
+        homeScreenViewModel.selectedFinalCurrency.postValue(finalCurrency.currencyName)
 
     }
 
@@ -110,7 +108,6 @@ class HomeScreenActivity : ComponentActivity() {
         setupCalculateButtonListeners()
         setupCurrencyButtonsListeners()
         setupConvertingValueEditTextListeners()
-        setupInitialCurrencySpinnerListeners()
         setupRootListeners()
 
     }
@@ -118,8 +115,11 @@ class HomeScreenActivity : ComponentActivity() {
     private fun setupCalculateButtonListeners() {
 
         binding.calculateButton.setOnClickListener {
-            initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
-            finalCurrency.currency= CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
+            initialCurrency.currencyName = binding.initialCurrencyButton.text.toString()
+            initialCurrency.setCurrencyCode()
+
+            finalCurrency.currencyName = binding.finalCurrencyButton.text.toString()
+            finalCurrency.setCurrencyCode()
 
             if (!verifyIsAbleToGoToConversionPage())
                 return@setOnClickListener
@@ -138,7 +138,7 @@ class HomeScreenActivity : ComponentActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Selecione uma moeda")
+            .setCustomTitle(findViewById(R.id.titleDialog))
             .setView(dialogView)
             .create()
 
@@ -149,10 +149,17 @@ class HomeScreenActivity : ComponentActivity() {
 
         binding.finalCurrencyButton.setOnClickListener {
             recyclerView.adapter = MapAdapter(availableCurrenciesMap, dialog, homeScreenViewModel.selectedFinalCurrency)
-
             dialog.show()
         }
 
+        if(availableCurrenciesMap.isEmpty())
+            homeScreenViewModel.setAvailableCurrenciesMap()
+
+        if(bundle.isEmpty)
+            return
+
+        binding.initialCurrencyButton.text = initialCurrency.currencyName
+        binding.finalCurrencyButton.text = finalCurrency.currencyName
 
     }
 
@@ -161,8 +168,11 @@ class HomeScreenActivity : ComponentActivity() {
         binding.initialValueEditText.setOnKeyListener { _, keyCode, event ->
 
             if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
-                finalCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.finalCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
+                initialCurrency.currencyName = binding.initialCurrencyButton.text.toString()
+                initialCurrency.setCurrencyCode()
+
+                finalCurrency.currencyName = binding.finalCurrencyButton.text.toString()
+                initialCurrency.setCurrencyCode()
 
                 if (!verifyIsAbleToGoToConversionPage())
                     return@setOnKeyListener false
@@ -190,13 +200,6 @@ class HomeScreenActivity : ComponentActivity() {
 
     }
 
-    private fun setupInitialCurrencySpinnerListeners() {
-
-        // quando o usuario mudar pela primeira vez o "Selecione uma moeda", remover essa opção das próximas vezes
-        // ou resolver isso de outra forma
-
-    }
-
     private fun setupRootListeners() {
 
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
@@ -217,8 +220,9 @@ class HomeScreenActivity : ComponentActivity() {
             if(!binding.initialValueEditText.isFocused)
                 binding.initialValueInputLayout.requestFocus()
 
-            initialCurrency.currency = CurrencyEnum.getCurrencyEnum(resources, binding.initialCurrencyButton.text.toString()) ?: CurrencyEnum.DEFAULT
-            binding.initialValueInputLayout.prefixText = initialCurrency.currency.getCode(resources)
+            initialCurrency.currencyName = binding.initialCurrencyButton.text.toString()
+            initialCurrency.setCurrencyCode()
+            binding.initialValueInputLayout.prefixText = initialCurrency.currencyCode
 
         }
 
@@ -266,7 +270,7 @@ class HomeScreenActivity : ComponentActivity() {
 
     private fun verifyAreIdenticalSelectedCurrencies(): Boolean {
 
-        if (initialCurrency == finalCurrency) {
+        if (initialCurrency.currencyName == finalCurrency.currencyName) {
             binding.initialValueInputLayout.error = resources.getText(R.string.identical_currencies)
             return true
         }
@@ -289,9 +293,8 @@ class HomeScreenActivity : ComponentActivity() {
 
         startActivity(Intent(this, ConversionPageActivity::class.java).apply {
             putExtra(resources.getString(R.string.bundle), Bundle().apply {
-                putString(resources.getString(R.string.bundle_initial_currency), initialCurrency.currency.getName(resources))
-                putString(resources.getString(R.string.bundle_final_currency), finalCurrency.currency.getName(resources))
-                putDouble(resources.getString(R.string.bundle_initial_value), initialCurrency.value)
+                putParcelable(resources.getString(R.string.bundle_initial_currency), initialCurrency)
+                putParcelable(resources.getString(R.string.bundle_final_currency), finalCurrency)
             })
         })
 
