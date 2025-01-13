@@ -1,11 +1,14 @@
 package com.example.conversaomoedas.home_screen
 
+import com.example.conversaomoedas.classes.InternetConnectionListener
 import com.example.conversaomoedas.classes.MapAdapter
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +31,7 @@ class HomeScreenActivity : ComponentActivity() {
     private lateinit var finalCurrency: Currency
 
     private lateinit var availableCurrenciesMap: Map<String, String>
+    private lateinit var internetConnectionListener: InternetConnectionListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -41,8 +45,7 @@ class HomeScreenActivity : ComponentActivity() {
         setContentView(binding.root)
 
         availableCurrenciesMap = mapOf()
-
-        homeScreenViewModel.setAvailableCurrenciesMap()
+        internetConnectionListener = InternetConnectionListener(this, availableCurrenciesMap, homeScreenViewModel)
 
         getExtras()
 
@@ -57,7 +60,7 @@ class HomeScreenActivity : ComponentActivity() {
 
             if(reqSuccess) {
                 availableCurrenciesMap = homeScreenViewModel.availableCurrenciesMap
-
+                internetConnectionListener.availableCurrenciesMap = availableCurrenciesMap
             }
 
         }
@@ -78,6 +81,16 @@ class HomeScreenActivity : ComponentActivity() {
 
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        internetConnectionListener.startListening()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        internetConnectionListener.stopListening()
     }
 
     private fun getExtras() {
@@ -143,17 +156,32 @@ class HomeScreenActivity : ComponentActivity() {
             .create()
 
         binding.initialCurrencyButton.setOnClickListener {
+
+            val dialogViewWithErrorConnection = dialogView.findViewById<TextView>(R.id.errorConnectionMessage)
+            internetConnectionListener.availableCurrenciesMap = availableCurrenciesMap
+
+            if(availableCurrenciesMap.isEmpty())
+                dialogViewWithErrorConnection.visibility = View.VISIBLE
+            else
+                dialogViewWithErrorConnection.visibility = View.GONE
+
             recyclerView.adapter = MapAdapter(availableCurrenciesMap, dialog, homeScreenViewModel.selectedInitialCurrency)
             dialog.show()
         }
 
         binding.finalCurrencyButton.setOnClickListener {
+
+            val dialogViewWithErrorConnection = dialogView.findViewById<TextView>(R.id.errorConnectionMessage)
+            internetConnectionListener.availableCurrenciesMap = availableCurrenciesMap
+
+            if(availableCurrenciesMap.isEmpty())
+                dialogViewWithErrorConnection.visibility = View.VISIBLE
+            else
+                dialogViewWithErrorConnection.visibility = View.GONE
+
             recyclerView.adapter = MapAdapter(availableCurrenciesMap, dialog, homeScreenViewModel.selectedFinalCurrency)
             dialog.show()
         }
-
-        if(availableCurrenciesMap.isEmpty())
-            homeScreenViewModel.setAvailableCurrenciesMap()
 
         if(bundle.isEmpty)
             return

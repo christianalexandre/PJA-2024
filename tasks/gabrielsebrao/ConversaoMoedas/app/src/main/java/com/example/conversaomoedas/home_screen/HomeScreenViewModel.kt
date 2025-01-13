@@ -155,7 +155,7 @@ class HomeScreenViewModel: ViewModel() {
         disposable = getApiSingle().subscribe({ map ->
 
             availableCurrenciesMap = map
-            Log.e("RX_DEBUG_HOME (ON SUCCESS)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
+            Log.d("RX_DEBUG_HOME (ON SUCCESS)", "disposable is disposed: ${disposable?.isDisposed}, disposable location: ${System.identityHashCode(disposable)}")
 
             reqSuccess.postValue(true)
 
@@ -174,7 +174,7 @@ class HomeScreenViewModel: ViewModel() {
             .getAvailableCurrencies()
             .map { responseBody ->
                 val jsonString = responseBody.string()
-                Log.e("RX_DEBUG_HOME_RESPONSE", jsonString)
+                Log.d("RX_DEBUG_HOME_RESPONSE", jsonString)
                 Moshi.getMapFromJson(jsonString) ?: emptyMap()
             }
     }
