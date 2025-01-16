@@ -17,6 +17,18 @@ class MainActivity : AppCompatActivity() {
 
         replaceFragment(HomeFragment())
 
+        setupListeners()
+
+    }
+
+    private fun setupListeners() {
+
+        setupBottomNavigationViewListeners()
+
+    }
+
+    private fun setupBottomNavigationViewListeners() {
+
         binding?.bottomNavigationView?.setOnItemSelectedListener { item ->
 
             when(item.itemId) {
