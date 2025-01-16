@@ -21,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_nav_menu"/>
+        app:menu="@menu/bottom_nav_menu"
+        app:itemRippleColor="@color/light_green"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

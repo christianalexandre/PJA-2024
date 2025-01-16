@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">ToDo</string>
-    <string name="home">Home</string>
+    <string name="app_name" translatable="false">ToDo</string>
+    <string name="home" translatable="false">Home</string>
     <string name="archived">Arquivados</string>
     <string name="add">Adicionar</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
 </resources>
